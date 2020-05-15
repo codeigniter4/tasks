@@ -18,12 +18,51 @@ class CronExpression
      */
     protected $testTime;
 
-    public function shouldRun(string $expression): bool
+    /**
+     * Allows us to set global timezone for all tasks
+     * on construct
+     * 
+     * @param string $timezone
+     * 
+     * @return void
+     */
+    public function __construct(string $timezone = null)
     {
+        if($timezone === null){
+            $timezone = app_timezone();
+        }
+        
+        $this->timezone($timezone);
+
+    }
+
+    /**
+     * Checks whether cron expression should be run. Allows
+     * for custom timezone to be used for specific task
+     * 
+     * @param string $expression
+     * @param string $timezone
+     * 
+     * @return void
+     */
+    public function shouldRun(string $expression, $timezone = null): bool
+    {
+
         // Set our current time
         if (! $this->testTime instanceof Time) {
             $this->testTime = Time::now($this->timezone);
         }
+
+        if(!is_null($timezone)){
+            // Convert time object to selected timezone
+            $runtimeTimezone = new \DateTimeZone($timezone);
+            
+        }else{
+            $runtimeTimezone = $this->timezone;
+        }
+
+        $this->testTime = $this->testTime->setTimezone($runtimeTimezone);
+        
 
         // Break the expression into separate parts
         [$min, $hour, $monthDay, $month, $weekDay] = explode(' ', $expression);
@@ -67,11 +106,12 @@ class CronExpression
      * @param string $timezone
      *
      * @return $this
+     * @throws \Exception
      */
     public function timezone(string $timezone)
     {
-        $this->timezone = $timezone;
-
+        // Throws exception if invalid Timezone is given
+        $this->timezone = new \DateTimeZone($timezone);
         return $this;
     }
 
@@ -86,7 +126,7 @@ class CronExpression
      */
     public function testTime(string $dateTime)
     {
-        $this->testTime = Time::parse($dateTime);
+        $this->testTime = Time::parse($dateTime,$this->timezone);
 
         return $this;
     }
