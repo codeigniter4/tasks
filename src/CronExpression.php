@@ -28,12 +28,7 @@ class CronExpression
 	 */
 	public function __construct(string $timezone = null)
 	{
-		if ($timezone === null)
-		{
-			$timezone = app_timezone();
-		}
-
-		$this->timezone($timezone);
+		$this->setTimezone($timezone);
 	}
 
 	/**
@@ -41,29 +36,16 @@ class CronExpression
 	 * for custom timezone to be used for specific task
 	 *
 	 * @param string $expression The Cron Expression to be evaluated
-	 * @param string $timezone   The timezone for this specific task
 	 *
 	 * @return boolean
 	 */
-	public function shouldRun(string $expression, string $timezone = null): bool
+	public function shouldRun(string $expression): bool
 	{
 		// Set our current time
 		if (! $this->testTime instanceof Time)
 		{
 			$this->testTime = Time::now($this->timezone);
 		}
-
-		if (! is_null($timezone))
-		{
-			// Convert time object to selected timezone
-			$runtimeTimezone = new \DateTimeZone($timezone);
-		}
-		else
-		{
-			$runtimeTimezone = $this->timezone;
-		}
-
-		$this->testTime = $this->testTime->setTimezone($runtimeTimezone);
 
 		// Break the expression into separate parts
 		[
@@ -113,10 +95,21 @@ class CronExpression
 	 * @return $this
 	 * @throws \Exception Thrown if $timezone is not a valid timezone string.
 	 */
-	public function timezone(string $timezone)
+	public function setTimezone(string $timezone = null)
 	{
+		if ($timezone === null)
+		{
+			$timezone = app_timezone();
+		}
+
 		// Throws exception if invalid Timezone is given
 		$this->timezone = new \DateTimeZone($timezone);
+
+		// If testTime has been set, convert it to the new timezone
+		if ($this->testTime instanceof Time)
+		{
+			$this->testTime = $this->testTime->setTimezone($this->timezone);
+		}
 		return $this;
 	}
 
