@@ -10,6 +10,8 @@
  */
 class Task
 {
+    use FrequenciesTrait;
+
     /**
      * The command, shell command, or Closure
      * that should be ran.
@@ -30,7 +32,22 @@ class Task
      *
      * @var string
      */
-    protected $cronExpression = '* * * * *';
+    protected $expression = '* * * * *';
+
+    /**
+     * The timezone the event should be evaluated in.
+     *
+     * @var string
+     */
+    protected $timezone;
+
+    /**
+     * If not empty, lists the allowed environments
+     * this can run in.
+     *
+     * @var array
+     */
+    protected $environments = [];
 
     public function __construct($task, string $taskType)
     {
@@ -43,17 +60,8 @@ class Task
 
     }
 
-    /**
-     * Schedules the task through a raw crontab expression string.
-     *
-     * @param string $expression
-     *
-     * @return $this
-     */
-    public function cron(string $expression)
+    public function shouldRun()
     {
-        $this->cronExpression = $expression;
 
-        return $this;
     }
 }
