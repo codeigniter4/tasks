@@ -64,4 +64,36 @@ class Task
     {
 
     }
+
+    /**
+     * Restricts this task to run within only
+     * specified environements.
+     *
+     * @param mixed ...$environments
+     *
+     * @return $this
+     */
+    protected function environments(...$environments)
+    {
+        $this->environments = $environments;
+
+        return $this;
+    }
+
+    /**
+     * Checks if it runs within the specified environment.
+     *
+     * @param string $environment
+     *
+     * @return bool
+     */
+    protected function runsInEnvironment(string $environment): bool
+    {
+        // If nothing specified should run anywhere
+        if (! is_array($this->environments)) {
+            return true;
+        }
+
+        return in_array($environment, $this->environments);
+    }
 }

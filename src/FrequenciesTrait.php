@@ -22,6 +22,14 @@ trait FrequenciesTrait
     ];
 
     /**
+     * If listed, will restrict this to running
+     * within only those environments.
+     *
+     * @var null
+     */
+    protected $allowedEnvironments = null;
+
+    /**
      * Schedules the task through a raw crontab expression string.
      *
      * @param string $expression
@@ -268,6 +276,50 @@ trait FrequenciesTrait
         $this->expression['hour'] = $hour;
         $this->expression['dayOfMonth'] = 1;
         $this->expression['month'] = 1;
+
+        return $this;
+    }
+
+    /**
+     * Should run M-F.
+     *
+     * @param string|null $time
+     *
+     * @return $this
+     */
+    public function weekdays(string $time = null)
+    {
+        $min = $hour = 0;
+
+        if (! empty($time)) {
+            [$min, $hour] = $this->parseTime($time);
+        }
+
+        $this->expression['min'] = $min;
+        $this->expression['hour'] = $hour;
+        $this->expression['dayOfWeek'] = '1-5';
+
+        return $this;
+    }
+
+    /**
+     * Should run Saturday and Sunday
+     *
+     * @param string|null $time
+     *
+     * @return $this
+     */
+    public function weekends(string $time = null)
+    {
+        $min = $hour = 0;
+
+        if (! empty($time)) {
+            [$min, $hour] = $this->parseTime($time);
+        }
+
+        $this->expression['min'] = $min;
+        $this->expression['hour'] = $hour;
+        $this->expression['dayOfWeek'] = '6-7';
 
         return $this;
     }

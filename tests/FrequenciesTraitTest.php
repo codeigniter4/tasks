@@ -205,4 +205,32 @@ class FrequenciesTraitTest extends TestCase
 
         $this->assertEquals('08 16 1 /3 *', $this->class->getExpression());
     }
+
+    public function testWeekdays()
+    {
+        $this->class->weekdays();
+
+        $this->assertEquals('0 0 * * 1-5', $this->class->getExpression());
+    }
+
+    public function testWeekdaysWithTime()
+    {
+        $this->class->weekdays('4:08 pm');
+
+        $this->assertEquals('08 16 * * 1-5', $this->class->getExpression());
+    }
+
+    public function testWeekends()
+    {
+        $this->class->weekends();
+
+        $this->assertEquals('0 0 * * 6-7', $this->class->getExpression());
+    }
+
+    public function testWeekendsWithTime()
+    {
+        $this->class->weekends('4:08 pm');
+
+        $this->assertEquals('08 16 * * 6-7', $this->class->getExpression());
+    }
 }
