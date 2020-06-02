@@ -28,13 +28,6 @@ class Task
     protected $taskType;
 
     /**
-     * The crontab expression for this task
-     *
-     * @var string
-     */
-    protected $expression = '* * * * *';
-
-    /**
      * The timezone the event should be evaluated in.
      *
      * @var string
@@ -63,6 +56,16 @@ class Task
     public function shouldRun()
     {
 
+    }
+
+    /**
+     * Returns the saved task.
+     *
+     * @return mixed
+     */
+    public function getTask()
+    {
+        return $this->task;
     }
 
     /**

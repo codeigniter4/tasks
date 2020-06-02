@@ -3,13 +3,18 @@
 class Scheduler
 {
     /**
+     * @var array
+     */
+    protected $tasks = [];
+
+    /**
      * Schedules a closure to run.
      *
      * @param \Closure $func
      */
     public function call(\Closure $func)
     {
-
+        return $this->createTask($func, 'closure');
     }
 
     /**
@@ -19,7 +24,7 @@ class Scheduler
      */
     public function command(string $command)
     {
-
+        return $this->createTask($command, 'command');
     }
 
     /**
@@ -29,6 +34,20 @@ class Scheduler
      */
     public function shell(string $command)
     {
+        return $this->createTask($command, 'shell');
+    }
 
+    /**
+     * @param        $command
+     * @param string $type
+     *
+     * @return Task
+     */
+    protected function createTask($command, string $type)
+    {
+        $task = new Task($command, $type);
+        $this->tasks[] = $task;
+
+        return $task;
     }
 }
