@@ -4,33 +4,33 @@
  * Class Task
  *
  * Represents a single task that should be scheduled
- * and ran periodically.
- *
- * @package CodeIgniter\Tasks
+ * and run periodically.
  */
 class Task
 {
     use FrequenciesTrait;
 
     /**
-     * The command, shell command, or Closure
-     * that should be ran.
+     * The actual content that should be run.
      *
      * @var mixed
      */
-    protected $task;
+    protected $action;
 
     /**
-     * The task type, either 'callable', 'command', or 'shell'
+     * The type of action.
+     * Enum 'callable', 'command', or 'shell'
      *
      * @var string
      */
-    protected $taskType;
+    protected $type;
 
     /**
-     * The timezone the event should be evaluated in.
+     * The timezone this should be evaluated in.
      *
      * @var string
+     *
+     * @todo Needs to be implemented
      */
     protected $timezone;
 
@@ -38,34 +38,57 @@ class Task
      * If not empty, lists the allowed environments
      * this can run in.
      *
-     * @var array
+     * @var string[]
      */
     protected $environments = [];
 
+    /**
+     * @param mixed $task
+     * @param string $taskType
+     */
     public function __construct($task, string $taskType)
     {
-        $this->task = $task;
+        $this->task     = $task;
         $this->taskType = $taskType;
     }
 
+    /**
+     * Runs this Task's action.
+     *
+     * @todo
+     */
     public function run()
     {
-
-    }
-
-    public function shouldRun()
-    {
-
     }
 
     /**
-     * Returns the saved task.
+     * Determines whether this task should be run now
+     * according to its schedule, timezone, and environment.
+     *
+     * @return bool
+     */
+    public function shouldRun(): bool
+    {
+    }
+
+    /**
+     * Returns the saved action.
      *
      * @return mixed
      */
-    public function getTask()
+    public function getAction()
     {
-        return $this->task;
+        return $this->action;
+    }
+
+    /**
+     * Returns the type.
+     *
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     /**
@@ -92,8 +115,9 @@ class Task
      */
     protected function runsInEnvironment(string $environment): bool
     {
-        // If nothing specified should run anywhere
-        if (! is_array($this->environments)) {
+        // If nothing is specified then it should run
+        if (empty($this->environments))
+        {
             return true;
         }
 
