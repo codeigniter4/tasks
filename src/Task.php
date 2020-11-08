@@ -19,7 +19,7 @@ class Task
 
 	/**
 	 * The type of action.
-	 * Enum 'callable', 'command', or 'shell'
+	 * Enum 'callable', 'command', 'shell', 'event', 'url'
 	 *
 	 * @var string
 	 */

@@ -38,6 +38,27 @@ class Scheduler
 	}
 
 	/**
+	 * Schedules an Event to trigger
+	 *
+	 * @param string $name  Name of the event to trigger
+	 * @param array $params Optional parameters for the Event
+	 */
+	public function event(string $name, array $params = [])
+	{
+	}
+
+	/**
+	 * Schedules a cURL command to a remote URL
+	 *
+	 * @param string $url
+	 */
+	public function url(string $url)
+	{
+	}
+
+	//--------------------------------------------------------------------
+
+	/**
 	 * @param mixed  $command
 	 * @param string $type
 	 *

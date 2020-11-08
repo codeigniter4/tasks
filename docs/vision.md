@@ -10,33 +10,49 @@ Tasks are scheduled within the config file, `Config\Tasks.php`, within the `init
 ```
 public function init(Scheduler $schedule)
 {
-    $schedule->command('foo:bar')->nightly();
+	$schedule->command('foo:bar')->nightly();
 }
 ``` 
 
-There are 3 types of tasks that can be ran: 
+There are 5 types of tasks: 
 
 1. Commands. These are CLI commands that are defined by the name defined within their file, like `migrate:create`.
 
 ```
-    $schedule->command('foo:bar')->nightly();
+	$schedule->command('foo:bar')->nightly();
 ``` 
 
 2. Shell commands. These are passed to the system through `exec()` or `shell()`. Need to determine what makes 
 sense here. 
 
 ```
-    $schedule->shell('cp foo bar')->daily()->at('11:00 pm');
+	$schedule->shell('cp foo bar')->daily()->at('11:00 pm');
 ``` 
 
 3. Closures. Anonymous functions can be used to define the action to take, also.
 
 ```
-    $schedule->call(function() { 
-        do something.... 
-    })
-        ->everyMonday();
+	$schedule->call(function() { 
+		do something.... 
+	})
+		->everyMonday();
 ```
+
+4. Events. These trigger pre-defined framework [Events](https://codeigniter4.github.io/CodeIgniter4/extending/events.html)
+which allows for more dynamic actions to take place from a single Task.
+
+```
+	$schedule->event('reminders')->weekdays()->at('9:00 am');
+```
+
+5. URL. These access a remote URL and are handy for interacting with other APIs or coordinating tasks across servers.
+
+```
+	$schedule->url('https://example.com/api/sync_remote_db')->environments('production')->everyTuesday(););
+```
+
+> Note that URL Tasks perform a simple GET request; should you need more involved remote calls (like authentication)
+they should be written into a separate command.
 
 ## Scheduling Tasks
 
