@@ -11,14 +11,14 @@ trait FrequenciesTrait
 {
     /**
      * The generated cron expression
-     * @var string
+     * @var array<string|int, string|int>
      */
     protected $expression = [
-        'min' => '*',
-        'hour' => '*',
+        'min'        => '*',
+        'hour'       => '*',
         'dayOfMonth' => '*',
-        'month' => '*',
-        'dayOfWeek' => '*',
+        'month'      => '*',
+        'dayOfWeek'  => '*',
     ];
 
     /**
@@ -132,7 +132,7 @@ trait FrequenciesTrait
      *
      * @param string|null $time
      *
-     * @return FrequenciesTrait
+     * @return $this
      */
     public function everySunday(string $time = null)
     {
@@ -144,7 +144,7 @@ trait FrequenciesTrait
      *
      * @param string|null $time
      *
-     * @return FrequenciesTrait
+     * @return $this
      */
     public function everyMonday(string $time = null)
     {
@@ -156,7 +156,7 @@ trait FrequenciesTrait
      *
      * @param string|null $time
      *
-     * @return FrequenciesTrait
+     * @return $this
      */
     public function everyTuesday(string $time = null)
     {
@@ -168,7 +168,7 @@ trait FrequenciesTrait
      *
      * @param string|null $time
      *
-     * @return FrequenciesTrait
+     * @return $this
      */
     public function everyWednesday(string $time = null)
     {
@@ -180,7 +180,7 @@ trait FrequenciesTrait
      *
      * @param string|null $time
      *
-     * @return FrequenciesTrait
+     * @return $this
      */
     public function everyThursday(string $time = null)
     {
@@ -192,7 +192,7 @@ trait FrequenciesTrait
      *
      * @param string|null $time
      *
-     * @return FrequenciesTrait
+     * @return $this
      */
     public function everyFriday(string $time = null)
     {
@@ -204,7 +204,7 @@ trait FrequenciesTrait
      *
      * @param string|null $time
      *
-     * @return FrequenciesTrait
+     * @return $this
      */
     public function everySaturday(string $time = null)
     {

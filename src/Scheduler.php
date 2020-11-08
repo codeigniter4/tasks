@@ -38,7 +38,7 @@ class Scheduler
     }
 
     /**
-     * @param        $command
+     * @param mixed  $command
      * @param string $type
      *
      * @return Task

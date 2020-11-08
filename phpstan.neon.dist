@@ -10,8 +10,6 @@ parameters:
 		- src/Config/Routes.php
 		- src/Views/*
 	ignoreErrors:
-		- '#Cannot access property [\$a-z_]+ on (array|object)#'
-		- '#Unsafe usage of new static\(\)*#'
 	universalObjectCratesClasses:
 		- CodeIgniter\Entity
 		- Faker\Generator
