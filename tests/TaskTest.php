@@ -35,13 +35,17 @@ class TaskTest extends TasksTestCase
 
 		$this->assertEquals(['command', 'tasks:test'], $_SESSION['tasks_cache']);
 	}
-/*
-	public function testCommandReturnsOutput()
-	{
-		$task   = new Task('command', 'tasks:test');
-		$result = $task->run();
 
-		$this->assertEquals('Commands can output text.', $result);
-	}
-*/
+	/**
+	 * `command()` is not buffering the output like it appears it should,
+	 * so the result is not actually being returned. Disabling this test
+	 * until the root issue can be resolved.
+	 */
+//	public function testCommandReturnsOutput()
+//	{
+//		$task   = new Task('command', 'tasks:test');
+//		$result = $task->run();
+//
+//		$this->assertEquals('Commands can output text.', $result);
+//	}
 }
