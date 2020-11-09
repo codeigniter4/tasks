@@ -1,102 +1,211 @@
 <?php namespace CodeIgniter\Tasks;
 
+use CodeIgniter\Events\Events;
+use CodeIgniter\Tasks\Exceptions\TasksException;
+use Config\Services;
+
 /**
  * Class Task
  *
  * Represents a single task that should be scheduled
- * and ran periodically.
- *
- * @package CodeIgniter\Tasks
+ * and run periodically.
  */
 class Task
 {
-    use FrequenciesTrait;
+	use FrequenciesTrait;
 
-    /**
-     * The command, shell command, or Closure
-     * that should be ran.
-     *
-     * @var mixed
-     */
-    protected $task;
+	/**
+	 * Supported action types.
+	 *
+	 * @var string[]
+	 */
+	protected $types = ['command', 'shell', 'closure', 'event', 'url'];
 
-    /**
-     * The task type, either 'callable', 'command', or 'shell'
-     *
-     * @var string
-     */
-    protected $taskType;
+	/**
+	 * The type of action.
+	 *
+	 * @var string
+	 */
+	protected $type;
 
-    /**
-     * The timezone the event should be evaluated in.
-     *
-     * @var string
-     */
-    protected $timezone;
+	/**
+	 * The actual content that should be run.
+	 *
+	 * @var mixed
+	 */
+	protected $action;
 
-    /**
-     * If not empty, lists the allowed environments
-     * this can run in.
-     *
-     * @var array
-     */
-    protected $environments = [];
+	/**
+	 * The timezone this should be evaluated in.
+	 *
+	 * @var string
+	 *
+	 * @todo Needs to be implemented
+	 */
+	protected $timezone;
 
-    public function __construct($task, string $taskType)
-    {
-        $this->task = $task;
-        $this->taskType = $taskType;
-    }
+	/**
+	 * If not empty, lists the allowed environments
+	 * this can run in.
+	 *
+	 * @var string[]
+	 */
+	protected $environments = [];
 
-    public function run()
-    {
+	/**
+	 * @param mixed  $action
+	 * @param string $type
+	 *
+	 * @throws TasksException
+	 */
+	public function __construct(string $type, $action)
+	{
+		if (! in_array($type, $this->types))
+		{
+			throw TasksException::forInvalidTaskType($type);
+		}
 
-    }
+		$this->type   = $type;
+		$this->action = $action;
+	}
 
-    public function shouldRun()
-    {
+	/**
+	 * Returns the type.
+	 *
+	 * @return string
+	 */
+	public function getType(): string
+	{
+		return $this->type;
+	}
 
-    }
+	/**
+	 * Returns the saved action.
+	 *
+	 * @return mixed
+	 */
+	public function getAction()
+	{
+		return $this->action;
+	}
 
-    /**
-     * Returns the saved task.
-     *
-     * @return mixed
-     */
-    public function getTask()
-    {
-        return $this->task;
-    }
+	//--------------------------------------------------------------------
 
-    /**
-     * Restricts this task to run within only
-     * specified environements.
-     *
-     * @param mixed ...$environments
-     *
-     * @return $this
-     */
-    protected function environments(...$environments)
-    {
-        $this->environments = $environments;
+	/**
+	 * Runs this Task's action.
+	 *
+	 * @throws TasksException
+	 */
+	public function run()
+	{
+		$method = 'run' . ucfirst($this->type);
+		if (! method_exists($this, $method))
+		{
+			throw TasksException::forInvalidTaskType($this->type);
+		}
 
-        return $this;
-    }
+		return $this->$method();
+	}
 
-    /**
-     * Checks if it runs within the specified environment.
-     *
-     * @param string $environment
-     *
-     * @return bool
-     */
-    protected function runsInEnvironment(string $environment): bool
-    {
-        // If nothing specified should run anywhere
-        if (! is_array($this->environments)) {
-            return true;
-        }
+	/**
+	 * Determines whether this task should be run now
+	 * according to its schedule, timezone, and environment.
+	 *
+	 * @return boolean
+	 */
+	public function shouldRun(): bool
+	{
+		/** @todo */
+		return true;
+	}
 
-        return in_array($environment, $this->environments);
-    }
+	/**
+	 * Restricts this task to run within only
+	 * specified environements.
+	 *
+	 * @param mixed ...$environments
+	 *
+	 * @return $this
+	 */
+	protected function environments(...$environments)
+	{
+		$this->environments = $environments;
+
+		return $this;
+	}
+
+	/**
+	 * Checks if it runs within the specified environment.
+	 *
+	 * @param string $environment
+	 *
+	 * @return boolean
+	 */
+	protected function runsInEnvironment(string $environment): bool
+	{
+		// If nothing is specified then it should run
+		if (empty($this->environments))
+		{
+			return true;
+		}
+
+		return in_array($environment, $this->environments);
+	}
+
+	//--------------------------------------------------------------------
+
+	/**
+	 * Runs a framework Command.
+	 *
+	 * @return string Buffered output from the Command
+	 * @throws \InvalidArgumentException
+	 */
+	protected function runCommand(): string
+	{
+		return command($this->getAction());
+	}
+
+	/**
+	 * Executes a shell script.
+	 *
+	 * @return array Lines of output from exec
+	 */
+	protected function runShell(): array
+	{
+		exec($this->getAction(), $output);
+
+		return $output;
+	}
+
+	/**
+	 * Calls a Closure.
+	 *
+	 * @return mixed The result of the closure
+	 */
+	protected function runClosure()
+	{
+		return $this->getAction()->__invoke();
+	}
+
+	/**
+	 * Triggers an Event.
+	 *
+	 * @return bool Result of the trigger
+	 */
+	protected function runEvent(): bool
+	{
+		return Events::trigger($this->getAction());
+	}
+
+	/**
+	 * Queries a URL.
+	 *
+	 * @return mixed|string Body of the Response
+	 */
+	protected function runUrl()
+	{
+		$response = Services::curlrequest()->request('GET', $this->getAction());
+
+		return $response->getBody();
+	}
 }
