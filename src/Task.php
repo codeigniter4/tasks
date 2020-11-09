@@ -118,6 +118,8 @@ class Task
 	 */
 	public function shouldRun(): bool
 	{
+		/** @todo */
+		return true;
 	}
 
 	/**
