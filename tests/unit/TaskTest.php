@@ -33,7 +33,7 @@ class TaskTest extends TasksTestCase
 		$task = new Task('command', 'tasks:test');
 		$task->run();
 
-		$this->assertEquals(['command', 'tasks:test'], $_SESSION['tasks_cache']);
+		$this->assertTrue($_SESSION['command_tasks_test_did_run']);
 	}
 
 	/**
