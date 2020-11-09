@@ -28,8 +28,8 @@ class SchedulerTest extends TestCase
 
         $this->assertInstanceOf(\Closure::class, $function);
         $this->assertInstanceOf(Task::class, $task);
-        $this->assertSame($function, $task->getTask());
-        $this->assertEquals('Hello', $task->getTask()());
+        $this->assertSame($function, $task->getAction());
+        $this->assertEquals('Hello', $task->getAction()());
     }
 
     public function testCommandSavesTask()
@@ -37,7 +37,7 @@ class SchedulerTest extends TestCase
         $task = $this->scheduler->command('foo:bar');
 
         $this->assertInstanceOf(Task::class, $task);
-        $this->assertEquals('foo:bar', $task->getTask());
+        $this->assertEquals('foo:bar', $task->getAction());
     }
 
     public function testShellSavesTask()
@@ -45,6 +45,6 @@ class SchedulerTest extends TestCase
         $task = $this->scheduler->shell('foo:bar');
 
         $this->assertInstanceOf(Task::class, $task);
-        $this->assertEquals('foo:bar', $task->getTask());
+        $this->assertEquals('foo:bar', $task->getAction());
     }
 }

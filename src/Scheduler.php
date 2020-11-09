@@ -14,7 +14,7 @@ class Scheduler
 	 */
 	public function call(\Closure $func)
 	{
-		return $this->createTask($func, 'closure');
+		return $this->createTask('closure', $func);
 	}
 
 	/**
@@ -24,7 +24,7 @@ class Scheduler
 	 */
 	public function command(string $command)
 	{
-		return $this->createTask($command, 'command');
+		return $this->createTask('command', $command);
 	}
 
 	/**
@@ -34,17 +34,17 @@ class Scheduler
 	 */
 	public function shell(string $command)
 	{
-		return $this->createTask($command, 'shell');
+		return $this->createTask('shell', $command);
 	}
 
 	/**
 	 * Schedules an Event to trigger
 	 *
 	 * @param string $name  Name of the event to trigger
-	 * @param array $params Optional parameters for the Event
 	 */
-	public function event(string $name, array $params = [])
+	public function event(string $name)
 	{
+		return $this->createTask('event', $name);
 	}
 
 	/**
@@ -54,19 +54,20 @@ class Scheduler
 	 */
 	public function url(string $url)
 	{
+		return $this->createTask('url', $url);
 	}
 
 	//--------------------------------------------------------------------
 
 	/**
-	 * @param mixed  $command
 	 * @param string $type
+	 * @param mixed  $action
 	 *
 	 * @return Task
 	 */
-	protected function createTask($command, string $type)
+	protected function createTask(string $type, $action)
 	{
-		$task          = new Task($command, $type);
+		$task          = new Task($type, $action);
 		$this->tasks[] = $task;
 
 		return $task;
