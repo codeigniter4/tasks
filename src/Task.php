@@ -180,7 +180,7 @@ class Task
 	/**
 	 * Calls a Closure.
 	 *
-	 * @return The result of the closure
+	 * @return mixed The result of the closure
 	 */
 	protected function runClosure()
 	{

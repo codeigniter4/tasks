@@ -1,9 +1,9 @@
 <?php
 
 use CodeIgniter\Tasks\Task;
-use CodeIgniter\Test\CIUnitTestCase as TestCase;
+use Tests\Support\TasksTestCase;
 
-class TaskTest extends TestCase
+class TaskTest extends TasksTestCase
 {
 	public function testConstructSavesAction()
 	{
@@ -27,4 +27,21 @@ class TaskTest extends TestCase
 
 		$this->assertEquals('command', $task->getType());
 	}
+
+	public function testCommandRunsCommand()
+	{
+		$task = new Task('command', 'tasks:test');
+		$task->run();
+
+		$this->assertEquals(['command', 'tasks:test'], $_SESSION['tasks_cache']);
+	}
+/*
+	public function testCommandReturnsOutput()
+	{
+		$task   = new Task('command', 'tasks:test');
+		$result = $task->run();
+
+		$this->assertEquals('Commands can output text.', $result);
+	}
+*/
 }
