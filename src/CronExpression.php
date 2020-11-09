@@ -7,7 +7,7 @@ class CronExpression
 	/**
 	 * The timezone this should be considered under.
 	 *
-	 * @var string
+	 * @var \DateTimeZone
 	 */
 	protected $timezone;
 
@@ -73,6 +73,7 @@ class CronExpression
 	 */
 	public function nextRun(string $expression): Time
 	{
+		return new Time();
 	}
 
 	/**
@@ -85,6 +86,7 @@ class CronExpression
 	 */
 	public function lastRun(string $expression): Time
 	{
+		return new Time();
 	}
 
 	/**
