@@ -1,5 +1,8 @@
 <?php namespace CodeIgniter\Tasks;
 
+use CodeIgniter\Events\Events;
+use CodeIgniter\Tasks\Exceptions\TasksException;
+
 /**
  * Class Task
  *
@@ -11,19 +14,25 @@ class Task
 	use FrequenciesTrait;
 
 	/**
+	 * Supported action types.
+	 *
+	 * @var string[]
+	 */
+	protected $types = ['command', 'shell', 'closure', 'event', 'url'];
+
+	/**
+	 * The type of action.
+	 *
+	 * @var string
+	 */
+	protected $type;
+
+	/**
 	 * The actual content that should be run.
 	 *
 	 * @var mixed
 	 */
 	protected $action;
-
-	/**
-	 * The type of action.
-	 * Enum 'callable', 'command', 'shell', 'event', 'url'
-	 *
-	 * @var string
-	 */
-	protected $type;
 
 	/**
 	 * The timezone this should be evaluated in.
@@ -43,32 +52,20 @@ class Task
 	protected $environments = [];
 
 	/**
-	 * @param mixed  $task
-	 * @param string $taskType
-	 */
-	public function __construct($task, string $taskType)
-	{
-		$this->task     = $task;
-		$this->taskType = $taskType;
-	}
-
-	/**
-	 * Runs this Task's action.
+	 * @param mixed  $action
+	 * @param string $type
 	 *
-	 * @todo
+	 * @throws TasksException
 	 */
-	public function run()
+	public function __construct(string $type, $action)
 	{
-	}
+		if (! in_array($type, $this->types))
+		{
+			throw TasksException::forInvalidTaskType($type);
+		}
 
-	/**
-	 * Determines whether this task should be run now
-	 * according to its schedule, timezone, and environment.
-	 *
-	 * @return boolean
-	 */
-	public function shouldRun(): bool
-	{
+		$this->type   = $type;
+		$this->action = $action;
 	}
 
 	/**
@@ -89,6 +86,38 @@ class Task
 	public function getType(): string
 	{
 		return $this->type;
+	}
+
+	//--------------------------------------------------------------------
+
+	/**
+	 * Runs this Task's action.
+	 *
+	 * @throws TasksException
+	 */
+	public function run()
+	{
+		$method = 'run' . ucfirst($this->type);
+		if (! method_exists($this, $method))
+		{
+			throw TasksException::forInvalidTaskType($this->type);
+		}
+
+		$result = $this->$method();
+
+		/** Handle logging & notifications */
+
+		return $result;
+	}
+
+	/**
+	 * Determines whether this task should be run now
+	 * according to its schedule, timezone, and environment.
+	 *
+	 * @return boolean
+	 */
+	public function shouldRun(): bool
+	{
 	}
 
 	/**
@@ -122,5 +151,49 @@ class Task
 		}
 
 		return in_array($environment, $this->environments);
+	}
+
+	//--------------------------------------------------------------------
+
+	/**
+	 * Runs a framework Command.
+	 *
+	 * @return string Buffered output from the Command
+	 * @throws \InvalidArgumentException
+	 */
+	protected function runCommand(): string
+	{
+		return command($this->action);
+	}
+
+	/**
+	 * Executes a shell script.
+	 */
+	protected function runShell()
+	{
+	}
+
+	/**
+	 * Calls a Closure.
+	 */
+	protected function runClosure()
+	{
+	}
+
+	/**
+	 * Triggers an Event.
+	 *
+	 * @return bool Result of the trigger
+	 */
+	protected function runEvent(): bool
+	{
+		return Events::trigger($this->action);
+	}
+
+	/**
+	 * Queries a URL.
+	 */
+	protected function runUrl()
+	{
 	}
 }
