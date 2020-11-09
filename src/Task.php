@@ -2,6 +2,7 @@
 
 use CodeIgniter\Events\Events;
 use CodeIgniter\Tasks\Exceptions\TasksException;
+use Config\Services;
 
 /**
  * Class Task
@@ -69,16 +70,6 @@ class Task
 	}
 
 	/**
-	 * Returns the saved action.
-	 *
-	 * @return mixed
-	 */
-	public function getAction()
-	{
-		return $this->action;
-	}
-
-	/**
 	 * Returns the type.
 	 *
 	 * @return string
@@ -86,6 +77,16 @@ class Task
 	public function getType(): string
 	{
 		return $this->type;
+	}
+
+	/**
+	 * Returns the saved action.
+	 *
+	 * @return mixed
+	 */
+	public function getAction()
+	{
+		return $this->action;
 	}
 
 	//--------------------------------------------------------------------
@@ -103,11 +104,7 @@ class Task
 			throw TasksException::forInvalidTaskType($this->type);
 		}
 
-		$result = $this->$method();
-
-		/** Handle logging & notifications */
-
-		return $result;
+		return $this->$method();
 	}
 
 	/**
@@ -165,21 +162,29 @@ class Task
 	 */
 	protected function runCommand(): string
 	{
-		return command($this->action);
+		return command($this->getAction());
 	}
 
 	/**
 	 * Executes a shell script.
+	 *
+	 * @return array Lines of output from exec
 	 */
-	protected function runShell()
+	protected function runShell(): array
 	{
+		exec($this->getAction(), $output);
+
+		return $output;
 	}
 
 	/**
 	 * Calls a Closure.
+	 *
+	 * @return The result of the closure
 	 */
 	protected function runClosure()
 	{
+		return $this->getAction()->__invoke();
 	}
 
 	/**
@@ -189,13 +194,18 @@ class Task
 	 */
 	protected function runEvent(): bool
 	{
-		return Events::trigger($this->action);
+		return Events::trigger($this->getAction());
 	}
 
 	/**
 	 * Queries a URL.
+	 *
+	 * @return mixed|string Body of the Response
 	 */
 	protected function runUrl()
 	{
+		$response = Services::curlrequest()->request('GET', $this->getAction());
+
+		return $response->getBody();
 	}
 }
