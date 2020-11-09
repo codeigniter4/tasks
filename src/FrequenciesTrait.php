@@ -69,10 +69,7 @@ trait FrequenciesTrait
 
 		if (! empty($time))
 		{
-			[
-				$min,
-				$hour,
-			] = $this->parseTime($time);
+			[$min, $hour] = $this->parseTime($time);
 		}
 
 		$this->expression['min']  = $min;
@@ -230,10 +227,7 @@ trait FrequenciesTrait
 
 		if (! empty($time))
 		{
-			[
-				$min,
-				$hour,
-			] = $this->parseTime($time);
+			[$min, $hour] = $this->parseTime($time);
 		}
 
 		$this->expression['min']        = $min;
@@ -257,10 +251,7 @@ trait FrequenciesTrait
 
 		if (! empty($time))
 		{
-			[
-				$min,
-				$hour,
-			] = $this->parseTime($time);
+			[$min, $hour] = $this->parseTime($time);
 		}
 
 		$this->expression['min']        = $min;
@@ -284,10 +275,7 @@ trait FrequenciesTrait
 
 		if (! empty($time))
 		{
-			[
-				$min,
-				$hour,
-			] = $this->parseTime($time);
+			[$min, $hour] = $this->parseTime($time);
 		}
 
 		$this->expression['min']        = $min;
@@ -311,10 +299,7 @@ trait FrequenciesTrait
 
 		if (! empty($time))
 		{
-			[
-				$min,
-				$hour,
-			] = $this->parseTime($time);
+			[$min, $hour] = $this->parseTime($time);
 		}
 
 		$this->expression['min']       = $min;
@@ -337,10 +322,7 @@ trait FrequenciesTrait
 
 		if (! empty($time))
 		{
-			[
-				$min,
-				$hour,
-			] = $this->parseTime($time);
+			[$min, $hour] = $this->parseTime($time);
 		}
 
 		$this->expression['min']       = $min;
@@ -364,10 +346,7 @@ trait FrequenciesTrait
 
 		if (! empty($time))
 		{
-			[
-				$min,
-				$hour,
-			] = $this->parseTime($time);
+			[$min, $hour] = $this->parseTime($time);
 		}
 
 		$this->expression['min']       = $min;
