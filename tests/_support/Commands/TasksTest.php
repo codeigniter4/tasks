@@ -14,6 +14,6 @@ class TasksTest extends BaseCommand
 	{
 		CLI::write('Commands can output text.');
 
-		$_SESSION['tasks_cache'] = ['command', 'tasks:test'];
+		$_SESSION['command_tasks_test_did_run'] = true;
 	}
 }

@@ -8,6 +8,18 @@ class Scheduler
 	protected $tasks = [];
 
 	/**
+	 * Returns the created Tasks.
+	 *
+	 * @return Task[]
+	 */
+	public function getTasks(): array
+	{
+		return $this->tasks;
+	}
+
+	//--------------------------------------------------------------------
+
+	/**
 	 * Schedules a closure to run.
 	 *
 	 * @param \Closure $func
