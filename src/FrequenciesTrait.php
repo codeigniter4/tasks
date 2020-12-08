@@ -137,7 +137,7 @@ trait FrequenciesTrait
 	 *
 	 * @return $this
 	 */
-	public function everySunday(string $time = null)
+	public function sundays(string $time = null)
 	{
 		return $this->setDayOfWeek(0, $time);
 	}
@@ -149,7 +149,7 @@ trait FrequenciesTrait
 	 *
 	 * @return $this
 	 */
-	public function everyMonday(string $time = null)
+	public function mondays(string $time = null)
 	{
 		return $this->setDayOfWeek(1, $time);
 	}
@@ -161,7 +161,7 @@ trait FrequenciesTrait
 	 *
 	 * @return $this
 	 */
-	public function everyTuesday(string $time = null)
+	public function tuesdays(string $time = null)
 	{
 		return $this->setDayOfWeek(2, $time);
 	}
@@ -173,7 +173,7 @@ trait FrequenciesTrait
 	 *
 	 * @return $this
 	 */
-	public function everyWednesday(string $time = null)
+	public function wednesdays(string $time = null)
 	{
 		return $this->setDayOfWeek(3, $time);
 	}
@@ -185,7 +185,7 @@ trait FrequenciesTrait
 	 *
 	 * @return $this
 	 */
-	public function everyThursday(string $time = null)
+	public function thursdays(string $time = null)
 	{
 		return $this->setDayOfWeek(4, $time);
 	}
@@ -197,7 +197,7 @@ trait FrequenciesTrait
 	 *
 	 * @return $this
 	 */
-	public function everyFriday(string $time = null)
+	public function fridays(string $time = null)
 	{
 		return $this->setDayOfWeek(5, $time);
 	}
@@ -209,7 +209,7 @@ trait FrequenciesTrait
 	 *
 	 * @return $this
 	 */
-	public function everySaturday(string $time = null)
+	public function saturdays(string $time = null)
 	{
 		return $this->setDayOfWeek(6, $time);
 	}

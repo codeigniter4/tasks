@@ -68,98 +68,98 @@ class FrequenciesTraitTest extends TestCase
 
     public function testEverySunday()
     {
-        $this->class->everySunday();
+        $this->class->sundays();
 
         $this->assertEquals('* * * * 0', $this->class->getExpression());
     }
 
     public function testEverySundayWithTime()
     {
-        $this->class->everySunday('4:08 pm');
+        $this->class->sundays('4:08 pm');
 
         $this->assertEquals('08 16 * * 0', $this->class->getExpression());
     }
 
     public function testEveryMonday()
     {
-        $this->class->everyMonday();
+        $this->class->mondays();
 
         $this->assertEquals('* * * * 1', $this->class->getExpression());
     }
 
     public function testEveryMondayWithTime()
     {
-        $this->class->everyMonday('4:08 pm');
+        $this->class->mondays('4:08 pm');
 
         $this->assertEquals('08 16 * * 1', $this->class->getExpression());
     }
 
     public function testEveryTuesday()
     {
-        $this->class->everyTuesday();
+        $this->class->tuesdays();
 
         $this->assertEquals('* * * * 2', $this->class->getExpression());
     }
 
     public function testEveryTuesdayWithTime()
     {
-        $this->class->everyTuesday('4:08 pm');
+        $this->class->tuesdays('4:08 pm');
 
         $this->assertEquals('08 16 * * 2', $this->class->getExpression());
     }
 
     public function testEveryWednesday()
     {
-        $this->class->everyWednesday();
+        $this->class->wednesdays();
 
         $this->assertEquals('* * * * 3', $this->class->getExpression());
     }
 
     public function testEveryWednesdayWithTime()
     {
-        $this->class->everyWednesday('4:08 pm');
+        $this->class->wednesdays('4:08 pm');
 
         $this->assertEquals('08 16 * * 3', $this->class->getExpression());
     }
 
     public function testEveryThursday()
     {
-        $this->class->everyThursday();
+        $this->class->thursdays();
 
         $this->assertEquals('* * * * 4', $this->class->getExpression());
     }
 
     public function testEveryThursdayWithTime()
     {
-        $this->class->everyThursday('4:08 pm');
+        $this->class->thursdays('4:08 pm');
 
         $this->assertEquals('08 16 * * 4', $this->class->getExpression());
     }
 
     public function testEveryFriday()
     {
-        $this->class->everyFriday();
+        $this->class->fridays();
 
         $this->assertEquals('* * * * 5', $this->class->getExpression());
     }
 
     public function testEveryFridayWithTime()
     {
-        $this->class->everyFriday('4:08 pm');
+        $this->class->fridays('4:08 pm');
 
         $this->assertEquals('08 16 * * 5', $this->class->getExpression());
     }
 
     public function testEverySaturday()
     {
-        $this->class->everySaturday();
+        $this->class->saturdays();
 
         $this->assertEquals('* * * * 6', $this->class->getExpression());
     }
 
     public function testEverySaturdayWithTime()
     {
-        $this->class->everySaturday('4:08 pm');
+        $this->class->saturdays('4:08 pm');
 
         $this->assertEquals('08 16 * * 6', $this->class->getExpression());
     }

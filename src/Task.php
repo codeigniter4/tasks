@@ -89,8 +89,6 @@ class Task
 		return $this->action;
 	}
 
-	//--------------------------------------------------------------------
-
 	/**
 	 * Runs this Task's action.
 	 *
@@ -117,6 +115,21 @@ class Task
 	{
 		/** @todo */
 		return true;
+	}
+
+	/**
+	 * Sets the timezone to use when determing if
+	 * the task should run.
+	 *
+	 * @param string $timezone
+	 *
+	 * @return $this
+	 */
+	public function timezone(string $timezone)
+	{
+		$this->timezone = $timezone;
+
+		return $this;
 	}
 
 	/**
@@ -151,8 +164,6 @@ class Task
 
 		return in_array($environment, $this->environments);
 	}
-
-	//--------------------------------------------------------------------
 
 	/**
 	 * Runs a framework Command.
