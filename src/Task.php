@@ -19,7 +19,13 @@ class Task
 	 *
 	 * @var string[]
 	 */
-	protected $types = ['command', 'shell', 'closure', 'event', 'url'];
+	protected $types = [
+		'command',
+		'shell',
+		'closure',
+		'event',
+		'url',
+	];
 
 	/**
 	 * The type of action.
@@ -109,27 +115,34 @@ class Task
 	 * Determines whether this task should be run now
 	 * according to its schedule, timezone, and environment.
 	 *
+	 * @param string|null $testTime
+	 *
 	 * @return boolean
 	 */
-	public function shouldRun(): bool
+	public function shouldRun(string $testTime = null): bool
 	{
-		/** @todo */
-		return true;
-	}
+		$cron = service('cronExpression');
 
-	/**
-	 * Sets the timezone to use when determing if
-	 * the task should run.
-	 *
-	 * @param string $timezone
-	 *
-	 * @return $this
-	 */
-	public function timezone(string $timezone)
-	{
-		$this->timezone = $timezone;
+		// Allow times to be set during testing
+		if (! empty($testTime))
+		{
+			$cron->testTime($testTime);
+		}
 
-		return $this;
+		// Make sure the timezone is updated
+		// if this task is specifying it.
+		if (! empty($this->timezone))
+		{
+			$cron->setTimezone($this->timezone);
+		}
+
+		// Are we restricting to environments?
+		if (! empty($this->environments) && ! $this->runsInEnvironment($_SERVER['CI_ENVIRONMENT']))
+		{
+			return false;
+		}
+
+		return $cron->shouldRun($this->getExpression());
 	}
 
 	/**
@@ -140,7 +153,7 @@ class Task
 	 *
 	 * @return $this
 	 */
-	protected function environments(...$environments)
+	public function environments(...$environments)
 	{
 		$this->environments = $environments;
 
@@ -201,7 +214,7 @@ class Task
 	/**
 	 * Triggers an Event.
 	 *
-	 * @return bool Result of the trigger
+	 * @return boolean Result of the trigger
 	 */
 	protected function runEvent(): bool
 	{

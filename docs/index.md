@@ -114,7 +114,6 @@ There are a number of ways available to specify how often the task is called.
 | ->yearly('12:34am')           | Runs the first day of the year.                                       |
 | ->weekdays('1:23pm')          | Runs M-F at 12:00 am unless time passed in.                           |
 | ->weekends('2:34am')          | Runs Saturday and Sunday at 12:00 am unless time passed in.           |
-| ->timezone('America/Chicago') | Specifies a timezone to use when determine if it runs.                |
 | ->environments('local', 'prod')   | Restricts the task to run only in the specified environments      |
 +---------------------------+---------------------------------------------------------------------------+
 
@@ -124,11 +123,7 @@ These methods can be combined together to create even more nuanced timings:
 $schdule->command('foo)
     ->weekdays()
     ->hourly()
-    ->timezone('America/Chicago')
     ->environments('development');
 ```
-
-> NOTE: When using a timezone that observes Daylight Savings time your task my run twice, or not
-> at all on the days that the time switches. For this reason we discourage using timezones.
 
 

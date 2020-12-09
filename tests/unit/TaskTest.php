@@ -41,11 +41,35 @@ class TaskTest extends TasksTestCase
 	 * so the result is not actually being returned. Disabling this test
 	 * until the root issue can be resolved.
 	 */
-//	public function testCommandReturnsOutput()
-//	{
-//		$task   = new Task('command', 'tasks:test');
-//		$result = $task->run();
-//
-//		$this->assertEquals('Commands can output text.', $result);
-//	}
+	//  public function testCommandReturnsOutput()
+	//  {
+	//      $task   = new Task('command', 'tasks:test');
+	//      $result = $task->run();
+	//
+	//      $this->assertEquals('Commands can output text.', $result);
+	//  }
+
+	public function testShouldRunSimple()
+	{
+		$task = (new Task('command', 'tasks:test'))->hourly();
+
+		$this->assertFalse($task->shouldRun('12:05am'));
+		$this->assertTrue($task->shouldRun('12:00am'));
+	}
+
+	public function testShouldRunWithEnvironments()
+	{
+		$originalEnv               = $_SERVER['CI_ENVIRONMENT'];
+		$_SERVER['CI_ENVIRONMENT'] = 'development';
+
+		$task = (new Task('command', 'tasks:test'))->environments('development');
+
+		$this->assertTrue($task->shouldRun('12:00am'));
+
+		$_SERVER['CI_ENVIRONMENT'] = 'production';
+
+		$this->assertFalse($task->shouldRun('12:00am'));
+
+		$_SERVER['CI_ENVIRONMENT'] = $originalEnv;
+	}
 }
