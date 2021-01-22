@@ -1,6 +1,7 @@
 <?php namespace CodeIgniter\Tasks;
 
 use CodeIgniter\CLI\CLI;
+use CodeIgniter\I18n\Time;
 
 /**
  * Class TaskRunner
@@ -13,6 +14,19 @@ class TaskRunner
 	 * @var Scheduler
 	 */
 	protected $scheduler;
+
+	/**
+	 * @var string
+	 */
+	protected $testTime;
+
+	/**
+	 * Stores execution logs for each
+	 * task that was ran
+	 *
+	 * @var array
+	 */
+	protected $performanceLogs = [];
 
 	public function __construct()
 	{
@@ -33,19 +47,62 @@ class TaskRunner
 			return;
 		}
 
-		try
+		foreach ($tasks as $task)
 		{
-			foreach ($tasks as $task)
+			if (! $task->shouldRun($this->testTime))
 			{
-				if ($task->shouldRun())
-				{
-					$task->run();
-				}
+				continue;
+			}
+
+			try
+			{
+				$error = null;
+				$start = Time::now();
+
+				$output = $task->run();
+			}
+			catch (\Throwable $e)
+			{
+				log_message('error', $e->getMessage(), $e->getTrace());
+				$error = $e;
+			}
+			finally
+			{
+				// Save performance info
+				$this->performanceLogs[] = new TaskLog([
+					'task'     => $task,
+					'output'   => $output,
+					'runStart' => $start,
+					'runEnd'   => Time::now(),
+					'error'    => $error,
+				]);
 			}
 		}
-		catch (\Throwable $e)
-		{
-			log_message('error', $e->getMessage(), $e->getTrace());
-		}
+	}
+
+	/**
+	 * Sets a time that will be used.
+	 * Allows setting a specific time to test against.
+	 * Must be in a DateTime-compatible format.
+	 *
+	 * @param string $time
+	 *
+	 * @return $this
+	 */
+	public function withTestTime(string $time)
+	{
+		$this->testTime = $time;
+
+		return $this;
+	}
+
+	/**
+	 * Returns the performance logs, if any.
+	 *
+	 * @return array
+	 */
+	public function performanceLogs()
+	{
+		return $this->performanceLogs;
 	}
 }

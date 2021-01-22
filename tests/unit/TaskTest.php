@@ -5,6 +5,17 @@ use Tests\Support\TasksTestCase;
 
 class TaskTest extends TasksTestCase
 {
+	public function testNamed()
+	{
+		$task = new Task('command', 'foo:bar');
+
+		$this->assertNull($task->name);
+
+		$task = (new Task('command', 'foo:bar'))->named('foo');
+
+		$this->assertEquals('foo', $task->name);
+	}
+
 	public function testConstructSavesAction()
 	{
 		$task = new Task('command', 'foo:bar');
@@ -31,6 +42,7 @@ class TaskTest extends TasksTestCase
 	public function testCommandRunsCommand()
 	{
 		$task = new Task('command', 'tasks:test');
+
 		$task->run();
 
 		$this->assertTrue($_SESSION['command_tasks_test_did_run']);

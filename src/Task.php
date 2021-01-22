@@ -59,6 +59,13 @@ class Task
 	protected $environments = [];
 
 	/**
+	 * The alias this task can be run by
+	 *
+	 * @var string
+	 */
+	protected $name;
+
+	/**
 	 * @param mixed  $action
 	 * @param string $type
 	 *
@@ -73,6 +80,20 @@ class Task
 
 		$this->type   = $type;
 		$this->action = $action;
+	}
+
+	/**
+	 * Set the name to reference this task by
+	 *
+	 * @param string $name
+	 *
+	 * @return $this
+	 */
+	public function named(string $name)
+	{
+		$this->name = $name;
+
+		return $this;
 	}
 
 	/**
@@ -231,5 +252,20 @@ class Task
 		$response = Services::curlrequest()->request('GET', $this->getAction());
 
 		return $response->getBody();
+	}
+
+	/**
+	 * Magic getter
+	 *
+	 * @param string $key
+	 *
+	 * @return mixed
+	 */
+	public function __get(string $key)
+	{
+		if (property_exists($this, $key))
+		{
+			return $this->$key;
+		}
 	}
 }

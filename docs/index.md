@@ -117,7 +117,7 @@ There are a number of ways available to specify how often the task is called.
 | ->environments('local', 'prod')   | Restricts the task to run only in the specified environments      |
 +---------------------------+---------------------------------------------------------------------------+
 
-These methods can be combined together to create even more nuanced timings: 
+These methods can be combined to create even more nuanced timings: 
 
 ```
 $schdule->command('foo)
@@ -126,4 +126,10 @@ $schdule->command('foo)
     ->environments('development');
 ```
 
+### Naming Tasks
 
+You can name tasks so they can be easily referenced later, such as through the CLI with the `named()` method:
+
+```
+$schedule->command('foo')->nightly()->named('foo-task');
+```
