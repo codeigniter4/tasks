@@ -86,7 +86,7 @@ class Lister extends BaseCommand
 				'runs_in'  => $nextRun->humanize(),
 			];
 
-		endforeach;
+		}
 
 		usort($tasks, function ($a, $b) {
 				return ($a['next_run'] < $b['next_run']) ? -1 : 1;
