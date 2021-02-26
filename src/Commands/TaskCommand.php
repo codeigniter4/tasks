@@ -8,8 +8,15 @@ use CodeIgniter\Tasks\TaskRunner;
 /**
  * Base functionality for enable/disable.
  */
-trait Settings
+abstract class TaskCommand extends BaseCommand
 {
+	/**
+	 * Command grouping.
+	 *
+	 * @var string
+	 */
+	protected $group = 'Tasks';
+
 	/**
 	 * location to save.
 	 */
@@ -48,8 +55,8 @@ trait Settings
 	}
 
 	/**
-	 * Gets the settings. If they
-	 * have never been saved then create them.
+	 * Gets the settings, if they have never been
+	 * saved, save them.
 	 */
 	protected function getSettings()
 	{
