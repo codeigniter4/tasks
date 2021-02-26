@@ -58,6 +58,6 @@ class Enable extends BaseCommand
 	{
 		$this->saveSettings('enabled');
 
-		CLI::write(CLI::color('Tasks have been enabled.', 'green'));
+		CLI::write('Tasks have been enabled.', 'green');
 	}
 }
