@@ -50,7 +50,7 @@ class Enable extends BaseCommand
 	];
 
 	/**
-	 * Dsiables task running
+	 * Enables task running
 	 *
 	 * @param array $params
 	 */
