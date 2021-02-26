@@ -66,8 +66,7 @@ class Lister extends BaseCommand
 
 		$scheduler = \Config\Services::scheduler();
 
-		config('Tasks')
-			->init($scheduler);
+		config('Tasks')->init($scheduler);
 
 		$runner = new TaskRunner();
 
