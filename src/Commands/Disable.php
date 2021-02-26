@@ -58,6 +58,6 @@ class Disable extends BaseCommand
 	{
 		$this->saveSettings('disabled');
 
-		CLI::write(CLI::color('Tasks have been disabled.', 'red'));
+		CLI::write('Tasks have been disabled.', 'red');
 	}
 }
