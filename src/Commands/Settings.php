@@ -48,8 +48,8 @@ trait Settings
 	}
 
 	/**
-	 * Gets the settings have never been saved
-	 * save them.
+	 * Gets the settings. If they
+	 * have never been saved then create them.
 	 */
 	protected function getSettings()
 	{
