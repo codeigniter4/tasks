@@ -8,17 +8,8 @@ use CodeIgniter\Tasks\TaskRunner;
 /**
  * Enables Task Running
  */
-class Enable extends BaseCommand
+class Enable extends TaskCommand
 {
-	use Settings;
-
-	/**
-	 * Command grouping.
-	 *
-	 * @var string
-	 */
-	protected $group = 'Tasks';
-
 	/**
 	 * The Command's name
 	 *

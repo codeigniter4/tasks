@@ -8,17 +8,8 @@ use CodeIgniter\Tasks\TaskRunner;
 /**
  * Lists currently scheduled tasks.
  */
-class Lister extends BaseCommand
+class Lister extends TaskCommand
 {
-	use Settings;
-
-	/**
-	 * Command grouping.
-	 *
-	 * @var string
-	 */
-	protected $group = 'Tasks';
-
 	/**
 	 * The Command's name
 	 *
@@ -74,7 +65,6 @@ class Lister extends BaseCommand
 
 		foreach ($scheduler->getTasks() as $task)
 		{
-
 			$cron = service('cronExpression');
 
 			$nextRun = $cron->nextRun($task->getExpression());
@@ -85,7 +75,6 @@ class Lister extends BaseCommand
 				'next_run' => $nextRun,
 				'runs_in'  => $nextRun->humanize(),
 			];
-
 		}
 
 		usort($tasks, function ($a, $b) {
@@ -93,10 +82,10 @@ class Lister extends BaseCommand
 		});
 
 		CLI::table($tasks, [
-					   'Name',
-					   'Type',
-					   'Next Run',
-					   '',
-				   ]);
+			'Name',
+			'Type',
+			'Next Run',
+			'',
+		]);
 	}
 }
