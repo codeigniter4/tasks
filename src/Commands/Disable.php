@@ -50,7 +50,7 @@ class Disable extends BaseCommand
 	];
 
 	/**
-	 * Dsiables task running
+	 * Disables task running
 	 *
 	 * @param array $params
 	 */
