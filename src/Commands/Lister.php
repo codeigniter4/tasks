@@ -72,7 +72,8 @@ class Lister extends BaseCommand
 
 		$tasks = [];
 
-		foreach($scheduler->getTasks() as $task) :
+		foreach ($scheduler->getTasks() as $task)
+		{
 
 			$cron = service('cronExpression');
 
