@@ -42,15 +42,6 @@ class Task
 	protected $action;
 
 	/**
-	 * The timezone this should be evaluated in.
-	 *
-	 * @var string
-	 *
-	 * @todo Needs to be implemented
-	 */
-	protected $timezone;
-
-	/**
 	 * If not empty, lists the allowed environments
 	 * this can run in.
 	 *
@@ -134,7 +125,7 @@ class Task
 
 	/**
 	 * Determines whether this task should be run now
-	 * according to its schedule, timezone, and environment.
+	 * according to its schedule and environment.
 	 *
 	 * @param string|null $testTime
 	 *
@@ -148,13 +139,6 @@ class Task
 		if (! empty($testTime))
 		{
 			$cron->testTime($testTime);
-		}
-
-		// Make sure the timezone is updated
-		// if this task is specifying it.
-		if (! empty($this->timezone))
-		{
-			$cron->setTimezone($this->timezone);
 		}
 
 		// Are we restricting to environments?

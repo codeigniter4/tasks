@@ -28,7 +28,7 @@ class CronExpression
 	 */
 	public function __construct(string $timezone = null)
 	{
-		$this->setTimezone($timezone);
+		$this->timezone = $timezone ?? app_timezone();
 	}
 
 	/**
@@ -87,32 +87,6 @@ class CronExpression
 	public function lastRun(string $expression): Time
 	{
 		return new Time();
-	}
-
-	/**
-	 * Sets the timezone that dates should be examined under.
-	 *
-	 * @param string $timezone
-	 *
-	 * @return $this
-	 * @throws \Exception Thrown if $timezone is not a valid timezone string.
-	 */
-	public function setTimezone(string $timezone = null)
-	{
-		if ($timezone === null)
-		{
-			$timezone = app_timezone();
-		}
-
-		// Throws exception if invalid Timezone is given
-		$this->timezone = new \DateTimeZone($timezone);
-
-		// If testTime has been set, convert it to the new timezone
-		if ($this->testTime instanceof Time)
-		{
-			$this->testTime = $this->testTime->setTimezone($this->timezone);
-		}
-		return $this;
 	}
 
 	/**

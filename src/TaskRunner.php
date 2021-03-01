@@ -105,4 +105,26 @@ class TaskRunner
 	{
 		return $this->performanceLogs;
 	}
+
+	/**
+	 * Performance log information is stored
+	 * at /writable/tasks/tasks_yyyy_mm_dd.json
+	 */
+	protected function storePerformanceLogs()
+	{
+		if (empty($this->performanceLogs))
+		{
+			return;
+		}
+
+		// Ensure we have someplace to store the log
+		if (! is_dir(WRITEPATH . 'tasks'))
+		{
+			mkdir(WRITEPATH . 'tasks', 0777);
+		}
+
+		$fileName = 'tasks_' . date('Y_m_d') . '.json';
+
+		dd($fileName);
+	}
 }
