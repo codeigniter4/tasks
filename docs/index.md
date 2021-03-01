@@ -93,9 +93,9 @@ $schedule->url('https://my-status-cloud.com?site=foo.com')->everyFiveMinutes();
 
 There are a number of ways available to specify how often the task is called.
 
-+-------------------------------+-----------------------------------------------------------------------+
+
 | Method                        | Description                                                           |
-+-------------------------------+-----------------------------------------------------------------------+
+|:------------------------------|:----------------------------------------------------------------------|
 | ->cron('* * * * *')           | Run on a custom cron schedule.                                        |
 | ->daily('4:00 am')            | Runs daily at 12:00am, unless a time string is passed in.             |    
 | ->hourly()                    | Runs at the top of every hour.                                        |
@@ -115,7 +115,6 @@ There are a number of ways available to specify how often the task is called.
 | ->weekdays('1:23pm')          | Runs M-F at 12:00 am unless time passed in.                           |
 | ->weekends('2:34am')          | Runs Saturday and Sunday at 12:00 am unless time passed in.           |
 | ->environments('local', 'prod')   | Restricts the task to run only in the specified environments      |
-+---------------------------+---------------------------------------------------------------------------+
 
 These methods can be combined to create even more nuanced timings: 
 
