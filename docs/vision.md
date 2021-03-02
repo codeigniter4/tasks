@@ -109,11 +109,6 @@ on production servers when something is going wrong. Likely stores a json file i
 **tasks::performance** generates a table to display performance information about all of the last runs. 
 See https://github.com/codestudiohq/laravel-totem for inspiration, though we're doing it on the CLI.
 
-## Debug Toolbar Pane
-
-The debug toolbar pane should be able to list much the same information as `tasks:list` and `tasks:performance`
-in a single pane. 
-
 ## Notifications
 
 The schedular should also provide a few different ways to return information about the jobs. I envision the 

@@ -30,7 +30,7 @@ class TaskLogTest extends TestCase
 	/**
 	 * @dataProvider durationProvider
 	 */
-	public function testDuration($start = null, $end = null, $expected)
+	public function testDuration($start, $end, $expected)
 	{
 		$start = new Time($start);
 		$end   = new Time($end);

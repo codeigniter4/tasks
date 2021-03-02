@@ -63,6 +63,6 @@ class TaskLog
 		// Since $seconds includes the minutes, calc the extra
 		$seconds = $seconds - ($minutes * 60);
 
-		return str_pad($minutes, 2, '0', STR_PAD_LEFT) . ':' . str_pad($seconds, 2, '0', STR_PAD_LEFT);
+		return str_pad((string)$minutes, 2, '0', STR_PAD_LEFT) . ':' . str_pad((string)$seconds, 2, '0', STR_PAD_LEFT);
 	}
 }
