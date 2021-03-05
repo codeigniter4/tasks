@@ -7,7 +7,7 @@ class CronExpression
 	/**
 	 * The timezone this should be considered under.
 	 *
-	 * @var \DateTimeZone
+	 * @var string
 	 */
 	protected $timezone;
 

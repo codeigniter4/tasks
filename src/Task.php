@@ -9,6 +9,12 @@ use Config\Services;
  *
  * Represents a single task that should be scheduled
  * and run periodically.
+ *
+ * @property-read array $types
+ * @property-read string $type
+ * @property-read mixed $action
+ * @property-read array $environments
+ * @property-read string $name
  */
 class Task
 {
@@ -45,7 +51,7 @@ class Task
 	 * If not empty, lists the allowed environments
 	 * this can run in.
 	 *
-	 * @var string[]
+	 * @var array
 	 */
 	protected $environments = [];
 
