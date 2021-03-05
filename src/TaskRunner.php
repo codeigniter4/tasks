@@ -54,11 +54,12 @@ class TaskRunner
 				continue;
 			}
 
+			$error  = null;
+			$start  = Time::now();
+			$output = null;
+
 			try
 			{
-				$error = null;
-				$start = Time::now();
-
 				$output = $task->run();
 			}
 			catch (\Throwable $e)
