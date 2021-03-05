@@ -1,5 +1,6 @@
 <?php namespace CodeIgniter\Tasks\Config;
 
+use CodeIgniter\Tasks\CronExpression;
 use Config\Services as BaseServices;
 use CodeIgniter\Tasks\Scheduler;
 
@@ -18,5 +19,22 @@ class Services extends BaseServices
 		}
 
 		return new Scheduler();
+	}
+
+	/**
+	 * Returns the CronExpression class.
+	 *
+	 * @param boolean $getShared
+	 *
+	 * @return \CodeIgniter\Tasks\CronExpression
+	 */
+	public static function cronExpression(bool $getShared = true): CronExpression
+	{
+		if ($getShared)
+		{
+			return static::getSharedInstance('cronExpression');
+		}
+
+		return new CronExpression();
 	}
 }

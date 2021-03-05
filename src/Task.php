@@ -9,6 +9,12 @@ use Config\Services;
  *
  * Represents a single task that should be scheduled
  * and run periodically.
+ *
+ * @property-read array $types
+ * @property-read string $type
+ * @property-read mixed $action
+ * @property-read array $environments
+ * @property-read string $name
  */
 class Task
 {
@@ -19,7 +25,13 @@ class Task
 	 *
 	 * @var string[]
 	 */
-	protected $types = ['command', 'shell', 'closure', 'event', 'url'];
+	protected $types = [
+		'command',
+		'shell',
+		'closure',
+		'event',
+		'url',
+	];
 
 	/**
 	 * The type of action.
@@ -36,21 +48,19 @@ class Task
 	protected $action;
 
 	/**
-	 * The timezone this should be evaluated in.
-	 *
-	 * @var string
-	 *
-	 * @todo Needs to be implemented
-	 */
-	protected $timezone;
-
-	/**
 	 * If not empty, lists the allowed environments
 	 * this can run in.
 	 *
-	 * @var string[]
+	 * @var array
 	 */
 	protected $environments = [];
+
+	/**
+	 * The alias this task can be run by
+	 *
+	 * @var string
+	 */
+	protected $name;
 
 	/**
 	 * @param mixed  $action
@@ -67,6 +77,20 @@ class Task
 
 		$this->type   = $type;
 		$this->action = $action;
+	}
+
+	/**
+	 * Set the name to reference this task by
+	 *
+	 * @param string $name
+	 *
+	 * @return $this
+	 */
+	public function named(string $name)
+	{
+		$this->name = $name;
+
+		return $this;
 	}
 
 	/**
@@ -107,29 +131,29 @@ class Task
 
 	/**
 	 * Determines whether this task should be run now
-	 * according to its schedule, timezone, and environment.
+	 * according to its schedule and environment.
+	 *
+	 * @param string|null $testTime
 	 *
 	 * @return boolean
 	 */
-	public function shouldRun(): bool
+	public function shouldRun(string $testTime = null): bool
 	{
-		/** @todo */
-		return true;
-	}
+		$cron = service('cronExpression');
 
-	/**
-	 * Sets the timezone to use when determing if
-	 * the task should run.
-	 *
-	 * @param string $timezone
-	 *
-	 * @return $this
-	 */
-	public function timezone(string $timezone)
-	{
-		$this->timezone = $timezone;
+		// Allow times to be set during testing
+		if (! empty($testTime))
+		{
+			$cron->testTime($testTime);
+		}
 
-		return $this;
+		// Are we restricting to environments?
+		if (! empty($this->environments) && ! $this->runsInEnvironment($_SERVER['CI_ENVIRONMENT']))
+		{
+			return false;
+		}
+
+		return $cron->shouldRun($this->getExpression());
 	}
 
 	/**
@@ -140,7 +164,7 @@ class Task
 	 *
 	 * @return $this
 	 */
-	protected function environments(...$environments)
+	public function environments(...$environments)
 	{
 		$this->environments = $environments;
 
@@ -201,7 +225,7 @@ class Task
 	/**
 	 * Triggers an Event.
 	 *
-	 * @return bool Result of the trigger
+	 * @return boolean Result of the trigger
 	 */
 	protected function runEvent(): bool
 	{
@@ -218,5 +242,20 @@ class Task
 		$response = Services::curlrequest()->request('GET', $this->getAction());
 
 		return $response->getBody();
+	}
+
+	/**
+	 * Magic getter
+	 *
+	 * @param string $key
+	 *
+	 * @return mixed
+	 */
+	public function __get(string $key)
+	{
+		if (property_exists($this, $key))
+		{
+			return $this->$key;
+		}
 	}
 }
