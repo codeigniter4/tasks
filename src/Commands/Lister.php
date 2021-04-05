@@ -82,10 +82,10 @@ class Lister extends TaskCommand
 		});
 
 		CLI::table($tasks, [
-			'Name',
-			'Type',
-			'Next Run',
-			'',
-		]);
+					   'Name',
+					   'Type',
+					   'Next Run',
+					   '',
+				   ]);
 	}
 }
