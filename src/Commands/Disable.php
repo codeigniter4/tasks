@@ -32,15 +32,6 @@ class Disable extends TaskCommand
 	protected $usage = 'tasks:disable';
 
 	/**
-	 * the Command's Arguments
-	 *
-	 * @var array
-	 */
-	protected $arguments = [
-		//'driver' => 'The cache driver to use',
-	];
-
-	/**
 	 * Disables task running
 	 *
 	 * @param array $params
