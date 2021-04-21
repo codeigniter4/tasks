@@ -32,15 +32,6 @@ class Run extends TaskCommand
 	protected $usage = 'tasks:run';
 
 	/**
-	 * the Command's Arguments
-	 *
-	 * @var array
-	 */
-	protected $arguments = [
-		//'driver' => 'The cache driver to use',
-	];
-
-	/**
 	 * Runs tasks at the proper time.
 	 *
 	 * @param array $params

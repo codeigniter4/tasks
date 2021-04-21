@@ -32,15 +32,6 @@ class Lister extends TaskCommand
 	protected $usage = 'tasks:list';
 
 	/**
-	 * the Command's Arguments
-	 *
-	 * @var array
-	 */
-	protected $arguments = [
-		//'driver' => 'The cache driver to use',
-	];
-
-	/**
 	 * Lists upcoming tasks
 	 *
 	 * @param array $params
@@ -82,10 +73,10 @@ class Lister extends TaskCommand
 		});
 
 		CLI::table($tasks, [
-					   'Name',
-					   'Type',
-					   'Next Run',
-					   '',
-				   ]);
+			'Name',
+			'Type',
+			'Next Run',
+			'',
+		]);
 	}
 }

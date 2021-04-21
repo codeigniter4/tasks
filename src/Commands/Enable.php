@@ -31,7 +31,6 @@ class Enable extends TaskCommand
 	 */
 	protected $usage = 'tasks:enable';
 
-
 	/**
 	 * Enables task running
 	 *
