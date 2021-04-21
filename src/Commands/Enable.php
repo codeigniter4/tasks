@@ -31,14 +31,6 @@ class Enable extends TaskCommand
 	 */
 	protected $usage = 'tasks:enable';
 
-	/**
-	 * the Command's Arguments
-	 *
-	 * @var array
-	 */
-	protected $arguments = [
-		//'driver' => 'The cache driver to use',
-	];
 
 	/**
 	 * Enables task running
