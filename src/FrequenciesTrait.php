@@ -390,7 +390,7 @@ trait FrequenciesTrait
 		$this->expression['min']        = $min;
 		$this->expression['hour']       = $hour;
 		$this->expression['dayOfMonth'] = 1;
-		$this->expression['month']      = '/3';
+		$this->expression['month']      = '*/3';
 
 		return $this;
 	}
