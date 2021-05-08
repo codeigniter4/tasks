@@ -3,6 +3,7 @@
 use CodeIgniter\Events\Events;
 use CodeIgniter\Tasks\Exceptions\TasksException;
 use Config\Services;
+use DateTime;
 
 /**
  * Class Task
@@ -10,11 +11,13 @@ use Config\Services;
  * Represents a single task that should be scheduled
  * and run periodically.
  *
- * @property-read array $types
- * @property-read string $type
- * @property-read mixed $action
- * @property-read array $environments
- * @property-read string $name
+ * @property-read array       $types
+ * @property-read string      $type
+ * @property-read mixed       $action
+ * @property-read array       $environments
+ * @property-read string      $connection
+ * @property-read bool        $performance
+ * @property-read string|null $name
  */
 class Task
 {
@@ -63,6 +66,20 @@ class Task
 	protected $name;
 
 	/**
+	 * Enable performance tracking
+	 *
+	 * @var bool
+	 */
+	protected $performance = false;
+
+	/**
+	 * Database Connection for Performance Table
+	 *
+	 * @var mixed
+	 */
+	protected $connection = "default";
+
+	/**
 	 * @param mixed  $action
 	 * @param string $type
 	 *
@@ -70,12 +87,12 @@ class Task
 	 */
 	public function __construct(string $type, $action)
 	{
-		if (! in_array($type, $this->types))
+		if (!in_array($type, $this->types))
 		{
 			throw TasksException::forInvalidTaskType($type);
 		}
 
-		$this->type   = $type;
+		$this->type = $type;
 		$this->action = $action;
 	}
 
@@ -121,7 +138,7 @@ class Task
 	public function run()
 	{
 		$method = 'run' . ucfirst($this->type);
-		if (! method_exists($this, $method))
+		if (!method_exists($this, $method))
 		{
 			throw TasksException::forInvalidTaskType($this->type);
 		}
@@ -139,21 +156,15 @@ class Task
 	 */
 	public function shouldRun(string $testTime = null): bool
 	{
-		$cron = service('cronExpression');
-
-		// Allow times to be set during testing
-		if (! empty($testTime))
-		{
-			$cron->testTime($testTime);
-		}
+		$cron = new \Cron\CronExpression($this->getExpression());
 
 		// Are we restricting to environments?
-		if (! empty($this->environments) && ! $this->runsInEnvironment($_SERVER['CI_ENVIRONMENT']))
+		if (!empty($this->environments) && !$this->runsInEnvironment($_SERVER['CI_ENVIRONMENT']))
 		{
 			return false;
 		}
 
-		return $cron->shouldRun($this->getExpression());
+		return $cron->isDue(empty($testTime) ? 'now' : $testTime);
 	}
 
 	/**
@@ -242,6 +253,41 @@ class Task
 		$response = Services::curlrequest()->request('GET', $this->getAction());
 
 		return $response->getBody();
+	}
+
+	/**
+	 * Enable performance data to be saved
+	 *
+	 * @return $this
+	 */
+	public function enablePerformance(): Task
+	{
+		$this->performance = true;
+		return $this;
+	}
+
+	/**
+	 * Select database connection for performance data
+	 *
+	 * @param string $databaseConnection
+	 * @return $this
+	 */
+	public function onConnection(string $databaseConnection): Task
+	{
+		$this->connection = $databaseConnection;
+		return $this;
+	}
+
+	/**
+	 * Get the time for the next run for this task
+	 *
+	 * @param string|null $testTime
+	 * @return \DateTime
+	 */
+	public function nextRun(string $testTime = null) : DateTime
+	{
+		$cron = new \Cron\CronExpression($this->getExpression());
+		return $cron->getNextRunDate( empty($testTime) ? 'now' : $testTime );
 	}
 
 	/**

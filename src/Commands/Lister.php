@@ -3,6 +3,7 @@
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
+use CodeIgniter\I18n\Time;
 use CodeIgniter\Tasks\TaskRunner;
 
 /**
@@ -50,19 +51,16 @@ class Lister extends TaskCommand
 
 		config('Tasks')->init($scheduler);
 
-		$runner = new TaskRunner();
-
 		$tasks = [];
 
 		foreach ($scheduler->getTasks() as $task)
 		{
-			$cron = service('cronExpression');
-
-			$nextRun = $cron->nextRun($task->getExpression());
+			$nextRun = Time::createFromInstance($task->nextRun());
 
 			$tasks[] = [
 				'name'     => $task->name ?: $task->getAction(),
 				'type'     => $task->getType(),
+				'last_run' => "-",          // todo: will be done later
 				'next_run' => $nextRun,
 				'runs_in'  => $nextRun->humanize(),
 			];
@@ -75,6 +73,7 @@ class Lister extends TaskCommand
 		CLI::table($tasks, [
 			'Name',
 			'Type',
+			'Last Run',
 			'Next Run',
 			'',
 		]);

@@ -84,4 +84,24 @@ class TaskTest extends TasksTestCase
 
 		$_SERVER['CI_ENVIRONMENT'] = $originalEnv;
 	}
+
+
+	public function testEnableTaskPerformance()
+	{
+		$task = new Task('command', 'tasks:test');
+
+		$task->enablePerformance();
+
+		$this->assertTrue($task->performance);
+	}
+
+	public function testSetTaskDatabaseConnection()
+	{
+		$task = new Task('command', 'tasks:test');
+
+		$task->onConnection("test");
+
+		$this->assertEquals("test", $task->connection);
+	}
+
 }

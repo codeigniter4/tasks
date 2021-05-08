@@ -28,6 +28,16 @@ class TaskRunner
 	 */
 	protected $performanceLogs = [];
 
+
+	/**
+	 * Stores aliases of tasks to run
+	 * If empty, All tasks will be executed as per their schedule
+	 *
+	 * @var array
+	 */
+	protected $only = [];
+
+
 	public function __construct()
 	{
 		$this->scheduler = service('scheduler');
@@ -49,7 +59,13 @@ class TaskRunner
 
 		foreach ($tasks as $task)
 		{
-			if (! $task->shouldRun($this->testTime))
+
+			// If specific tasks were chosen then skip executing remaining tasks
+			if( !empty($this->only) and !in_array( $task->name , $this->only ) ){
+				continue;
+			}
+
+			if (! $task->shouldRun($this->testTime) and empty($this->only) )
 			{
 				continue;
 			}
@@ -58,28 +74,72 @@ class TaskRunner
 			$start  = Time::now();
 			$output = null;
 
+			$this->cliWrite("Processing : " . ($task->name ?: "Task"), 'green');
+
 			try
 			{
 				$output = $task->run();
+
+				$this->cliWrite("Executed   : " . ($task->name ?: "Task"), "cyan");
 			}
 			catch (\Throwable $e)
 			{
+				$this->cliWrite("Failed     : " . ($task->name ?: "Task"), "red");
+
 				log_message('error', $e->getMessage(), $e->getTrace());
+
 				$error = $e;
 			}
 			finally
 			{
 				// Save performance info
-				$this->performanceLogs[] = new TaskLog([
+				$taskLog = new TaskLog([
 					'task'     => $task,
 					'output'   => $output,
 					'runStart' => $start,
 					'runEnd'   => Time::now(),
 					'error'    => $error,
 				]);
+
+				// Save performance log to the database
+				$taskLog->saveToDatabase();
+
+				$this->performanceLogs[] = $taskLog;
 			}
 		}
 	}
+
+
+	/**
+	 * Write a line to command line interface
+	 *
+	 * @param string      $text
+	 * @param string|null $foreground
+	 */
+	protected function cliWrite(string $text, string $foreground = null)
+	{
+		// Skip writing to cli in tests
+		if( defined("ENVIRONMENT") && ENVIRONMENT == "testing" ){
+			return ;
+		}
+
+		if( !is_cli() ) {
+			return ;
+		}
+
+		CLI::write("[" . date("Y-m-d H:i:s") . "] " . $text, $foreground);
+	}
+
+	/**
+	 * Specify tasks to run
+	 *
+	 * @param array $tasks
+	 */
+	public function only( array $tasks = [] )
+	{
+		$this->only = $tasks;
+	}
+
 
 	/**
 	 * Sets a time that will be used.
