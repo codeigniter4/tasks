@@ -143,3 +143,14 @@ You can name tasks so they can be easily referenced later, such as through the C
 ```
 $schedule->command('foo')->nightly()->named('foo-task');
 ```
+
+### Performance Logs
+
+You can enable performance logs for a specific task by using `enablePerformance()` method. The perforamnce
+data can be displayed later using CLI command `spark tasks:performance`.
+
+```
+$schedule->command('foo')->nightly()->enablePerformance()->named('foo-task');
+```
+
+Note: In order for performance logs to be written a task MUST have a name.

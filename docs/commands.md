@@ -45,3 +45,29 @@ This is the primary entry point to the Tasks system. It should be called by a cr
 every minute in order to be able to effectively run all of the scheduled tasks. You typically will not
 run this manually.
 
+    > php spark tasks:run --task foo
+
+To run a specific task even if the specificed scheduled is not met use `--task` argument appended with
+the task name.
+
+**tasks:performance**
+
+    > php spark tasks:performance
+
+This command will list a summary of all tasks performance data.
+
+    +---------------+--------------+------------------+------------------+---------+----------+---------------------+---------------------+
+    | Name          | Type         | Average Duration | Min/Max Duration | Success | Failures | Last Run            | Last Success        |
+    +---------------+--------------+------------------+------------------+---------+----------+---------------------+---------------------+
+    | emails        | command      | 0.05 s           | 0.05s / 0.08 s   | 2       | 0        | 2021-05-08 07:38:02 | 2021-05-08 07:38:02 |
+    +---------------+--------------+------------------+------------------+---------+----------+---------------------+---------------------+
+
+    > php spark tasks:performance --task foo
+
+To list a detailed summary of a specific task use `--task` argument appended with the task name.
+
+**tasks:performance-table**
+
+    > php spark tasks:performance-table
+
+This command will create the needed migration file for performance tracking.
