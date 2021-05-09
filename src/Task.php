@@ -73,13 +73,6 @@ class Task
 	protected $performance = false;
 
 	/**
-	 * Database Connection for Performance Table
-	 *
-	 * @var mixed
-	 */
-	protected $connection = "default";
-
-	/**
 	 * @param mixed  $action
 	 * @param string $type
 	 *
@@ -156,15 +149,21 @@ class Task
 	 */
 	public function shouldRun(string $testTime = null): bool
 	{
-		$cron = new \Cron\CronExpression($this->getExpression());
+		$cron = service('cronExpression');
+
+		// Allow times to be set during testing
+		if (! empty($testTime))
+		{
+			$cron->testTime($testTime);
+		}
 
 		// Are we restricting to environments?
-		if (!empty($this->environments) && !$this->runsInEnvironment($_SERVER['CI_ENVIRONMENT']))
+		if (! empty($this->environments) && ! $this->runsInEnvironment($_SERVER['CI_ENVIRONMENT']))
 		{
 			return false;
 		}
 
-		return $cron->isDue(empty($testTime) ? 'now' : $testTime);
+		return $cron->shouldRun($this->getExpression());
 	}
 
 	/**
@@ -264,30 +263,6 @@ class Task
 	{
 		$this->performance = true;
 		return $this;
-	}
-
-	/**
-	 * Select database connection for performance data
-	 *
-	 * @param string $databaseConnection
-	 * @return $this
-	 */
-	public function onConnection(string $databaseConnection): Task
-	{
-		$this->connection = $databaseConnection;
-		return $this;
-	}
-
-	/**
-	 * Get the time for the next run for this task
-	 *
-	 * @param string|null $testTime
-	 * @return \DateTime
-	 */
-	public function nextRun(string $testTime = null) : DateTime
-	{
-		$cron = new \Cron\CronExpression($this->getExpression());
-		return $cron->getNextRunDate( empty($testTime) ? 'now' : $testTime );
 	}
 
 	/**

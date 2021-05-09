@@ -4,6 +4,7 @@ namespace CodeIgniter\Tasks\Commands;
 
 use CodeIgniter\CLI\CLI;
 use CodeIgniter\Database\Exceptions\DatabaseException;
+use CodeIgniter\I18n\Time;
 use CodeIgniter\Tasks\Task;
 use CodeIgniter\Tasks\TaskLog;
 
@@ -52,7 +53,7 @@ class Performance extends TaskCommand
 	public function run(array $params)
 	{
 
-		$scheduler = \Config\Services::scheduler();
+		$scheduler = service("scheduler");
 
 		config('Tasks')->init($scheduler);
 
@@ -97,29 +98,25 @@ class Performance extends TaskCommand
 					$performanceData['no_of_failure']
 				];
 
-				/*
-				 * Will be added later
 				$tbody[] = [
 					"Last Run",
-					$task->taskLog->getLastRun()
+					$performanceData['last_run']
 				];
-				*/
 
 				$tbody[] = [
 					"Next Run",
-					$task->nextRun()->format("Y-m-d H:i:s")
+					"-"
+					//$task->nextRun()->format("Y-m-d H:i:s")
 				];
 
-				/*
-				 * Will be added later
 				$tbody[] = [
 					"Last Successful Run",
-					$task->taskLog->getLastSuccessRun()
+					$performanceData['last_success']
 				];
 				$tbody[] = [
 					"Last Failure    Run",
-					$task->taskLog->getLastFailedRun()
-				];*/
+					$performanceData['last_failure']
+				];
 
 				CLI::write("Task Performance Summary","purple");
 				CLI::table($tbody, []);
@@ -170,8 +167,8 @@ class Performance extends TaskCommand
 				$performanceData['min_duration'] . "s / " . $performanceData['max_duration'] . "s",
 				$performanceData['no_of_success'],
 				$performanceData['no_of_failure'],
-				//$task->taskLog->getLastRun(),
-				//$task->taskLog->getLastSuccessRun(),
+				$performanceData['last_run'],
+				$performanceData['last_success'],
 			];
 		}
 
@@ -182,8 +179,8 @@ class Performance extends TaskCommand
 			CLI::color('Min/Max Duration', 'green'),
 			CLI::color('Success', 'green'),
 			CLI::color('Failures', 'green'),
-			//CLI::color('Last Run', 'green'),
-			//CLI::color('Last Success', 'green'),
+			CLI::color('Last Run', 'green'),
+			CLI::color('Last Success', 'green'),
 		];
 
 		CLI::table($tbody, $thead);
@@ -202,6 +199,9 @@ class Performance extends TaskCommand
 			'max_duration' => '-',
 			'no_of_success' => '-',
 			'no_of_failure' => '-',
+			'last_run'      => '',
+			'last_success'  => '-',
+			'last_failure'  => '-',
 		];
 
 		// Make sure performance stats are enabled for the task
@@ -212,9 +212,9 @@ class Performance extends TaskCommand
 
 		try
 		{
-			$array = db_connect($task->connection)
+			$array = db_connect()
 				->table("tasks_performance")
-				->select("avg(duration) as durationAvg, min(duration) as durationMin, max(duration) as durationMax, result, count(result) as counter")
+				->select("avg(duration) as durationAvg, min(duration) as durationMin, max(duration) as durationMax, max(ran_at) as lastRun, result, count(result) as counter")
 				->where('name', $task->name)
 				->groupBy("result")
 				->get()->getResultArray();
@@ -236,12 +236,18 @@ class Performance extends TaskCommand
 			$max += ($data['durationMax'] * $data['counter']);
 			$totalRecords += $data['counter'];
 
+			$lastRunTimestamp = strtotime($data['lastRun']);
+
+			$stats['last_run'] = max( $stats['last_run'], $lastRunTimestamp );
+
 			if ($data['result'] == TaskLog::STATUS_SUCCESS)
 			{
+				$stats['last_success'] = $data['lastRun'];
 				$stats['no_of_success'] = $data['counter'];
 			}
 			elseif ($data['result'] == TaskLog::STATUS_FAILURE)
 			{
+				$stats['last_failure'] = $data['lastRun'];
 				$stats['no_of_failure'] = $data['counter'];
 			}
 		}
@@ -251,6 +257,10 @@ class Performance extends TaskCommand
 			$stats['avg_duration'] = round($avg / $totalRecords, 3);
 			$stats['min_duration'] = round($min / $totalRecords, 3);
 			$stats['max_duration'] = round($max / $totalRecords, 3);
+		}
+
+		if( $stats['last_run'] > 0 ){
+			$stats['last_run'] = date("Y-m-d H:i:s", $stats['last_run']);
 		}
 
 		return $stats;
@@ -271,7 +281,7 @@ class Performance extends TaskCommand
 
 		try
 		{
-			return db_connect($task->connection)
+			return db_connect()
 				->table("tasks_performance")
 				->where('name', $task->name)
 				->orderBy("ran_at", 'desc')

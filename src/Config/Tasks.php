@@ -1,5 +1,6 @@
 <?php namespace CodeIgniter\Tasks\Config;
 
+use _HumbugBoxe5640220fe34\Nette\Neon\Exception;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Tasks\Scheduler;
 
@@ -17,6 +18,24 @@ class Tasks extends BaseConfig
 
 		// $schedule->shell('cp foo bar')->daily()->at('11:00 pm');
 
-		// $schedule->call(function() { do something.... })->everyMonday()->named('foo')
+		$schedule->call(function() {
+			//echo "HHH";
+			sleep(2);
+			usleep(500);
+			file_put_contents("test.txt", time());
+			return "This Is The Output";
+		})
+		         ->enablePerformance()
+		         ->everyMinute(5)
+		         ->named('foo');
+
+		$schedule->call(function() {
+			//echo "HHH";
+			throw new Exception("There is an error");
+			//return "This Is The Output";
+		})
+		         ->enablePerformance()
+		         ->everyMinute(8)
+		         ->named('bar');
 	}
 }

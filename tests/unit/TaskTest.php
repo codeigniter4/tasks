@@ -95,13 +95,4 @@ class TaskTest extends TasksTestCase
 		$this->assertTrue($task->performance);
 	}
 
-	public function testSetTaskDatabaseConnection()
-	{
-		$task = new Task('command', 'tasks:test');
-
-		$task->onConnection("test");
-
-		$this->assertEquals("test", $task->connection);
-	}
-
 }

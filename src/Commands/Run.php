@@ -1,6 +1,5 @@
 <?php namespace CodeIgniter\Tasks\Commands;
 
-use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
 use CodeIgniter\Tasks\TaskRunner;
@@ -58,8 +57,7 @@ class Run extends TaskCommand
 
 		CLI::write('Running Tasks...');
 
-		/** @phpstan-ignore-next-line */
-		config('Tasks')->init(\Config\Services::scheduler());
+		config('Tasks')->init( service("scheduler") );
 
 		$runner = new TaskRunner();
 

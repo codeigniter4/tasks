@@ -47,7 +47,7 @@ class Lister extends TaskCommand
 			CLI::write('To re-enable tasks run: tasks:enable');
 		}
 
-		$scheduler = \Config\Services::scheduler();
+		$scheduler = service("scheduler");
 
 		config('Tasks')->init($scheduler);
 
@@ -55,7 +55,9 @@ class Lister extends TaskCommand
 
 		foreach ($scheduler->getTasks() as $task)
 		{
-			$nextRun = Time::createFromInstance($task->nextRun());
+			$cron = service('cronExpression');
+
+			$nextRun = $cron->nextRun($task->getExpression());
 
 			$tasks[] = [
 				'name'     => $task->name ?: $task->getAction(),

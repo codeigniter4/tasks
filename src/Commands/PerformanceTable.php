@@ -60,7 +60,6 @@ class PerformanceTable extends TaskCommand
 	{
 		// Set a unqiue name to avoid writing more than one migration file
 		return "2021-01-01-000000_" . basename($filename);
-		//return gmdate(config('Migrations')->timestampFormat) . basename($filename);
 	}
 
 
@@ -76,7 +75,7 @@ class PerformanceTable extends TaskCommand
 	{
 		$content = file_get_contents(__DIR__ . "/Views/".$this->template);
 
-		return Services::renderer()
+		return service("renderer")
 		               ->setData($data, 'raw')
 		               ->renderString($content);
 	}

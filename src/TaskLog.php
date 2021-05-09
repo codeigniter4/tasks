@@ -135,7 +135,7 @@ class TaskLog
 			'exception' => $exception,
 		];
 
-		return db_connect($this->task->connection)
+		return db_connect()
 			->table("tasks_performance")
 			->insert($log);
 	}

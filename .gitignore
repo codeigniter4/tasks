@@ -7,4 +7,3 @@ composer.lock
 .DS_Store
 .idea/
 .env
-composer.phar
