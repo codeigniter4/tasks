@@ -1,8 +1,9 @@
-<?php namespace CodeIgniter\Tasks\Commands;
+<?php
+
+namespace CodeIgniter\Tasks\Commands;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
-
 use CodeIgniter\Tasks\TaskRunner;
 
 /**
@@ -10,73 +11,71 @@ use CodeIgniter\Tasks\TaskRunner;
  */
 class Lister extends TaskCommand
 {
-	/**
-	 * The Command's name
-	 *
-	 * @var string
-	 */
-	protected $name = 'tasks:list';
+    /**
+     * The Command's name
+     *
+     * @var string
+     */
+    protected $name = 'tasks:list';
 
-	/**
-	 * the Command's short description
-	 *
-	 * @var string
-	 */
-	protected $description = 'Lists the tasks currently set to run.';
+    /**
+     * the Command's short description
+     *
+     * @var string
+     */
+    protected $description = 'Lists the tasks currently set to run.';
 
-	/**
-	 * the Command's usage
-	 *
-	 * @var string
-	 */
-	protected $usage = 'tasks:list';
+    /**
+     * the Command's usage
+     *
+     * @var string
+     */
+    protected $usage = 'tasks:list';
 
-	/**
-	 * Lists upcoming tasks
-	 *
-	 * @param array $params
-	 */
-	public function run(array $params)
-	{
-		$settings = $this->getSettings();
+    /**
+     * Lists upcoming tasks
+     *
+     * @param array $params
+     */
+    public function run(array $params)
+    {
+        $settings = $this->getSettings();
 
-		if ($settings['status'] !== 'enabled')
-		{
-			CLI::write('WARNING: Task running is currently disabled.', 'red');
-			CLI::write('To re-enable tasks run: tasks:enable');
-		}
+        if ($settings['status'] !== 'enabled') {
+            CLI::write('WARNING: Task running is currently disabled.', 'red');
+            CLI::write('To re-enable tasks run: tasks:enable');
+        }
 
-		$scheduler = \Config\Services::scheduler();
+        $scheduler = \Config\Services::scheduler();
 
-		config('Tasks')->init($scheduler);
+        config('Tasks')->init($scheduler);
 
-		$runner = new TaskRunner();
+        $runner = new TaskRunner();
 
-		$tasks = [];
+        $tasks = [];
 
-		foreach ($scheduler->getTasks() as $task)
-		{
-			$cron = service('cronExpression');
+        foreach ($scheduler->getTasks() as $task) {
+            $cron = service('cronExpression');
 
-			$nextRun = $cron->nextRun($task->getExpression());
+            $nextRun = $cron->nextRun($task->getExpression());
 
-			$tasks[] = [
-				'name'     => $task->name ?: $task->getAction(),
-				'type'     => $task->getType(),
-				'next_run' => $nextRun,
-				'runs_in'  => $nextRun->humanize(),
-			];
-		}
+            $tasks[] = [
+                'name'     => $task->name ?: $task->getAction(),
+                'type'     => $task->getType(),
+                'next_run' => $nextRun,
+                'runs_in'  => $nextRun->humanize(),
+            ];
+        }
 
-		usort($tasks, function ($a, $b) {
-				return ($a['next_run'] < $b['next_run']) ? -1 : 1;
-		});
+        usort($tasks, function ($a, $b) {
+                return ($a['next_run'] < $b['next_run']) ? -1 : 1;
+        });
 
-		CLI::table($tasks, [
-			'Name',
-			'Type',
-			'Next Run',
-			'',
-		]);
-	}
+        CLI::table($tasks, [
+            'Name',
+            'Type',
+            'Next Run',
+            '',
+        ]);
+    }
 }

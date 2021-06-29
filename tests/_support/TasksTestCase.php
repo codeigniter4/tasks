@@ -1,13 +1,15 @@
-<?php namespace Tests\Support;
+<?php
+
+namespace Tests\Support;
 
 use CodeIgniter\Test\CIUnitTestCase;
 
 class TasksTestCase extends CIUnitTestCase
 {
-	protected function setUp(): void
-	{
-		parent::setUp();
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-		$_SESSION = [];
-	}
+        $_SESSION = [];
+    }
 }
