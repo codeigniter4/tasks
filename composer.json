@@ -52,7 +52,7 @@
 			"bash admin/setup.sh"
 		],
 		"analyze": "phpstan analyze",
-		"style": "phpcbf --standard=./vendor/codeigniter4/codeigniter4-standard/CodeIgniter4 tests/ src/",
+		"style": "phpcbf --standard=PSR12 tests/ src/",
 		"test": "phpunit"
 	}
 }
