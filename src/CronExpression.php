@@ -166,7 +166,7 @@ class CronExpression
             $items = explode(',', $time);
         }
 
-        return in_array($currentTime, $items);
+        return in_array($currentTime, $items, true);
     }
 
     /**

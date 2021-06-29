@@ -169,7 +169,7 @@ class RunResolver
     {
         $list = explode(',', $list);
 
-        return in_array(trim($value), $list);
+        return in_array(trim($value), $list, true);
     }
 
     /**
