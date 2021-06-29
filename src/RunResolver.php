@@ -26,9 +26,6 @@ class RunResolver
      */
     public function nextRun(string $expression, Time $next)
     {
-        // Make sure that $next never is the current time.
-        $next->addMinutes(1)->setSecond(0);
-
         // Break the expression into separate parts
         [
             $minute,
@@ -51,6 +48,12 @@ class RunResolver
         $cron = array_filter($cron, function ($item) {
             return $item !== '*';
         });
+
+        // If there's nothing left then it's every minute
+        // so set it to one minute from now.
+        if (! count($cron)) {
+            return $next->addMinutes(1)->setSecond(0);
+        }
 
         // Loop over each of the remaining $cron elements
         // until we manage to satisfy all of the them
@@ -182,7 +185,7 @@ class RunResolver
         [$start, $increment] = explode('/', $increment);
 
         // Allow for empty start values
-        if ($start === '') {
+        if ($start === '' || $start === '*') {
             $start = 0;
         }
 
