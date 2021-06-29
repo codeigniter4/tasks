@@ -16,7 +16,7 @@ class CronExpression
     /**
      * The current date/time. Used for testing.
      *
-     * @var \DateTime
+     * @var Time|null
      */
     protected $testTime;
 

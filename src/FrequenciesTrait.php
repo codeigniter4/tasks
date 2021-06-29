@@ -97,7 +97,7 @@ trait FrequenciesTrait
      * Runs at every hour or every x hours
      *
      * @param int  $hour
-     * @param null $minute
+     * @param int|string|null $minute
      * @return self
      */
     public function everyHour(int $hour = 1, $minute = null)
@@ -141,9 +141,9 @@ trait FrequenciesTrait
     /**
      * Set the execution time to every minute or every x minutes.
      *
-     * @param int|string|null When set, specifies that the job will be run every $minute minutes
+     * @param int|string|null $minute When set, specifies that the job will be run every $minute minutes
      *
-     * @return self
+     * @return $this
      */
     public function everyMinute($minute = null)
     {
