@@ -1,63 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="vendor/codeigniter4/codeigniter4/system/Test/bootstrap.php"
-         backupGlobals="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         stopOnError="false"
-         stopOnFailure="false"
-         stopOnIncomplete="false"
-         stopOnSkipped="false">
-    <testsuites>
-        <testsuite name="app">
-            <directory>./tests</directory>
-        </testsuite>
-    </testsuites>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+		bootstrap="vendor/codeigniter4/codeigniter4/system/Test/bootstrap.php"
+		backupGlobals="false"
+		beStrictAboutCoversAnnotation="true"
+		beStrictAboutOutputDuringTests="true"
+		beStrictAboutTodoAnnotatedTests="true"
+		colors="true"
+		convertErrorsToExceptions="true"
+		convertNoticesToExceptions="true"
+		convertWarningsToExceptions="true"
+		executionOrder="random"
+		failOnRisky="true"
+		failOnWarning="true"
+		stopOnError="false"
+		stopOnFailure="false"
+		stopOnIncomplete="false"
+		stopOnSkipped="false"
+		verbose="true">
 
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
-            <exclude>
-                <directory suffix=".php">./src/Views</directory>
-                <file>./src/Config/Routes.php</file>
-            </exclude>
-        </whitelist>
-    </filter>
+	<coverage includeUncoveredFiles="true" processUncoveredFiles="true">
+		<include>
+			<directory suffix=".php">./src</directory>
+		</include>
+		<exclude>
+			<directory suffix=".php">./src/Views</directory>
+			<file>./src/Config/Routes.php</file>
+		</exclude>
+		<report>
+			<clover outputFile="build/phpunit/clover.xml"/>
+			<html outputDirectory="build/phpunit/html"/>
+			<php outputFile="build/phpunit/coverage.serialized"/>
+			<text outputFile="php://stdout" showUncoveredFiles="false"/>
+			<xml outputDirectory="build/phpunit/xml-coverage"/>
+		</report>
+	</coverage>
 
-    <logging>
-        <log type="coverage-html" target="build/logs/html"/>
-        <log type="coverage-clover" target="build/logs/clover.xml"/>
-        <log type="coverage-php" target="build/logs/coverage.serialized"/>
-        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
-        <log type="testdox-html" target="build/logs/testdox.html"/>
-        <log type="testdox-text" target="build/logs/testdox.txt"/>
-        <log type="junit" target="build/logs/logfile.xml"/>
-    </logging>
+	<testsuites>
+		<testsuite name="app">
+			<directory>./tests</directory>
+		</testsuite>
+	</testsuites>
 
-    <php>
-        <server name="app.baseURL" value="http://example.com"/>
+	<extensions>
+		<extension class="Nexus\PHPUnit\Extension\Tachycardia">
+			<arguments>
+				<array>
+					<element key="timeLimit">
+						<double>0.50</double>
+					</element>
+					<element key="reportable">
+						<integer>30</integer>
+					</element>
+					<element key="precision">
+						<integer>2</integer>
+					</element>
+					<element key="collectBare">
+						<boolean>true</boolean>
+					</element>
+					<element key="tabulate">
+						<boolean>true</boolean>
+					</element>
+				</array>
+			</arguments>
+		</extension>
+	</extensions>
 
-        <!-- Directory containing phpunit.xml -->
-        <const name="HOMEPATH" value="./"/>
+	<logging>
+		<testdoxHtml outputFile="build/phpunit/testdox.html"/>
+		<testdoxText outputFile="build/phpunit/testdox.txt"/>
+		<junit outputFile="build/phpunit/junit.xml"/>
+	</logging>
 
-        <!-- Directory containing the Paths config file -->
-        <const name="CONFIGPATH" value="./vendor/codeigniter4/codeigniter4/app/Config/"/>
+	<php>
+		<env name="XDEBUG_MODE" value="coverage"/>
+		<server name="app.baseURL" value="http://example.com"/>
 
-        <!-- Directory containing the front controller (index.php) -->
-        <const name="PUBLICPATH" value="./vendor/codeigniter4/codeigniter4/public/"/>
+		<!-- Directory containing phpunit.xml -->
+		<const name="HOMEPATH" value="./"/>
 
-        <!-- https://getcomposer.org/xdebug -->
-        <env name="COMPOSER_DISABLE_XDEBUG_WARN" value="1"/>
+		<!-- Directory containing the Paths config file -->
+		<const name="CONFIGPATH" value="./vendor/codeigniter4/codeigniter4/app/Config/"/>
 
-        <!-- Database configuration -->
-        <!--	<env name="database.tests.hostname" value="localhost"/>  -->
-        <!--	<env name="database.tests.database" value="tests"/>	     -->
-        <!--	<env name="database.tests.username" value="tests_user"/> -->
-        <!--	<env name="database.tests.password" value=""/>		     -->
-        <!--	<env name="database.tests.DBDriver" value="MySQLi"/>	 -->
-        <!--	<env name="database.tests.DBPrefix" value="tests_"/>	 -->
-        <env name="database.tests.database" value=":memory:"/>
-        <env name="database.tests.DBDriver" value="SQLite3"/>
-    </php>
+		<!-- Directory containing the front controller (index.php) -->
+		<const name="PUBLICPATH" value="./vendor/codeigniter4/codeigniter4/public/"/>
+
+		<!-- https://getcomposer.org/xdebug -->
+		<env name="COMPOSER_DISABLE_XDEBUG_WARN" value="1"/>
+
+		<!-- Database configuration -->
+		<env name="database.tests.strictOn" value="true"/>
+		<!-- Uncomment to use alternate testing database configuration
+		<env name="database.tests.hostname" value="localhost"/>
+		<env name="database.tests.database" value="tests"/>
+		<env name="database.tests.username" value="tests_user"/>
+		<env name="database.tests.password" value=""/>
+		<env name="database.tests.DBDriver" value="MySQLi"/>
+		<env name="database.tests.DBPrefix" value="tests_"/>
+		-->
+	</php>
 </phpunit>

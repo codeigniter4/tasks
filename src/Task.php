@@ -72,7 +72,7 @@ class Task
      */
     public function __construct(string $type, $action)
     {
-        if (! in_array($type, $this->types)) {
+        if (! in_array($type, $this->types, true)) {
             throw TasksException::forInvalidTaskType($type);
         }
 
@@ -183,7 +183,7 @@ class Task
             return true;
         }
 
-        return in_array($environment, $this->environments);
+        return in_array($environment, $this->environments, true);
     }
 
     /**

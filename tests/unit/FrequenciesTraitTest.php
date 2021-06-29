@@ -10,7 +10,7 @@ class FrequenciesTraitTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new class () {
+        $this->class = new class() {
             use \CodeIgniter\Tasks\FrequenciesTrait;
         };
     }

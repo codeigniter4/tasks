@@ -16,7 +16,7 @@ class CronExpression
     /**
      * The current date/time. Used for testing.
      *
-     * @var \DateTime
+     * @var Time|null
      */
     protected $testTime;
 
@@ -166,7 +166,7 @@ class CronExpression
             $items = explode(',', $time);
         }
 
-        return in_array($currentTime, $items);
+        return in_array($currentTime, $items, true);
     }
 
     /**
