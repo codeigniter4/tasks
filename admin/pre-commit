@@ -29,7 +29,7 @@ done
 if [ "$FILES" != "" ]
 then
 	echo "Running Code Sniffer..."
-	./vendor/bin/phpcbf --standard=PSR12 --encoding=utf-8 -n -p $FILES
+	composer style
 fi
 
 exit $?

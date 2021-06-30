@@ -6,8 +6,8 @@ use RuntimeException;
 
 class TasksException extends RuntimeException
 {
-	public static function forInvalidTaskType(string $type)
-	{
-		return new static(lang('Tasks.invalidTaskType', [$type]));
-	}
+    public static function forInvalidTaskType(string $type)
+    {
+        return new static(lang('Tasks.invalidTaskType', [$type]));
+    }
 }

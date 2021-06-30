@@ -16,7 +16,7 @@ class CronExpression
     /**
      * The current date/time. Used for testing.
      *
-     * @var \DateTime
+     * @var Time|null
      */
     protected $testTime;
 
@@ -149,13 +149,11 @@ class CronExpression
             $period = substr($time, 1);
             return ($currentTime % $period) === 0;
         }
+
         // Handle ranges (1-5)
-        elseif (strpos($time, '-') !== false) {
+        if (strpos($time, '-') !== false) {
             $items = [];
-            [
-                $start,
-                $end,
-            ]      = explode('-', $time);
+            [$start, $end] = explode('-', $time);
 
             for ($i = $start; $i <= $end; $i++) {
                 $items[] = $i;
@@ -166,7 +164,7 @@ class CronExpression
             $items = explode(',', $time);
         }
 
-        return in_array($currentTime, $items);
+        return in_array($currentTime, $items, false);
     }
 
     /**

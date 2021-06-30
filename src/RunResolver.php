@@ -145,7 +145,7 @@ class RunResolver
     /**
      * Determines if the given value is in the specified range.
      *
-     * @param        $value
+     * @param string|int $value
      * @param string $range
      *
      * @return bool
@@ -160,7 +160,7 @@ class RunResolver
     /**
      * Determines if the given value is in the specified list of values.
      *
-     * @param        $value
+     * @param string|int $value
      * @param string $list
      *
      * @return bool
@@ -169,13 +169,13 @@ class RunResolver
     {
         $list = explode(',', $list);
 
-        return in_array(trim($value), $list);
+        return in_array(trim($value), $list, true);
     }
 
     /**
      * Determines if the $value is one of the increments.
      *
-     * @param        $value
+     * @param string|int $value
      * @param string $increment
      *
      * @return bool

@@ -20,7 +20,7 @@ class SchedulerTest extends TestCase
 
     public function testCallSavesTask()
     {
-        $function = function() {
+        $function = function () {
             return "Hello";
         };
 
