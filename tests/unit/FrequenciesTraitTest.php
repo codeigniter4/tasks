@@ -45,25 +45,32 @@ class FrequenciesTraitTest extends TestCase
         $this->assertEquals('00 * * * *', $this->class->getExpression());
     }
 
+    public function testHourlyWithMinutes()
+    {
+        $this->class->hourly(30);
+
+        $this->assertEquals('30 * * * *', $this->class->getExpression());
+    }
+
     public function testEveryFiveMinutes()
     {
         $this->class->everyFiveMinutes();
 
-        $this->assertEquals('/5 * * * *', $this->class->getExpression());
+        $this->assertEquals('*/5 * * * *', $this->class->getExpression());
     }
 
     public function testEveryFifteenMinutes()
     {
         $this->class->everyFifteenMinutes();
 
-        $this->assertEquals('/15 * * * *', $this->class->getExpression());
+        $this->assertEquals('*/15 * * * *', $this->class->getExpression());
     }
 
     public function testEveryThirtyMinutes()
     {
         $this->class->everyThirtyMinutes();
 
-        $this->assertEquals('/30 * * * *', $this->class->getExpression());
+        $this->assertEquals('*/30 * * * *', $this->class->getExpression());
     }
 
     public function testEverySunday()
@@ -196,14 +203,14 @@ class FrequenciesTraitTest extends TestCase
     {
         $this->class->quarterly();
 
-        $this->assertEquals('0 0 1 /3 *', $this->class->getExpression());
+        $this->assertEquals('0 0 1 */3 *', $this->class->getExpression());
     }
 
     public function testQuarterlyWithTime()
     {
         $this->class->quarterly('4:08 pm');
 
-        $this->assertEquals('08 16 1 /3 *', $this->class->getExpression());
+        $this->assertEquals('08 16 1 */3 *', $this->class->getExpression());
     }
 
     public function testWeekdays()
@@ -232,5 +239,92 @@ class FrequenciesTraitTest extends TestCase
         $this->class->weekends('4:08 pm');
 
         $this->assertEquals('08 16 * * 6-7', $this->class->getExpression());
+    }
+
+
+    public function testEveryHour()
+    {
+        $this->class->everyHour();
+
+        $this->assertEquals('0 * * * *', $this->class->getExpression());
+    }
+
+    public function testEveryHourWithHour()
+    {
+        $this->class->everyHour(3);
+
+        $this->assertEquals('0 */3 * * *', $this->class->getExpression());
+    }
+
+    public function testEveryHourWithHourAndMinutes()
+    {
+        $this->class->everyHour(3, 15);
+
+        $this->assertEquals('15 */3 * * *', $this->class->getExpression());
+    }
+
+    public function testBetweenHours()
+    {
+        $this->class->betweenHours(10, 12);
+
+        $this->assertEquals('* 10-12 * * *', $this->class->getExpression());
+    }
+
+    public function testHours()
+    {
+        $this->class->hours([12,16]);
+
+        $this->assertEquals('* 12,16 * * *', $this->class->getExpression());
+    }
+
+    public function testEveryMinute()
+    {
+        $this->class->everyMinute();
+
+        $this->assertEquals('* * * * *', $this->class->getExpression());
+    }
+
+    public function testEveryMinuteWithParameter()
+    {
+        $this->class->everyMinute(15);
+
+        $this->assertEquals('*/15 * * * *', $this->class->getExpression());
+    }
+
+    public function testBetweenMinutes()
+    {
+        $this->class->betweenMinutes(15, 30);
+
+        $this->assertEquals('15-30 * * * *', $this->class->getExpression());
+    }
+
+    public function testMinutes()
+    {
+        $this->class->minutes([0,10,30]);
+
+        $this->assertEquals('0,10,30 * * * *', $this->class->getExpression());
+    }
+
+    public function testDays()
+    {
+        $this->class->days([0,4]);
+
+        $this->assertEquals('* * * * 0,4', $this->class->getExpression());
+    }
+
+
+    public function testDaysOfMonth()
+    {
+        $this->class->daysOfMonth([1,15]);
+
+        $this->assertEquals('* * 1,15 * *', $this->class->getExpression());
+    }
+
+
+    public function testMonths()
+    {
+        $this->class->months([1, 7]);
+
+        $this->assertEquals('* * * 1,7 *', $this->class->getExpression());
     }
 }

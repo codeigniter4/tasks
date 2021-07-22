@@ -98,7 +98,7 @@ There are a number of ways available to specify how often the task is called.
 |:------------------------------|:----------------------------------------------------------------------|
 | ->cron('* * * * *')           | Run on a custom cron schedule.                                        |
 | ->daily('4:00 am')            | Runs daily at 12:00am, unless a time string is passed in.             |    
-| ->hourly()                    | Runs at the top of every hour.                                        |
+| ->hourly() / ->hourly(15)     | Runs at the top of every hour or at specified minute.                 |
 | ->everyFiveMinutes()          | Runs every 5 minutes (12:00, 12:05, 12:10, etc)                       |
 | ->everyFifteenMinutes()       | Runs every 15 minutes (12:00, 12:15, etc)                             |
 | ->everyThirtyMinutes()        | Runs every 30 minutes (12:00, 12:30, etc)                             |
@@ -115,6 +115,17 @@ There are a number of ways available to specify how often the task is called.
 | ->weekdays('1:23pm')          | Runs M-F at 12:00 am unless time passed in.                           |
 | ->weekends('2:34am')          | Runs Saturday and Sunday at 12:00 am unless time passed in.           |
 | ->environments('local', 'prod')   | Restricts the task to run only in the specified environments      |
+| ->everyHour(3, 15)            | Runs every 3 hours at XX:15.                                          |
+| ->betweenHours(6,12)          | Runs between hours 6 and 12.                                          |
+| ->hours([0,10,16])            | Runs at hours 0, 10 and 16.                                           |
+| ->everyMinute(20)             | Runs every 20 minutes.                                                |
+| ->betweenMinutes(0,30)        | Runs between minutes 0 and 30.                                        |
+| ->minutes([0,20,40])          | Runs at specific minutes 0,20 and 40.                                 |
+| ->days([0,3])                 | Runs only on Sunday and Wednesday  ( 0 is Sunday , 6 is Saturday )    |
+| ->daysOfMonth([1,15])         | Runs only on days 1 and 15.                                           |
+| ->months([1,7])               | Runs only on January and July.                                        |
+
+
 
 These methods can be combined to create even more nuanced timings: 
 

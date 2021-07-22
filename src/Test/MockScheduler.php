@@ -1,4 +1,6 @@
-<?php namespace CodeIgniter\Tasks\Test;
+<?php
+
+namespace CodeIgniter\Tasks\Test;
 
 use CodeIgniter\Tasks\Scheduler;
 
@@ -10,17 +12,17 @@ use CodeIgniter\Tasks\Scheduler;
  */
 class MockScheduler extends Scheduler
 {
-	/**
-	 * @param string $type
-	 * @param mixed  $action
-	 *
-	 * @return MockTask
-	 */
-	protected function createTask(string $type, $action)
-	{
-		$task          = new MockTask($type, $action);
-		$this->tasks[] = $task;
+    /**
+     * @param string $type
+     * @param mixed  $action
+     *
+     * @return MockTask
+     */
+    protected function createTask(string $type, $action)
+    {
+        $task          = new MockTask($type, $action);
+        $this->tasks[] = $task;
 
-		return $task;
-	}
+        return $task;
+    }
 }

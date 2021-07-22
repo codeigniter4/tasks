@@ -1,8 +1,9 @@
-<?php namespace CodeIgniter\Tasks\Commands;
+<?php
+
+namespace CodeIgniter\Tasks\Commands;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
-
 use CodeIgniter\Tasks\TaskRunner;
 
 /**
@@ -10,62 +11,58 @@ use CodeIgniter\Tasks\TaskRunner;
  */
 abstract class TaskCommand extends BaseCommand
 {
-	/**
-	 * Command grouping.
-	 *
-	 * @var string
-	 */
-	protected $group = 'Tasks';
+    /**
+     * Command grouping.
+     *
+     * @var string
+     */
+    protected $group = 'Tasks';
 
-	/**
-	 * location to save.
-	 */
-	protected $path = WRITEPATH . 'tasks';
+    /**
+     * location to save.
+     */
+    protected $path = WRITEPATH . 'tasks';
 
-	/**
-	 * Saves the settings.
-	 */
-	protected function saveSettings($status)
-	{
-		$settings = [
-			'status' => $status,
-		];
+    /**
+     * Saves the settings.
+     */
+    protected function saveSettings($status)
+    {
+        $settings = [
+            'status' => $status,
+        ];
 
-		$data = json_encode($settings);
+        $data = json_encode($settings);
 
-		if (($fp = @fopen($this->path, 'wb')) === false)
-		{
-			return false;
-		}
+        if (($fp = @fopen($this->path, 'wb')) === false) {
+            return false;
+        }
 
-		flock($fp, LOCK_EX);
+        flock($fp, LOCK_EX);
 
-		for ($result = $written = 0, $length = strlen($data); $written < $length; $written += $result)
-		{
-			if (($result = fwrite($fp, substr($data, $written))) === false)
-			{
-				break;
-			}
-		}
+        for ($result = $written = 0, $length = strlen($data); $written < $length; $written += $result) {
+            if (($result = fwrite($fp, substr($data, $written))) === false) {
+                break;
+            }
+        }
 
-		flock($fp, LOCK_UN);
-		fclose($fp);
+        flock($fp, LOCK_UN);
+        fclose($fp);
 
-		return $settings;
-	}
+        return $settings;
+    }
 
-	/**
-	 * Gets the settings, if they have never been
-	 * saved, save them.
-	 */
-	protected function getSettings()
-	{
-		//if settings have never
-		if (! is_file($this->path))
-		{
-			return $this->saveSettings('enabled');
-		}
+    /**
+     * Gets the settings, if they have never been
+     * saved, save them.
+     */
+    protected function getSettings()
+    {
+        //if settings have never
+        if (! is_file($this->path)) {
+            return $this->saveSettings('enabled');
+        }
 
-		return json_decode(file_get_contents($this->path), true);
-	}
+        return json_decode(file_get_contents($this->path), true);
+    }
 }
