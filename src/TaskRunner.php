@@ -30,6 +30,14 @@ class TaskRunner
      */
     protected $performanceLogs = [];
 
+    /**
+     * Stores aliases of tasks to run
+     * If empty, All tasks will be executed as per their schedule
+     *
+     * @var array
+     */
+    protected $only = [];
+
     public function __construct()
     {
         $this->scheduler = service('scheduler');
@@ -49,7 +57,12 @@ class TaskRunner
         }
 
         foreach ($tasks as $task) {
-            if (! $task->shouldRun($this->testTime)) {
+            // If specific tasks were chosen then skip executing remaining tasks
+            if(! empty($this->only) && ! in_array($task->name, $this->only)) {
+                continue;
+            }
+
+            if (! $task->shouldRun($this->testTime) && empty($this->only)) {
                 continue;
             }
 
@@ -57,9 +70,15 @@ class TaskRunner
             $start  = Time::now();
             $output = null;
 
+            $this->cliWrite("Processing: " . ($task->name ?: "Task"), 'green');
+
             try {
                 $output = $task->run();
+
+                $this->cliWrite("Executed: " . ($task->name ?: "Task"), "cyan");
             } catch (\Throwable $e) {
+                $this->cliWrite("Failed: " . ($task->name ?: "Task"), "red");
+
                 log_message('error', $e->getMessage(), $e->getTrace());
                 $error = $e;
             } finally {
@@ -76,6 +95,40 @@ class TaskRunner
     }
 
     /**
+     * Write a line to command line interface
+     *
+     * @param string      $text
+     * @param string|null $foreground
+     */
+    protected function cliWrite(string $text, string $foreground = null)
+    {
+        // Skip writing to cli in tests
+        if(defined("ENVIRONMENT") && ENVIRONMENT === "testing") {
+            return ;
+        }
+
+        if(! is_cli()) {
+            return ;
+        }
+
+        CLI::write("[" . date("Y-m-d H:i:s") . "] " . $text, $foreground);
+    }
+
+    /**
+     * Specify tasks to run
+     *
+     * @param array $tasks
+     *
+     * @return TaskRunner
+     */
+    public function only(array $tasks = []): TaskRunner
+    {
+        $this->only = $tasks;
+
+        return $this;
+    }
+
+    /**
      * Sets a time that will be used.
      * Allows setting a specific time to test against.
      * Must be in a DateTime-compatible format.
@@ -84,7 +137,7 @@ class TaskRunner
      *
      * @return $this
      */
-    public function withTestTime(string $time)
+    public function withTestTime(string $time): TaskRunner
     {
         $this->testTime = $time;
 
@@ -96,7 +149,7 @@ class TaskRunner
      *
      * @return array
      */
-    public function performanceLogs()
+    public function performanceLogs(): array
     {
         return $this->performanceLogs;
     }

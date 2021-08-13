@@ -19,6 +19,15 @@ class Run extends TaskCommand
     protected $name = 'tasks:run';
 
     /**
+     * The Command's Options
+     *
+     * @var array
+     */
+    protected $options = [
+        '--task' => 'Run specific task by alias.',
+    ];
+
+    /**
      * the Command's short description
      *
      * @var string
@@ -49,10 +58,13 @@ class Run extends TaskCommand
 
         CLI::write('Running Tasks...');
 
-        config('Tasks')
-            ->init(\Config\Services::scheduler());
+        config('Tasks')->init(service('scheduler'));
 
         $runner = new TaskRunner();
+
+        if( CLI::getOption("task") ){
+            $runner->only( [CLI::getOption("task")] );
+        }
 
         $runner->run();
 
