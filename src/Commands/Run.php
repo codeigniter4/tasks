@@ -62,8 +62,8 @@ class Run extends TaskCommand
 
         $runner = new TaskRunner();
 
-        if( CLI::getOption("task") ){
-            $runner->only( [CLI::getOption("task")] );
+        if (CLI::getOption("task")) {
+            $runner->only([CLI::getOption("task")]);
         }
 
         $runner->run();

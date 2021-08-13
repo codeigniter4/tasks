@@ -58,7 +58,7 @@ class TaskRunner
 
         foreach ($tasks as $task) {
             // If specific tasks were chosen then skip executing remaining tasks
-            if(! empty($this->only) && ! in_array($task->name, $this->only)) {
+            if (! empty($this->only) && ! in_array($task->name, $this->only, true)) {
                 continue;
             }
 
@@ -103,11 +103,11 @@ class TaskRunner
     protected function cliWrite(string $text, string $foreground = null)
     {
         // Skip writing to cli in tests
-        if(defined("ENVIRONMENT") && ENVIRONMENT === "testing") {
+        if (defined("ENVIRONMENT") && ENVIRONMENT === "testing") {
             return ;
         }
 
-        if(! is_cli()) {
+        if (! is_cli()) {
             return ;
         }
 

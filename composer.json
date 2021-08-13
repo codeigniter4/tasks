@@ -18,7 +18,8 @@
         }
     ],
     "require": {
-        "php": "^7.3 || ^8.0"
+        "php": "^7.3 || ^8.0",
+        "codeigniter4/settings": "dev-develop"
     },
     "require-dev": {
         "codeigniter4/codeigniter4": "dev-develop",
