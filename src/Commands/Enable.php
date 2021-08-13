@@ -39,7 +39,9 @@ class Enable extends TaskCommand
      */
     public function run(array $params)
     {
-        $this->saveSettings('enabled');
+        helper('setting');
+
+        setting('Tasks.enabled', true);
 
         CLI::write('Tasks have been enabled.', 'green');
     }

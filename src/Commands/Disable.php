@@ -39,7 +39,9 @@ class Disable extends TaskCommand
      */
     public function run(array $params)
     {
-        $this->saveSettings('disabled');
+        helper('setting');
+
+        setting('Tasks.enabled', false);
 
         CLI::write('Tasks have been disabled.', 'red');
     }
