@@ -46,7 +46,7 @@ class Lister extends TaskCommand
             CLI::write('To re-enable tasks run: tasks:enable');
         }
 
-        $scheduler = \Config\Services::scheduler();
+        $scheduler = service('scheduler');
 
         config('Tasks')->init($scheduler);
 
@@ -62,6 +62,7 @@ class Lister extends TaskCommand
             $tasks[] = [
                 'name'     => $task->name ?: $task->getAction(),
                 'type'     => $task->getType(),
+                'last_run' => "-",              // todo: will be done later
                 'next_run' => $nextRun,
                 'runs_in'  => $nextRun->humanize(),
             ];
@@ -74,6 +75,7 @@ class Lister extends TaskCommand
         CLI::table($tasks, [
             'Name',
             'Type',
+            'Last Run',
             'Next Run',
             '',
         ]);
