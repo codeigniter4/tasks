@@ -23,14 +23,6 @@ class TaskRunner
     protected $testTime;
 
     /**
-     * Stores execution logs for each
-     * task that was ran
-     *
-     * @var array
-     */
-    protected $performanceLogs = [];
-
-    /**
      * Stores aliases of tasks to run
      * If empty, All tasks will be executed as per their schedule
      *
@@ -40,6 +32,7 @@ class TaskRunner
 
     public function __construct()
     {
+        helper('setting');
         $this->scheduler = service('scheduler');
     }
 
@@ -83,35 +76,17 @@ class TaskRunner
                 $error = $e;
             } finally {
                 // Save performance info
-                $this->performanceLogs[] = new TaskLog([
+                $taskLog = new TaskLog([
                     'task'     => $task,
                     'output'   => $output,
                     'runStart' => $start,
                     'runEnd'   => Time::now(),
                     'error'    => $error,
                 ]);
+
+                $this->updateLogs($taskLog);
             }
         }
-    }
-
-    /**
-     * Write a line to command line interface
-     *
-     * @param string      $text
-     * @param string|null $foreground
-     */
-    protected function cliWrite(string $text, string $foreground = null)
-    {
-        // Skip writing to cli in tests
-        if (defined("ENVIRONMENT") && ENVIRONMENT === "testing") {
-            return ;
-        }
-
-        if (! is_cli()) {
-            return ;
-        }
-
-        CLI::write("[" . date("Y-m-d H:i:s") . "] " . $text, $foreground);
     }
 
     /**
@@ -145,32 +120,88 @@ class TaskRunner
     }
 
     /**
-     * Returns the performance logs, if any.
+     * Write a line to command line interface
      *
-     * @return array
+     * @param string      $text
+     * @param string|null $foreground
      */
-    public function performanceLogs(): array
+    protected function cliWrite(string $text, string $foreground = null)
     {
-        return $this->performanceLogs;
+        // Skip writing to cli in tests
+        if (defined("ENVIRONMENT") && ENVIRONMENT === "testing") {
+            return ;
+        }
+
+        if (! is_cli()) {
+            return ;
+        }
+
+        CLI::write("[" . date("Y-m-d H:i:s") . "] " . $text, $foreground);
     }
 
     /**
-     * Performance log information is stored
-     * at /writable/tasks/tasks_yyyy_mm_dd.json
+     * Adds the performance log to the
+     *
+     * @param TaskLog $taskLog
      */
-    protected function storePerformanceLogs()
+    protected function updateLogs(TaskLog $taskLog)
     {
-        if (empty($this->performanceLogs)) {
+        if (setting('Tasks.logPerformance') === false) {
             return;
         }
 
-        // Ensure we have someplace to store the log
-        if (! is_dir(WRITEPATH . 'tasks')) {
-            mkdir(WRITEPATH . 'tasks', 0777);
+        // Build a name if the task doesn't exist
+        $name = $taskLog->task->name ?? $this->buildName($taskLog->task);
+
+        $data = [
+            'task' => $name,
+            'type' => $taskLog->task->getType(),
+            'duration' => $taskLog->duration(),
+            'output' => $taskLog->output ?? null,
+            'error' => serialize($taskLog->error ?? null),
+        ];
+
+        // Get existing logs
+        $logs = setting("Tasks.log-{$name}");
+        if (empty($logs)) {
+            $logs = [];
         }
 
-        $fileName = 'tasks_' . date('Y_m_d') . '.json';
+        // Make sure we have room for one more
+        if (count($logs) > setting('Tasks.maxLogsPerTask')) {
+            array_pop($logs);
+        }
 
-        dd($fileName);
+        // Add the log to the top of the array
+        array_unshift($logs, $data);
+
+        setting("Tasks.log-{$name}", $logs);
+    }
+
+    private function buildName(Task $task)
+    {
+        // Get a hash based on the action
+        // Closures cannot be serialized so do it the hard way
+        if ($task->getType() === 'closure') {
+            $ref  = new \ReflectionFunction($task->getAction());
+            $file = new \SplFileObject($ref->getFileName());
+            $file->seek($ref->getStartLine()-1);
+            $content = '';
+            while ($file->key() < $ref->getEndLine()) {
+                $content .= $file->current();
+                $file->next();
+            }
+            $actionString = json_encode(array(
+                $content,
+                $ref->getStaticVariables()
+            ));
+        } else {
+            $actionString = serialize($task->getAction());
+        }
+
+        // Get a hash based on the expression
+        $expHash = $task->getExpression();
+
+        return  $task->getType() .'_'. md5($actionString .'_'. $expHash);
     }
 }

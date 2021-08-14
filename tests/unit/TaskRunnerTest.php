@@ -3,10 +3,25 @@
 use CodeIgniter\Tasks\Task;
 use CodeIgniter\Tasks\Scheduler;
 use CodeIgniter\Tasks\TaskRunner;
+use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\CIUnitTestCase as TestCase;
+use CodeIgniter\I18n\Time;
 
 class TaskRunnerTest extends TestCase
 {
+    use DatabaseTestTrait;
+
+    protected $refresh = true;
+    protected $namespace = 'Sparks\Settings';
+
+    public function setUp(): void
+    {
+        parent:: setUp();
+
+        helper('setting');
+        setting('Tasks.logPerformance', true);
+    }
+
     public function testRunWithNoTasks()
     {
         $this->assertNull($this->getRunner()->run());
@@ -16,10 +31,10 @@ class TaskRunnerTest extends TestCase
     {
         $task1 = (new Task('closure', function () {
             echo 'Task 1';
-        }))->daily('12:05am');
+        }))->daily('12:05am')->named('task1');
         $task2 = (new Task('closure', function () {
             echo 'Task 2';
-        }))->daily('12:00am');
+        }))->daily('12:00am')->named('task2');
 
         $runner = $this->getRunner([$task1, $task2]);
 
@@ -34,8 +49,23 @@ class TaskRunnerTest extends TestCase
         ob_end_clean();
 
         // Should have logged the stats
-        $logs = $runner->performanceLogs();
-        $this->assertCount(1, $logs);
+        $expected = [
+            [
+                'task' => 'task2',
+                'type' => 'closure',
+                'duration' => '0.00',
+                'output' => null,
+                'error' => serialize(null)
+            ]
+        ];
+        $this->seeInDatabase('settings', [
+            'class' => 'CodeIgniter\Tasks\Config\Tasks',
+            'key' => 'log-task2',
+            'value' => serialize($expected),
+        ]);
+        $this->dontSeeInDatabase('settings', [
+            'key' => 'log-task1'
+        ]);
     }
 
     protected function getRunner(array $tasks = [])

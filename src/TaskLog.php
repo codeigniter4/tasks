@@ -48,21 +48,25 @@ class TaskLog
     }
 
     /**
-     * Returns the duration of the task in mm:ss format.
+     * Returns the duration of the task in seconds and fractions of a second.
      *
      * @return string
      * @throws \Exception
      */
     public function duration()
     {
-        $dif = $this->runEnd->difference($this->runStart);
+        return number_format((float)$this->runEnd->format("U.u") - (float)$this->runStart->format("U.u"), 2);
+    }
 
-        $minutes = (int)$dif->getMinutes(true);
-        $seconds = $dif->getSeconds(true);
-
-        // Since $seconds includes the minutes, calc the extra
-        $seconds = $seconds - ($minutes * 60);
-
-        return str_pad((string)$minutes, 2, '0', STR_PAD_LEFT) . ':' . str_pad((string)$seconds, 2, '0', STR_PAD_LEFT);
+    /**
+     * Magic getter.
+     *
+     * @param string $key
+     */
+    public function __get(string $key)
+    {
+        if (property_exists($this, $key)) {
+            return $this->{$key};
+        }
     }
 }
