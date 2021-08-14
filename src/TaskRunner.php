@@ -191,10 +191,10 @@ class TaskRunner
                 $content .= $file->current();
                 $file->next();
             }
-            $actionString = json_encode(array(
+            $actionString = json_encode([
                 $content,
                 $ref->getStaticVariables()
-            ));
+            ]);
         } else {
             $actionString = serialize($task->getAction());
         }
