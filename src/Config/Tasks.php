@@ -40,9 +40,9 @@ class Tasks extends BaseConfig
      */
     public function init(Scheduler $schedule)
     {
-         $schedule->command('foo:bar')->daily();
+        $schedule->command('foo:bar')->daily();
 
-         $schedule->shell('cp foo bar')->daily('11:00 pm');
+        $schedule->shell('cp foo bar')->daily('11:00 pm');
 
 //         $schedule->call(function() { do something.... })->everyMonday()->named('foo');
     }

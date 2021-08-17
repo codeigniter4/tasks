@@ -97,7 +97,9 @@ class TaskTest extends TasksTestCase
         helper('setting');
         setting('Tasks.logPerformance', true);
 
-        $task = new CodeIgniter\Tasks\Task('closure', function() { return 1; });
+        $task = new CodeIgniter\Tasks\Task('closure', function () {
+            return 1;
+        });
         $task->named('foo');
 
         // Should be dashes when not ran
