@@ -4,6 +4,7 @@ namespace CodeIgniter\Tasks\Commands;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
+use CodeIgniter\I18n\Time;
 use CodeIgniter\Tasks\TaskRunner;
 
 /**
@@ -39,18 +40,17 @@ class Lister extends TaskCommand
      */
     public function run(array $params)
     {
-        $settings = $this->getSettings();
+        helper('setting');
 
-        if ($settings['status'] !== 'enabled') {
+        if (setting('Tasks.logPerformance') === false) {
             CLI::write('WARNING: Task running is currently disabled.', 'red');
             CLI::write('To re-enable tasks run: tasks:enable');
+            CLI::newLine();
         }
 
         $scheduler = service('scheduler');
 
         config('Tasks')->init($scheduler);
-
-        $runner = new TaskRunner();
 
         $tasks = [];
 
@@ -58,11 +58,13 @@ class Lister extends TaskCommand
             $cron = service('cronExpression');
 
             $nextRun = $cron->nextRun($task->getExpression());
+            $lastRun = $task->lastRun();
 
             $tasks[] = [
                 'name'     => $task->name ?: $task->getAction(),
                 'type'     => $task->getType(),
-                'last_run' => "-",              // todo: will be done later
+                'schedule' => $task->getExpression(),
+                'last_run' => $lastRun instanceof Time ? $lastRun->toDateTimeString() : $lastRun,
                 'next_run' => $nextRun,
                 'runs_in'  => $nextRun->humanize(),
             ];
@@ -75,9 +77,10 @@ class Lister extends TaskCommand
         CLI::table($tasks, [
             'Name',
             'Type',
+            'Schedule',
             'Last Run',
             'Next Run',
-            '',
+            'Runs',
         ]);
     }
 }

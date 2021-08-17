@@ -1,11 +1,9 @@
 <?php
 
 use CodeIgniter\Tasks\Task;
-use CodeIgniter\Tasks\Scheduler;
 use CodeIgniter\Tasks\TaskRunner;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\CIUnitTestCase as TestCase;
-use CodeIgniter\I18n\Time;
 
 class TaskRunnerTest extends TestCase
 {
@@ -53,6 +51,7 @@ class TaskRunnerTest extends TestCase
             [
                 'task' => 'task2',
                 'type' => 'closure',
+                'start' => date('Y-m-d H:i:s'),
                 'duration' => '0.00',
                 'output' => null,
                 'error' => serialize(null)

@@ -150,12 +150,13 @@ class TaskRunner
             return;
         }
 
-        // Build a name if the task doesn't exist
-        $name = $taskLog->task->name ?? $this->buildName($taskLog->task);
+        // "unique" name will be returned if one wasn't set
+        $name = $taskLog->task->name;
 
         $data = [
             'task' => $name,
             'type' => $taskLog->task->getType(),
+            'start' => $taskLog->runStart->format('Y-m-d H:i:s'),
             'duration' => $taskLog->duration(),
             'output' => $taskLog->output ?? null,
             'error' => serialize($taskLog->error ?? null),
@@ -176,32 +177,5 @@ class TaskRunner
         array_unshift($logs, $data);
 
         setting("Tasks.log-{$name}", $logs);
-    }
-
-    private function buildName(Task $task)
-    {
-        // Get a hash based on the action
-        // Closures cannot be serialized so do it the hard way
-        if ($task->getType() === 'closure') {
-            $ref  = new \ReflectionFunction($task->getAction());
-            $file = new \SplFileObject($ref->getFileName());
-            $file->seek($ref->getStartLine()-1);
-            $content = '';
-            while ($file->key() < $ref->getEndLine()) {
-                $content .= $file->current();
-                $file->next();
-            }
-            $actionString = json_encode([
-                $content,
-                $ref->getStaticVariables()
-            ]);
-        } else {
-            $actionString = serialize($task->getAction());
-        }
-
-        // Get a hash based on the expression
-        $expHash = $task->getExpression();
-
-        return  $task->getType() .'_'. md5($actionString .'_'. $expHash);
     }
 }

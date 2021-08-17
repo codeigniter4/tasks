@@ -3,6 +3,7 @@
 namespace CodeIgniter\Tasks;
 
 use CodeIgniter\Events\Events;
+use CodeIgniter\I18n\Time;
 use CodeIgniter\Tasks\Exceptions\TasksException;
 use Config\Services;
 
@@ -156,7 +157,7 @@ class Task
 
     /**
      * Restricts this task to run within only
-     * specified environements.
+     * specified environments.
      *
      * @param mixed ...$environments
      *
@@ -167,6 +168,30 @@ class Task
         $this->environments = $environments;
 
         return $this;
+    }
+
+    /**
+     * Returns the date this was last ran.
+     *
+     * @return mixed
+     */
+    public function lastRun()
+    {
+        helper('setting');
+        if (setting('Tasks.logPerformance') === false) {
+            return '--';
+        }
+
+        // Get the logs
+        $logs = setting("Tasks.log-{$this->name}");
+
+        if (empty($logs)) {
+            return '--';
+        }
+
+        $log = array_shift($logs);
+
+        return Time::parse($log['start']);
     }
 
     /**
@@ -242,6 +267,40 @@ class Task
     }
 
     /**
+     * Builds a unique name for the task.
+     * Used when an existing name doesn't exist.
+     *
+     * @return string
+     * @throws \ReflectionException
+     */
+    protected function buildName()
+    {
+        // Get a hash based on the action
+        // Closures cannot be serialized so do it the hard way
+        if ($this->getType() === 'closure') {
+            $ref  = new \ReflectionFunction($this->getAction());
+            $file = new \SplFileObject($ref->getFileName());
+            $file->seek($ref->getStartLine()-1);
+            $content = '';
+            while ($file->key() < $ref->getEndLine()) {
+                $content .= $file->current();
+                $file->next();
+            }
+            $actionString = json_encode([
+                $content,
+                $ref->getStaticVariables()
+            ]);
+        } else {
+            $actionString = serialize($this->getAction());
+        }
+
+        // Get a hash based on the expression
+        $expHash = $this->getExpression();
+
+        return  $this->getType() .'_'. md5($actionString .'_'. $expHash);
+    }
+
+    /**
      * Magic getter
      *
      * @param string $key
@@ -250,6 +309,10 @@ class Task
      */
     public function __get(string $key)
     {
+        if ($key === 'name' && empty($this->name)) {
+            return $this->buildName();
+        }
+
         if (property_exists($this, $key)) {
             return $this->$key;
         }

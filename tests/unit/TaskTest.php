@@ -2,14 +2,21 @@
 
 use CodeIgniter\Tasks\Task;
 use Tests\Support\TasksTestCase;
+use CodeIgniter\Test\DatabaseTestTrait;
+use CodeIgniter\I18n\Time;
 
 class TaskTest extends TasksTestCase
 {
+    use DatabaseTestTrait;
+
+    protected $namespace = 'Sparks\Settings';
+
     public function testNamed()
     {
         $task = new Task('command', 'foo:bar');
 
-        $this->assertNull($task->name);
+        // Will build a random name
+        $this->assertTrue(strpos($task->name, 'command_') === 0);
 
         $task = (new Task('command', 'foo:bar'))->named('foo');
 
@@ -83,5 +90,33 @@ class TaskTest extends TasksTestCase
         $this->assertFalse($task->shouldRun('12:00am'));
 
         $_SERVER['CI_ENVIRONMENT'] = $originalEnv;
+    }
+
+    public function testLastRun()
+    {
+        helper('setting');
+        setting('Tasks.logPerformance', true);
+
+        $task = new CodeIgniter\Tasks\Task('closure', function() { return 1; });
+        $task->named('foo');
+
+        // Should be dashes when not ran
+        $this->assertEquals('--', $task->lastRun());
+
+        $date = date('Y-m-d H:i:s');
+
+        // Insert a performance bit in the db
+        setting("Tasks.log-{$task->name}", [[
+            'task' => $task->name,
+            'type' => $task->getType(),
+            'start' => $date,
+            'duration' => '11.3s',
+            'output' => null,
+            'error' => null,
+        ]]);
+
+        // Should return the current time
+        $this->assertInstanceOf(Time::class, $task->lastRun());
+        $this->assertEquals($date, $task->lastRun()->format('Y-m-d H:i:s'));
     }
 }
