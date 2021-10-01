@@ -11,52 +11,52 @@ use CodeIgniter\Tasks\TaskRunner;
  */
 class Run extends TaskCommand
 {
-	/**
-	 * The Command's name
-	 *
-	 * @var string
-	 */
-	protected $name = 'tasks:run';
+    /**
+     * The Command's name
+     *
+     * @var string
+     */
+    protected $name = 'tasks:run';
 
-	/**
-	 * the Command's short description
-	 *
-	 * @var string
-	 */
-	protected $description = 'Runs tasks based on the schedule, should be configured as a crontask to run every minute.';
+    /**
+     * the Command's short description
+     *
+     * @var string
+     */
+    protected $description = 'Runs tasks based on the schedule, should be configured as a crontask to run every minute.';
 
-	/**
-	 * the Command's usage
-	 *
-	 * @var string
-	 */
-	protected $usage = 'tasks:run';
+    /**
+     * the Command's usage
+     *
+     * @var string
+     */
+    protected $usage = 'tasks:run';
 
-	/**
-	 * Runs tasks at the proper time.
-	 *
-	 * @param array $params
-	 */
-	public function run(array $params)
-	{
-		$settings = $this->getSettings();
+    /**
+     * Runs tasks at the proper time.
+     *
+     * @param array $params
+     */
+    public function run(array $params)
+    {
+        $settings = $this->getSettings();
 
-		if ($settings['status'] !== 'enabled')
-		{
-			CLI::write(CLI::color('WARNING: Task running is currently disabled.', 'red'));
-			CLI::write('To re-enable tasks run: tasks:enable');
-			return false;
-		}
+        if ($settings['status'] !== 'enabled')
+        {
+            CLI::write(CLI::color('WARNING: Task running is currently disabled.', 'red'));
+            CLI::write('To re-enable tasks run: tasks:enable');
+            return false;
+        }
 
-		CLI::write('Running Tasks...');
+        CLI::write('Running Tasks...');
 
-		config('Tasks')
-			->init(\Config\Services::scheduler());
+        config('Tasks')
+            ->init(\Config\Services::scheduler());
 
-		$runner = new TaskRunner();
+        $runner = new TaskRunner();
 
-		$runner->run();
+        $runner->run();
 
-		CLI::write(CLI::color('Completed Running Tasks', 'green'));
-	}
+        CLI::write(CLI::color('Completed Running Tasks', 'green'));
+    }
 }
