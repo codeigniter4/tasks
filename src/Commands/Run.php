@@ -41,8 +41,7 @@ class Run extends TaskCommand
     {
         $settings = $this->getSettings();
 
-        if ($settings['status'] !== 'enabled')
-        {
+        if ($settings['status'] !== 'enabled') {
             CLI::write(CLI::color('WARNING: Task running is currently disabled.', 'red'));
             CLI::write('To re-enable tasks run: tasks:enable');
             return false;
