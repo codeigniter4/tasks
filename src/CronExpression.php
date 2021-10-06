@@ -144,9 +144,9 @@ class CronExpression
 
         $currentTime = $this->testTime->format($format);
 
-        // Handle repeating times (i.e. /5 for every 5 minutes)
-        if (strpos($time, '/') === 0) {
-            $period = substr($time, 1);
+        // Handle repeating times (i.e. /5 or */5 for every 5 minutes)
+        if (strpos($time, '/') !== false) {
+            $period = substr($time, strpos($time, '/') + 1);
             return ($currentTime % $period) === 0;
         }
 

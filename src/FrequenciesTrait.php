@@ -476,7 +476,7 @@ trait FrequenciesTrait
 
         $this->expression['min']       = $min;
         $this->expression['hour']      = $hour;
-        $this->expression['dayOfWeek'] = $day;
+        $this->expression['dayOfWeek'] = $day + 1; //cron uses 0 based day of week (0 is Sunday), but this functions with (1 as Sunday)
 
         return $this;
     }

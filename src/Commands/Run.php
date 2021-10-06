@@ -68,6 +68,6 @@ class Run extends TaskCommand
 
         $runner->run();
 
-        CLI::write(CLI::color('Completed.', 'green'));
+        CLI::write(CLI::color('Completed Running Tasks', 'green'));
     }
 }
