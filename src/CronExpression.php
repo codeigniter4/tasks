@@ -28,7 +28,7 @@ class CronExpression
      *
      * @return void
      */
-    public function __construct(string $timezone = null)
+    public function __construct(?string $timezone = null)
     {
         $this->timezone = $timezone ?? app_timezone();
     }
@@ -38,8 +38,6 @@ class CronExpression
      * for custom timezone to be used for specific task
      *
      * @param string $expression The Cron Expression to be evaluated
-     *
-     * @return boolean
      */
     public function shouldRun(string $expression): bool
     {
@@ -64,25 +62,17 @@ class CronExpression
     /**
      * Returns a Time instance representing the next
      * date/time this expression would be ran.
-     *
-     * @param string $expression
-     *
-     * @return Time
      */
     public function nextRun(string $expression): Time
     {
         $this->setTime();
 
-        return (new RunResolver())->nextRun($expression, clone($this->testTime));
+        return (new RunResolver())->nextRun($expression, clone $this->testTime);
     }
 
     /**
      * Returns a Time instance representing the last
      * date/time this expression would have ran.
-     *
-     * @param string $expression
-     *
-     * @return Time
      */
     public function lastRun(string $expression): Time
     {
@@ -93,10 +83,9 @@ class CronExpression
      * Sets a date/time that will be used in place
      * of the current time to help with testing.
      *
-     * @param string $dateTime
+     * @throws \Exception
      *
      * @return $this
-     * @throws \Exception
      */
     public function testTime(string $dateTime)
     {
@@ -130,12 +119,6 @@ class CronExpression
         return $this->checkTime($time, 'w');
     }
 
-    /**
-     * @param string $time
-     * @param string $format
-     *
-     * @return boolean
-     */
     private function checkTime(string $time, string $format): bool
     {
         if ($time === '*') {
@@ -147,12 +130,13 @@ class CronExpression
         // Handle repeating times (i.e. /5 or */5 for every 5 minutes)
         if (strpos($time, '/') !== false) {
             $period = substr($time, strpos($time, '/') + 1);
+
             return ($currentTime % $period) === 0;
         }
 
         // Handle ranges (1-5)
         if (strpos($time, '-') !== false) {
-            $items = [];
+            $items         = [];
             [$start, $end] = explode('-', $time);
 
             for ($i = $start; $i <= $end; $i++) {

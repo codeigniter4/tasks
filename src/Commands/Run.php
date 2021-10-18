@@ -2,7 +2,6 @@
 
 namespace CodeIgniter\Tasks\Commands;
 
-use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use CodeIgniter\Tasks\TaskRunner;
 
@@ -43,8 +42,6 @@ class Run extends TaskCommand
 
     /**
      * Runs tasks at the proper time.
-     *
-     * @param array $params
      */
     public function run(array $params)
     {
@@ -53,6 +50,7 @@ class Run extends TaskCommand
         if (setting('Tasks.enabled') === false) {
             CLI::write(CLI::color('WARNING: Task running is currently disabled.', 'red'));
             CLI::write('To re-enable tasks run: tasks:enable');
+
             return false;
         }
 
@@ -62,8 +60,8 @@ class Run extends TaskCommand
 
         $runner = new TaskRunner();
 
-        if (CLI::getOption("task")) {
-            $runner->only([CLI::getOption("task")]);
+        if (CLI::getOption('task')) {
+            $runner->only([CLI::getOption('task')]);
         }
 
         $runner->run();

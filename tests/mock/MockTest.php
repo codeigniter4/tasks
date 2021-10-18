@@ -4,7 +4,10 @@ namespace CodeIgniter\Tasks\Test;
 
 use Tests\Support\TasksTestCase;
 
-class MockTest extends TasksTestCase
+/**
+ * @internal
+ */
+final class MockTest extends TasksTestCase
 {
     /**
      * @var MockScheduler
@@ -38,6 +41,6 @@ class MockTest extends TasksTestCase
         $task = new MockTask('command', 'foo:bar');
         $task->run();
 
-        $this->assertEquals(['command', 'foo:bar'], $_SESSION['tasks_cache']);
+        $this->assertSame(['command', 'foo:bar'], $_SESSION['tasks_cache']);
     }
 }

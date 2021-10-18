@@ -3,8 +3,6 @@
 namespace CodeIgniter\Tasks\Commands;
 
 use CodeIgniter\CLI\BaseCommand;
-use CodeIgniter\CLI\CLI;
-use CodeIgniter\Tasks\TaskRunner;
 
 /**
  * Base functionality for enable/disable.

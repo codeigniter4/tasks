@@ -2,8 +2,6 @@
 
 namespace CodeIgniter\Tasks;
 
-use CodeIgniter\Tasks\Task;
-
 class TaskLog
 {
     /**
@@ -35,14 +33,12 @@ class TaskLog
 
     /**
      * TaskLog constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data)
     {
         foreach ($data as $key => $value) {
             if (property_exists($this, $key)) {
-                $this->$key = $value;
+                $this->{$key} = $value;
             }
         }
     }
@@ -50,18 +46,17 @@ class TaskLog
     /**
      * Returns the duration of the task in seconds and fractions of a second.
      *
-     * @return string
      * @throws \Exception
+     *
+     * @return string
      */
     public function duration()
     {
-        return number_format((float)$this->runEnd->format("U.u") - (float)$this->runStart->format("U.u"), 2);
+        return number_format((float) $this->runEnd->format('U.u') - (float) $this->runStart->format('U.u'), 2);
     }
 
     /**
      * Magic getter.
-     *
-     * @param string $key
      */
     public function __get(string $key)
     {

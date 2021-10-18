@@ -1,17 +1,20 @@
 <?php
 
-use CodeIgniter\Tasks\Task;
 use CodeIgniter\Tasks\Scheduler;
+use CodeIgniter\Tasks\Task;
 use CodeIgniter\Test\CIUnitTestCase as TestCase;
 
-class SchedulerTest extends TestCase
+/**
+ * @internal
+ */
+final class SchedulerTest extends TestCase
 {
     /**
      * @var Scheduler
      */
     protected $scheduler;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -20,8 +23,8 @@ class SchedulerTest extends TestCase
 
     public function testCallSavesTask()
     {
-        $function = function () {
-            return "Hello";
+        $function = static function () {
+            return 'Hello';
         };
 
         $task = $this->scheduler->call($function);
@@ -29,7 +32,7 @@ class SchedulerTest extends TestCase
         $this->assertInstanceOf(\Closure::class, $function);
         $this->assertInstanceOf(Task::class, $task);
         $this->assertSame($function, $task->getAction());
-        $this->assertEquals('Hello', $task->getAction()());
+        $this->assertSame('Hello', $task->getAction()());
     }
 
     public function testCommandSavesTask()
@@ -37,7 +40,7 @@ class SchedulerTest extends TestCase
         $task = $this->scheduler->command('foo:bar');
 
         $this->assertInstanceOf(Task::class, $task);
-        $this->assertEquals('foo:bar', $task->getAction());
+        $this->assertSame('foo:bar', $task->getAction());
     }
 
     public function testShellSavesTask()
@@ -45,6 +48,6 @@ class SchedulerTest extends TestCase
         $task = $this->scheduler->shell('foo:bar');
 
         $this->assertInstanceOf(Task::class, $task);
-        $this->assertEquals('foo:bar', $task->getAction());
+        $this->assertSame('foo:bar', $task->getAction());
     }
 }

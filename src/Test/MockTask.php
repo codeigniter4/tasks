@@ -2,8 +2,8 @@
 
 namespace CodeIgniter\Tasks\Test;
 
-use CodeIgniter\Tasks\Task;
 use CodeIgniter\Tasks\Exceptions\TasksException;
+use CodeIgniter\Tasks\Task;
 
 /**
  * Mock Task Class

@@ -13,11 +13,11 @@ use Config\Services;
  * Represents a single task that should be scheduled
  * and run periodically.
  *
- * @property-read array $types
- * @property-read string $type
- * @property-read mixed $action
- * @property-read array $environments
- * @property-read string $name
+ * @property mixed  $action
+ * @property array  $environments
+ * @property string $name
+ * @property string $type
+ * @property array  $types
  */
 class Task
 {
@@ -66,8 +66,7 @@ class Task
     protected $name;
 
     /**
-     * @param mixed  $action
-     * @param string $type
+     * @param mixed $action
      *
      * @throws TasksException
      */
@@ -84,8 +83,6 @@ class Task
     /**
      * Set the name to reference this task by
      *
-     * @param string $name
-     *
      * @return $this
      */
     public function named(string $name)
@@ -97,8 +94,6 @@ class Task
 
     /**
      * Returns the type.
-     *
-     * @return string
      */
     public function getType(): string
     {
@@ -127,18 +122,14 @@ class Task
             throw TasksException::forInvalidTaskType($this->type);
         }
 
-        return $this->$method();
+        return $this->{$method}();
     }
 
     /**
      * Determines whether this task should be run now
      * according to its schedule and environment.
-     *
-     * @param string|null $testTime
-     *
-     * @return boolean
      */
-    public function shouldRun(string $testTime = null): bool
+    public function shouldRun(?string $testTime = null): bool
     {
         $cron = service('cronExpression');
 
@@ -196,10 +187,6 @@ class Task
 
     /**
      * Checks if it runs within the specified environment.
-     *
-     * @param string $environment
-     *
-     * @return boolean
      */
     protected function runsInEnvironment(string $environment): bool
     {
@@ -214,8 +201,9 @@ class Task
     /**
      * Runs a framework Command.
      *
-     * @return string Buffered output from the Command
      * @throws \InvalidArgumentException
+     *
+     * @return string Buffered output from the Command
      */
     protected function runCommand(): string
     {
@@ -247,7 +235,7 @@ class Task
     /**
      * Triggers an Event.
      *
-     * @return boolean Result of the trigger
+     * @return bool Result of the trigger
      */
     protected function runEvent(): bool
     {
@@ -270,8 +258,9 @@ class Task
      * Builds a unique name for the task.
      * Used when an existing name doesn't exist.
      *
-     * @return string
      * @throws \ReflectionException
+     *
+     * @return string
      */
     protected function buildName()
     {
@@ -280,15 +269,16 @@ class Task
         if ($this->getType() === 'closure') {
             $ref  = new \ReflectionFunction($this->getAction());
             $file = new \SplFileObject($ref->getFileName());
-            $file->seek($ref->getStartLine()-1);
+            $file->seek($ref->getStartLine() - 1);
             $content = '';
+
             while ($file->key() < $ref->getEndLine()) {
                 $content .= $file->current();
                 $file->next();
             }
             $actionString = json_encode([
                 $content,
-                $ref->getStaticVariables()
+                $ref->getStaticVariables(),
             ]);
         } else {
             $actionString = serialize($this->getAction());
@@ -297,13 +287,11 @@ class Task
         // Get a hash based on the expression
         $expHash = $this->getExpression();
 
-        return  $this->getType() .'_'. md5($actionString .'_'. $expHash);
+        return $this->getType() . '_' . md5($actionString . '_' . $expHash);
     }
 
     /**
      * Magic getter
-     *
-     * @param string $key
      *
      * @return mixed
      */
@@ -314,7 +302,7 @@ class Task
         }
 
         if (property_exists($this, $key)) {
-            return $this->$key;
+            return $this->{$key};
         }
     }
 }

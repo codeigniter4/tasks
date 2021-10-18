@@ -2,10 +2,8 @@
 
 namespace CodeIgniter\Tasks\Commands;
 
-use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use CodeIgniter\I18n\Time;
-use CodeIgniter\Tasks\TaskRunner;
 
 /**
  * Lists currently scheduled tasks.
@@ -35,8 +33,6 @@ class Lister extends TaskCommand
 
     /**
      * Lists upcoming tasks
-     *
-     * @param array $params
      */
     public function run(array $params)
     {
@@ -70,7 +66,7 @@ class Lister extends TaskCommand
             ];
         }
 
-        usort($tasks, function ($a, $b) {
+        usort($tasks, static function ($a, $b) {
             return ($a['next_run'] < $b['next_run']) ? -1 : 1;
         });
 

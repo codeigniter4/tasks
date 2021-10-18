@@ -7,8 +7,6 @@ use CodeIgniter\I18n\Time;
 
 /**
  * Class TaskRunner
- *
- * @package CodeIgniter\Tasks
  */
 class TaskRunner
 {
@@ -63,14 +61,14 @@ class TaskRunner
             $start  = Time::now();
             $output = null;
 
-            $this->cliWrite("Processing: " . ($task->name ?: "Task"), 'green');
+            $this->cliWrite('Processing: ' . ($task->name ?: 'Task'), 'green');
 
             try {
                 $output = $task->run();
 
-                $this->cliWrite("Executed: " . ($task->name ?: "Task"), "cyan");
+                $this->cliWrite('Executed: ' . ($task->name ?: 'Task'), 'cyan');
             } catch (\Throwable $e) {
-                $this->cliWrite("Failed: " . ($task->name ?: "Task"), "red");
+                $this->cliWrite('Failed: ' . ($task->name ?: 'Task'), 'red');
 
                 log_message('error', $e->getMessage(), $e->getTrace());
                 $error = $e;
@@ -91,10 +89,6 @@ class TaskRunner
 
     /**
      * Specify tasks to run
-     *
-     * @param array $tasks
-     *
-     * @return TaskRunner
      */
     public function only(array $tasks = []): TaskRunner
     {
@@ -108,8 +102,6 @@ class TaskRunner
      * Allows setting a specific time to test against.
      * Must be in a DateTime-compatible format.
      *
-     * @param string $time
-     *
      * @return $this
      */
     public function withTestTime(string $time): TaskRunner
@@ -121,28 +113,23 @@ class TaskRunner
 
     /**
      * Write a line to command line interface
-     *
-     * @param string      $text
-     * @param string|null $foreground
      */
-    protected function cliWrite(string $text, string $foreground = null)
+    protected function cliWrite(string $text, ?string $foreground = null)
     {
         // Skip writing to cli in tests
-        if (defined("ENVIRONMENT") && ENVIRONMENT === "testing") {
-            return ;
+        if (defined('ENVIRONMENT') && ENVIRONMENT === 'testing') {
+            return;
         }
 
         if (! is_cli()) {
-            return ;
+            return;
         }
 
-        CLI::write("[" . date("Y-m-d H:i:s") . "] " . $text, $foreground);
+        CLI::write('[' . date('Y-m-d H:i:s') . '] ' . $text, $foreground);
     }
 
     /**
      * Adds the performance log to the
-     *
-     * @param TaskLog $taskLog
      */
     protected function updateLogs(TaskLog $taskLog)
     {
@@ -154,12 +141,12 @@ class TaskRunner
         $name = $taskLog->task->name;
 
         $data = [
-            'task' => $name,
-            'type' => $taskLog->task->getType(),
-            'start' => $taskLog->runStart->format('Y-m-d H:i:s'),
+            'task'     => $name,
+            'type'     => $taskLog->task->getType(),
+            'start'    => $taskLog->runStart->format('Y-m-d H:i:s'),
             'duration' => $taskLog->duration(),
-            'output' => $taskLog->output ?? null,
-            'error' => serialize($taskLog->error ?? null),
+            'output'   => $taskLog->output ?? null,
+            'error'    => serialize($taskLog->error ?? null),
         ];
 
         // Get existing logs
