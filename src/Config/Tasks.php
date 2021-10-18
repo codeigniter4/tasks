@@ -35,8 +35,6 @@ class Tasks extends BaseConfig
     /**
      * Register any tasks within this method for the application.
      * Called by the TaskRunner.
-     *
-     * @param Scheduler $schedule
      */
     public function init(Scheduler $schedule)
     {

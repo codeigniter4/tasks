@@ -19,9 +19,6 @@ class RunResolver
      * a Time instance that represents that next time that
      * expression would run.
      *
-     * @param string                 $expression
-     * @param \CodeIgniter\I18n\Time $next
-     *
      * @return \CodeIgniter\I18n\Time
      */
     public function nextRun(string $expression, Time $next)
@@ -36,16 +33,16 @@ class RunResolver
         ] = explode(' ', $expression);
 
         $cron = [
-            'minute' => $minute,
-            'hour' => $hour,
+            'minute'   => $minute,
+            'hour'     => $hour,
             'monthDay' => $monthDay,
-            'month' => $month,
-            'weekDay' => $weekDay
+            'month'    => $month,
+            'weekDay'  => $weekDay,
         ];
 
         // We don't need to satisfy '*' values, so
         // remove them to have less to loop over.
-        $cron = array_filter($cron, function ($item) {
+        $cron = array_filter($cron, static function ($item) {
             return $item !== '*';
         });
 
@@ -57,7 +54,7 @@ class RunResolver
 
         // Loop over each of the remaining $cron elements
         // until we manage to satisfy all of the them
-        for ($i = 1; $i <= $this->maxIterations; ++$i) {
+        for ($i = 1; $i <= $this->maxIterations; $i++) {
             foreach ($cron as $position => $value) {
                 $satisfied = false;
 
@@ -76,7 +73,7 @@ class RunResolver
                 $nextValue = $next->{$method}();
 
                 // If it's a single value
-                if ($nextValue == $value) {
+                if ($nextValue === $value) {
                     $satisfied = true;
                 }
                 // If the value is a list
@@ -101,6 +98,7 @@ class RunResolver
                 // If we didn't match it, then start the iterations over
                 if (! $satisfied) {
                     $next = $this->increment($next, $position);
+
                     continue 2;
                 }
             }
@@ -115,11 +113,6 @@ class RunResolver
      * Note: this is a pretty brute-force way to do it. We could
      * definitely make it smarter in the future to cut down on the
      * amount of iterations needed.
-     *
-     * @param \CodeIgniter\I18n\Time $next
-     * @param string                 $position
-     *
-     * @return \CodeIgniter\I18n\Time
      */
     protected function increment(Time $next, string $position): Time
     {
@@ -127,13 +120,16 @@ class RunResolver
             case 'minute':
                 $next = $next->addMinutes(1);
                 break;
+
             case 'hour':
                 $next = $next->addHours(1);
                 break;
+
             case 'monthDay':
             case 'weekDay':
                 $next = $next->addDays(1);
                 break;
+
             case 'month':
                 $next = $next->addMonths(1);
                 break;
@@ -145,10 +141,7 @@ class RunResolver
     /**
      * Determines if the given value is in the specified range.
      *
-     * @param string|int $value
-     * @param string $range
-     *
-     * @return bool
+     * @param int|string $value
      */
     protected function isInRange($value, string $range): bool
     {
@@ -160,10 +153,7 @@ class RunResolver
     /**
      * Determines if the given value is in the specified list of values.
      *
-     * @param string|int $value
-     * @param string $list
-     *
-     * @return bool
+     * @param int|string $value
      */
     protected function isInList($value, string $list): bool
     {
@@ -175,10 +165,7 @@ class RunResolver
     /**
      * Determines if the $value is one of the increments.
      *
-     * @param string|int $value
-     * @param string $increment
-     *
-     * @return bool
+     * @param int|string $value
      */
     protected function isInIncrement($value, string $increment): bool
     {
@@ -194,18 +181,14 @@ class RunResolver
             return true;
         }
 
-        return ($value - $start) > 0 &&
-               (($value - $start) % $increment) === 0;
+        return ($value - $start) > 0
+               && (($value - $start) % $increment) === 0;
     }
 
     /**
      * Given a cron setting for Day of Week, will convert
      * settings with text days of week (Mon, Tue, etc)
      * into numeric values for easier handling.
-     *
-     * @param string $origValue
-     *
-     * @return string
      */
     protected function convertDOWToNumbers(string $origValue): string
     {

@@ -23,8 +23,6 @@ class Scheduler
 
     /**
      * Schedules a closure to run.
-     *
-     * @param \Closure $func
      */
     public function call(\Closure $func)
     {
@@ -33,8 +31,6 @@ class Scheduler
 
     /**
      * Schedules a console command to run.
-     *
-     * @param string $command
      */
     public function command(string $command)
     {
@@ -43,8 +39,6 @@ class Scheduler
 
     /**
      * Schedules a local function to be exec'd
-     *
-     * @param string $command
      */
     public function shell(string $command)
     {
@@ -54,7 +48,7 @@ class Scheduler
     /**
      * Schedules an Event to trigger
      *
-     * @param string $name  Name of the event to trigger
+     * @param string $name Name of the event to trigger
      */
     public function event(string $name)
     {
@@ -63,8 +57,6 @@ class Scheduler
 
     /**
      * Schedules a cURL command to a remote URL
-     *
-     * @param string $url
      */
     public function url(string $url)
     {
@@ -74,8 +66,7 @@ class Scheduler
     //--------------------------------------------------------------------
 
     /**
-     * @param string $type
-     * @param mixed  $action
+     * @param mixed $action
      *
      * @return Task
      */

@@ -5,7 +5,10 @@ namespace Tests\Support\Commands;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
-class TasksTest extends BaseCommand
+/**
+ * @internal
+ */
+final class TasksTest extends BaseCommand
 {
     protected $group       = 'Testing';
     protected $name        = 'tasks:test';

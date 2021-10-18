@@ -1,11 +1,14 @@
 <?php
 
-use CodeIgniter\Tasks\Task;
-use Tests\Support\TasksTestCase;
-use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\I18n\Time;
+use CodeIgniter\Tasks\Task;
+use CodeIgniter\Test\DatabaseTestTrait;
+use Tests\Support\TasksTestCase;
 
-class TaskTest extends TasksTestCase
+/**
+ * @internal
+ */
+final class TaskTest extends TasksTestCase
 {
     use DatabaseTestTrait;
 
@@ -20,7 +23,7 @@ class TaskTest extends TasksTestCase
 
         $task = (new Task('command', 'foo:bar'))->named('foo');
 
-        $this->assertEquals('foo', $task->name);
+        $this->assertSame('foo', $task->name);
     }
 
     public function testConstructSavesAction()
@@ -29,21 +32,21 @@ class TaskTest extends TasksTestCase
 
         $result = $this->getPrivateProperty($task, 'action');
 
-        $this->assertEquals('foo:bar', $result);
+        $this->assertSame('foo:bar', $result);
     }
 
     public function testGetAction()
     {
         $task = new Task('command', 'foo:bar');
 
-        $this->assertEquals('foo:bar', $task->getAction());
+        $this->assertSame('foo:bar', $task->getAction());
     }
 
     public function testGetType()
     {
         $task = new Task('command', 'foo:bar');
 
-        $this->assertEquals('command', $task->getType());
+        $this->assertSame('command', $task->getType());
     }
 
     public function testCommandRunsCommand()
@@ -97,28 +100,28 @@ class TaskTest extends TasksTestCase
         helper('setting');
         setting('Tasks.logPerformance', true);
 
-        $task = new CodeIgniter\Tasks\Task('closure', function () {
+        $task = new CodeIgniter\Tasks\Task('closure', static function () {
             return 1;
         });
         $task->named('foo');
 
         // Should be dashes when not ran
-        $this->assertEquals('--', $task->lastRun());
+        $this->assertSame('--', $task->lastRun());
 
         $date = date('Y-m-d H:i:s');
 
         // Insert a performance bit in the db
         setting("Tasks.log-{$task->name}", [[
-            'task' => $task->name,
-            'type' => $task->getType(),
-            'start' => $date,
+            'task'     => $task->name,
+            'type'     => $task->getType(),
+            'start'    => $date,
             'duration' => '11.3s',
-            'output' => null,
-            'error' => null,
+            'output'   => null,
+            'error'    => null,
         ]]);
 
         // Should return the current time
         $this->assertInstanceOf(Time::class, $task->lastRun());
-        $this->assertEquals($date, $task->lastRun()->format('Y-m-d H:i:s'));
+        $this->assertSame($date, $task->lastRun()->format('Y-m-d H:i:s'));
     }
 }

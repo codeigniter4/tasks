@@ -1,10 +1,13 @@
 <?php
 
-use CodeIgniter\Test\CIUnitTestCase as TestCase;
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Tasks\TaskLog;
+use CodeIgniter\Test\CIUnitTestCase as TestCase;
 
-class TaskLogTest extends TestCase
+/**
+ * @internal
+ */
+final class TaskLogTest extends TestCase
 {
     public function durationProvider()
     {
@@ -29,6 +32,10 @@ class TaskLogTest extends TestCase
 
     /**
      * @dataProvider durationProvider
+     *
+     * @param mixed $start
+     * @param mixed $end
+     * @param mixed $expected
      */
     public function testDuration($start, $end, $expected)
     {
@@ -36,7 +43,7 @@ class TaskLogTest extends TestCase
         $end   = new Time($end);
 
         $log = new TaskLog([
-            'task'     => function () {
+            'task' => static function () {
             },
             'output'   => '',
             'runStart' => $start,
@@ -44,6 +51,6 @@ class TaskLogTest extends TestCase
             'error'    => null,
         ]);
 
-        $this->assertEquals($expected, $log->duration());
+        $this->assertSame($expected, $log->duration());
     }
 }

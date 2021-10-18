@@ -3,15 +3,13 @@
 namespace CodeIgniter\Tasks\Config;
 
 use CodeIgniter\Tasks\CronExpression;
-use Config\Services as BaseServices;
 use CodeIgniter\Tasks\Scheduler;
+use Config\Services as BaseServices;
 
 class Services extends BaseServices
 {
     /**
      * Returns the Task Scheduler
-     *
-     * @return Scheduler
      */
     public static function scheduler(bool $getShared = true): Scheduler
     {
@@ -24,10 +22,6 @@ class Services extends BaseServices
 
     /**
      * Returns the CronExpression class.
-     *
-     * @param boolean $getShared
-     *
-     * @return \CodeIgniter\Tasks\CronExpression
      */
     public static function cronExpression(bool $getShared = true): CronExpression
     {

@@ -4,7 +4,10 @@ namespace Tests\Support;
 
 use CodeIgniter\Test\CIUnitTestCase;
 
-class TasksTestCase extends CIUnitTestCase
+/**
+ * @internal
+ */
+abstract class TasksTestCase extends CIUnitTestCase
 {
     protected function setUp(): void
     {

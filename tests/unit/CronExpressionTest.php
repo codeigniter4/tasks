@@ -3,14 +3,17 @@
 use CodeIgniter\Tasks\CronExpression;
 use CodeIgniter\Test\CIUnitTestCase as TestCase;
 
-class CronExpressionTest extends TestCase
+/**
+ * @internal
+ */
+final class CronExpressionTest extends TestCase
 {
     /**
      * @var CronExpression
      */
     protected $cron;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -108,6 +111,9 @@ class CronExpressionTest extends TestCase
 
     /**
      * @dataProvider hoursProvider
+     *
+     * @param mixed $hourTrue
+     * @param mixed $hourFalse
      */
     public function testEveryHour($hourTrue, $hourFalse)
     {
@@ -158,24 +164,25 @@ class CronExpressionTest extends TestCase
 
     public function hoursProvider()
     {
-        $hours24 = array_map(function ($h) {
+        $hours24 = array_map(static function ($h) {
             return [
                 $h . ':00',
                 $h . ':10',
             ];
         }, range(0, 23));
-        $hoursAM = array_map(function ($h) {
+        $hoursAM = array_map(static function ($h) {
             return [
                 $h . ':00 AM',
                 $h . ':10 AM',
             ];
         }, range(1, 12));
-        $hoursPM = array_map(function ($h) {
+        $hoursPM = array_map(static function ($h) {
             return [
                 $h . ':00 PM',
                 $h . ':10 PM',
             ];
         }, range(1, 12));
+
         return array_merge($hours24, $hoursAM, $hoursPM);
     }
 
@@ -213,6 +220,6 @@ class CronExpressionTest extends TestCase
         $next = $this->cron->nextRun($exp);
 
         $this->assertInstanceOf(\CodeIgniter\I18n\Time::class, $next);
-        $this->assertEquals($expected, $next->format('F j, Y g:i a'));
+        $this->assertSame($expected, $next->format('F j, Y g:i a'));
     }
 }

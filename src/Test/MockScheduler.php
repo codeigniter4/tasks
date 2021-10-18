@@ -13,8 +13,7 @@ use CodeIgniter\Tasks\Scheduler;
 class MockScheduler extends Scheduler
 {
     /**
-     * @param string $type
-     * @param mixed  $action
+     * @param mixed $action
      *
      * @return MockTask
      */

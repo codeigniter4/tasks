@@ -2,9 +2,7 @@
 
 namespace CodeIgniter\Tasks\Commands;
 
-use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
-use CodeIgniter\Tasks\TaskRunner;
 
 /**
  * Enables Task Running
@@ -34,8 +32,6 @@ class Enable extends TaskCommand
 
     /**
      * Enables task running
-     *
-     * @param array $params
      */
     public function run(array $params)
     {

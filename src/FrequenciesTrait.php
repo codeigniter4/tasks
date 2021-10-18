@@ -6,16 +6,13 @@ namespace CodeIgniter\Tasks;
  * Trait FrequenciesTrait
  *
  * Provides the methods to assign frequencies to individual tasks.
- *
- * @package CodeIgniter\Tasks
  */
-
 trait FrequenciesTrait
 {
     /**
      * The generated cron expression
      *
-     * @var array<string|int, string|int>
+     * @var array<int|string, int|string>
      */
     protected $expression = [
         'min'        => '*',
@@ -31,12 +28,10 @@ trait FrequenciesTrait
      *
      * @var null
      */
-    protected $allowedEnvironments = null;
+    protected $allowedEnvironments;
 
     /**
      * Schedules the task through a raw crontab expression string.
-     *
-     * @param string $expression
      *
      * @return $this
      */
@@ -61,11 +56,9 @@ trait FrequenciesTrait
      * Runs daily at midnight, unless a time string is
      * passed in (like 4:08 pm)
      *
-     * @param string|null $time
-     *
      * @return $this
      */
-    public function daily(string $time = null)
+    public function daily(?string $time = null)
     {
         $min = $hour = 0;
 
@@ -84,26 +77,25 @@ trait FrequenciesTrait
      *
      * @return $this
      */
-    public function hourly(int $minute = null)
+    public function hourly(?int $minute = null)
     {
-        $this->expression['min']  = is_null($minute) ? "00" : $minute;
+        $this->expression['min']  = null === $minute ? '00' : $minute;
         $this->expression['hour'] = '*';
 
         return $this;
     }
 
-
     /**
      * Runs at every hour or every x hours
      *
-     * @param int  $hour
      * @param int|string|null $minute
+     *
      * @return self
      */
     public function everyHour(int $hour = 1, $minute = null)
     {
-        $this->expression['min'] = is_null($minute) ? "0" : $minute;
-        $this->expression['hour'] = ($hour == 1) ? "*" : '*/' . $hour;
+        $this->expression['min']  = null === $minute ? '0' : $minute;
+        $this->expression['hour'] = ($hour === 1) ? '*' : '*/' . $hour;
 
         return $this;
     }
@@ -111,29 +103,27 @@ trait FrequenciesTrait
     /**
      * Runs in a specific range of hours
      *
-     * @param int $fromHour
-     * @param int $toHour
      * @return self
      */
     public function betweenHours(int $fromHour, int $toHour)
     {
-        $this->expression['hour'] = $fromHour . "-" . $toHour;
+        $this->expression['hour'] = $fromHour . '-' . $toHour;
+
         return $this;
     }
 
     /**
      * Runs on a specific choosen hours
      *
-     * @param array $hours
      * @return self
      */
     public function hours(array $hours = [])
     {
-        if (!is_array($hours)) {
+        if (! is_array($hours)) {
             $hours = [$hours];
         }
 
-        $this->expression['hour'] = implode(",", $hours);
+        $this->expression['hour'] = implode(',', $hours);
 
         return $this;
     }
@@ -147,7 +137,7 @@ trait FrequenciesTrait
      */
     public function everyMinute($minute = null)
     {
-        $this->expression['min'] = is_null($minute) ? "*" : '*/' . $minute;
+        $this->expression['min'] = null === $minute ? '*' : '*/' . $minute;
 
         return $this;
     }
@@ -182,51 +172,48 @@ trait FrequenciesTrait
         return $this->everyMinute(30);
     }
 
-
     /**
      * Runs in a specific range of minutes
      *
-     * @param int $fromMinute
-     * @param int $toMinute
      * @return self
      */
     public function betweenMinutes(int $fromMinute, int $toMinute)
     {
-        $this->expression['min'] = $fromMinute . "-" . $toMinute;
+        $this->expression['min'] = $fromMinute . '-' . $toMinute;
+
         return $this;
     }
 
     /**
      * Runs on a specific choosen minutes
      *
-     * @param array $minutes
      * @return self
      */
     public function minutes(array $minutes = [])
     {
-        if (!is_array($minutes)) {
+        if (! is_array($minutes)) {
             $minutes = [$minutes];
         }
 
-        $this->expression['min'] = implode(",", $minutes);
+        $this->expression['min'] = implode(',', $minutes);
 
         return $this;
     }
-
 
     /**
      * Runs on specific days
      *
      * @param array|int $days [0 : Sunday - 6 : Saturday]
+     *
      * @return self
      */
     public function days($days)
     {
-        if (!is_array($days)) {
+        if (! is_array($days)) {
             $days = [$days];
         }
 
-        $this->expression['dayOfWeek'] = implode(",", $days);
+        $this->expression['dayOfWeek'] = implode(',', $days);
 
         return $this;
     }
@@ -234,11 +221,9 @@ trait FrequenciesTrait
     /**
      * Runs every Sunday at midnight, unless time passed in.
      *
-     * @param string|null $time
-     *
      * @return $this
      */
-    public function sundays(string $time = null)
+    public function sundays(?string $time = null)
     {
         return $this->setDayOfWeek(0, $time);
     }
@@ -246,11 +231,9 @@ trait FrequenciesTrait
     /**
      * Runs every monday at midnight, unless time passed in.
      *
-     * @param string|null $time
-     *
      * @return $this
      */
-    public function mondays(string $time = null)
+    public function mondays(?string $time = null)
     {
         return $this->setDayOfWeek(1, $time);
     }
@@ -258,11 +241,9 @@ trait FrequenciesTrait
     /**
      * Runs every Tuesday at midnight, unless time passed in.
      *
-     * @param string|null $time
-     *
      * @return $this
      */
-    public function tuesdays(string $time = null)
+    public function tuesdays(?string $time = null)
     {
         return $this->setDayOfWeek(2, $time);
     }
@@ -270,11 +251,9 @@ trait FrequenciesTrait
     /**
      * Runs every Wednesday at midnight, unless time passed in.
      *
-     * @param string|null $time
-     *
      * @return $this
      */
-    public function wednesdays(string $time = null)
+    public function wednesdays(?string $time = null)
     {
         return $this->setDayOfWeek(3, $time);
     }
@@ -282,11 +261,9 @@ trait FrequenciesTrait
     /**
      * Runs every Thursday at midnight, unless time passed in.
      *
-     * @param string|null $time
-     *
      * @return $this
      */
-    public function thursdays(string $time = null)
+    public function thursdays(?string $time = null)
     {
         return $this->setDayOfWeek(4, $time);
     }
@@ -294,11 +271,9 @@ trait FrequenciesTrait
     /**
      * Runs every Friday at midnight, unless time passed in.
      *
-     * @param string|null $time
-     *
      * @return $this
      */
-    public function fridays(string $time = null)
+    public function fridays(?string $time = null)
     {
         return $this->setDayOfWeek(5, $time);
     }
@@ -306,11 +281,9 @@ trait FrequenciesTrait
     /**
      * Runs every Saturday at midnight, unless time passed in.
      *
-     * @param string|null $time
-     *
      * @return $this
      */
-    public function saturdays(string $time = null)
+    public function saturdays(?string $time = null)
     {
         return $this->setDayOfWeek(6, $time);
     }
@@ -318,11 +291,9 @@ trait FrequenciesTrait
     /**
      * Should run the first day of every month.
      *
-     * @param string|null $time
-     *
      * @return $this
      */
-    public function monthly(string $time = null)
+    public function monthly(?string $time = null)
     {
         $min = $hour = 0;
 
@@ -341,15 +312,16 @@ trait FrequenciesTrait
      * Runs on specific days of the month
      *
      * @param array|int $days [1-31]
+     *
      * @return self
      */
     public function daysOfMonth($days)
     {
-        if (!is_array($days)) {
+        if (! is_array($days)) {
             $days = [$days];
         }
 
-        $this->expression['dayOfMonth'] = implode(",", $days);
+        $this->expression['dayOfMonth'] = implode(',', $days);
 
         return $this;
     }
@@ -357,12 +329,12 @@ trait FrequenciesTrait
     /**
      * Runs on specific months
      *
-     * @param array $months
      * @return self
      */
     public function months(array $months = [])
     {
-        $this->expression['month'] = implode(",", $months);
+        $this->expression['month'] = implode(',', $months);
+
         return $this;
     }
 
@@ -370,11 +342,9 @@ trait FrequenciesTrait
      * Should run the first day of each quarter,
      * i.e. Jan 1, Apr 1, July 1, Oct 1
      *
-     * @param string|null $time
-     *
      * @return $this
      */
-    public function quarterly(string $time = null)
+    public function quarterly(?string $time = null)
     {
         $min = $hour = 0;
 
@@ -393,11 +363,9 @@ trait FrequenciesTrait
     /**
      * Should run the first day of the year.
      *
-     * @param string|null $time
-     *
      * @return $this
      */
-    public function yearly(string $time = null)
+    public function yearly(?string $time = null)
     {
         $min = $hour = 0;
 
@@ -416,11 +384,9 @@ trait FrequenciesTrait
     /**
      * Should run M-F.
      *
-     * @param string|null $time
-     *
      * @return $this
      */
-    public function weekdays(string $time = null)
+    public function weekdays(?string $time = null)
     {
         $min = $hour = 0;
 
@@ -438,11 +404,9 @@ trait FrequenciesTrait
     /**
      * Should run Saturday and Sunday
      *
-     * @param string|null $time
-     *
      * @return $this
      */
-    public function weekends(string $time = null)
+    public function weekends(?string $time = null)
     {
         $min = $hour = 0;
 
@@ -457,16 +421,12 @@ trait FrequenciesTrait
         return $this;
     }
 
-
     /**
      * Internal function used by the everyMonday, etc functions.
      *
-     * @param integer     $day
-     * @param string|null $time
-     *
      * @return $this
      */
-    protected function setDayOfWeek(int $day, string $time = null)
+    protected function setDayOfWeek(int $day, ?string $time = null)
     {
         $min = $hour = '*';
 
@@ -483,8 +443,6 @@ trait FrequenciesTrait
 
     /**
      * Parses a time string (like 4:08 pm) into mins and hours
-     *
-     * @param string $time
      */
     protected function parseTime(string $time)
     {
