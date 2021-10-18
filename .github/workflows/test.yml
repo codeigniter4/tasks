@@ -28,7 +28,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          tools: composer, pecl, phpunit
+          tools: composer, pecl, phive, phpunit
           extensions: intl, json, mbstring, gd, mysqlnd, xdebug, xml, sqlite3
           coverage: xdebug
         env:
@@ -55,24 +55,25 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
-      - name: Enable Tachycardia
-        run: echo "TACHYCARDIA_MONITOR_GA=enabled" >> $GITHUB_ENV
-
       - name: Test with PHPUnit
         run: vendor/bin/phpunit --verbose --coverage-text
         env:
           TERM: xterm-256color
+          TACHYCARDIA_MONITOR_GA: enabled
 
       - if: matrix.php-versions == '8.0'
         name: Mutate with Infection
         run: |
-          composer global require infection/infection
+          sudo phive --no-progress install --global --trust-gpg-keys C5095986493B4AA0 infection
           git fetch --depth=1 origin $GITHUB_BASE_REF
           infection --threads=2 --skip-initial-tests --coverage=build/phpunit --git-diff-base=origin/$GITHUB_BASE_REF --git-diff-filter=AM --logger-github --ignore-msi-with-no-mutations
 
       - if: matrix.php-versions == '8.0'
         name: Run Coveralls
-        run: vendor/bin/php-coveralls --verbose --coverage_clover=build/phpunit/clover.xml --json_path build/phpunit/coveralls-upload.json
+        continue-on-error: true
+        run: |
+          sudo phive --no-progress install --global --trust-gpg-keys E82B2FB314E9906E php-coveralls
+          php-coveralls --verbose --coverage_clover=build/phpunit/clover.xml --json_path build/phpunit/coveralls-upload.json
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_PARALLEL: true

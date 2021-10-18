@@ -1,6 +1,7 @@
 <?php
 
-use PhpCsFixer\Config;
+use CodeIgniter\CodingStandard\CodeIgniter4;
+use Nexus\CsConfig\Factory;
 use PhpCsFixer\Finder;
 
 $finder = Finder::create()
@@ -9,10 +10,11 @@ $finder = Finder::create()
     ->exclude('build')
     ->append([__FILE__]);
 
-$config = new Config();
-return $config->setRules([
-        '@PSR12' => true,
-        'strict_param' => true,
-        'array_syntax' => ['syntax' => 'short'],
-    ])
-    ->setFinder($finder);
+$overrides = [];
+
+$options = [
+    'finder'    => $finder,
+    'cacheFile' => 'build/.php-cs-fixer.cache',
+];
+
+return Factory::create(new CodeIgniter4(), $overrides, $options)->forProjects();
