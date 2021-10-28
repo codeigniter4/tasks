@@ -1,5 +1,5 @@
 {
-    "name": "codeigniter4-projects/tasks",
+    "name": "codeigniter4/tasks",
     "type": "library",
     "description": "Task Scheduler for CodeIgniter 4",
     "keywords": [
@@ -8,7 +8,7 @@
         "task scheduling",
         "cron"
     ],
-    "homepage": "https://github.com/codeigniter4-projects/codeigniter4-tasks",
+    "homepage": "https://github.com/codeigniter4/tasks",
     "license": "MIT",
     "authors": [
         {
