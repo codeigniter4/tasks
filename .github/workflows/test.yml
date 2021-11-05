@@ -28,7 +28,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          tools: composer, pecl, phive, phpunit
+          tools: composer, infection, pecl, phive, phpunit
           extensions: intl, json, mbstring, gd, mysqlnd, xdebug, xml, sqlite3
           coverage: xdebug
         env:
@@ -64,7 +64,6 @@ jobs:
       - if: matrix.php-versions == '8.0'
         name: Mutate with Infection
         run: |
-          sudo phive --no-progress install --global --trust-gpg-keys C5095986493B4AA0 infection
           git fetch --depth=1 origin $GITHUB_BASE_REF
           infection --threads=2 --skip-initial-tests --coverage=build/phpunit --git-diff-base=origin/$GITHUB_BASE_REF --git-diff-filter=AM --logger-github --ignore-msi-with-no-mutations
 
