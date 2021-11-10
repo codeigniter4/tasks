@@ -29,7 +29,10 @@
         "mockery/mockery": "^1.0",
         "nexusphp/cs-config": "^3.1",
         "nexusphp/tachycardia": "^1.0",
-        "phpstan/phpstan": "^0.12",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^1.0",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0",
         "phpunit/phpunit": "^9.3"
     },
     "autoload": {

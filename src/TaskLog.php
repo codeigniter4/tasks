@@ -10,7 +10,7 @@ class TaskLog
     protected $task;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $output;
 
@@ -27,7 +27,7 @@ class TaskLog
     /**
      * The exception thrown during execution, if any.
      *
-     * @var \Throwable
+     * @var \Throwable|null
      */
     protected $error;
 
