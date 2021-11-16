@@ -20,7 +20,7 @@
     "require": {
         "php": "^7.3 || ^8.0",
         "ext-json": "*",
-        "codeigniter4/settings": "dev-develop"
+        "codeigniter4/settings": "^2.0"
     },
     "require-dev": {
         "codeigniter/coding-standard": "^1.1",
