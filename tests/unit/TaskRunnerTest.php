@@ -13,7 +13,7 @@ final class TaskRunnerTest extends TestCase
     use DatabaseTestTrait;
 
     protected $refresh   = true;
-    protected $namespace = 'CodeIgniter\Settings';
+    protected $namespace = null;
 
     protected function setUp(): void
     {

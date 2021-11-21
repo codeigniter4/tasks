@@ -12,7 +12,7 @@ final class TaskTest extends TasksTestCase
 {
     use DatabaseTestTrait;
 
-    protected $namespace = 'CodeIgniter\Settings';
+    protected $namespace = null;
 
     public function testNamed()
     {
