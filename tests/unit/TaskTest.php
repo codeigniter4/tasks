@@ -12,7 +12,7 @@ final class TaskTest extends TasksTestCase
 {
     use DatabaseTestTrait;
 
-    protected $namespace = null;
+    protected $namespace;
 
     public function testNamed()
     {

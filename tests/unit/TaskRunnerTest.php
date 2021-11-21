@@ -12,8 +12,8 @@ final class TaskRunnerTest extends TestCase
 {
     use DatabaseTestTrait;
 
-    protected $refresh   = true;
-    protected $namespace = null;
+    protected $refresh = true;
+    protected $namespace;
 
     protected function setUp(): void
     {
