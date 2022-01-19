@@ -113,11 +113,12 @@ trait FrequenciesTrait
     }
 
     /**
-     * Runs on a specific choosen hours
+     * Runs on a specific chosen hours
      *
+     * @param array|int $hours
      * @return self
      */
-    public function hours(array $hours = [])
+    public function hours($hours = [])
     {
         if (! is_array($hours)) {
             $hours = [$hours];
@@ -185,11 +186,12 @@ trait FrequenciesTrait
     }
 
     /**
-     * Runs on a specific choosen minutes
+     * Runs on a specific chosen minutes
      *
+     * @param array|int $minutes
      * @return self
      */
-    public function minutes(array $minutes = [])
+    public function minutes($minutes = [])
     {
         if (! is_array($minutes)) {
             $minutes = [$minutes];
@@ -229,7 +231,7 @@ trait FrequenciesTrait
     }
 
     /**
-     * Runs every monday at midnight, unless time passed in.
+     * Runs every Monday at midnight, unless time passed in.
      *
      * @return $this
      */
