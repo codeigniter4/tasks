@@ -67,4 +67,4 @@ jobs:
           fi
 
       - name: Detect unused packages
-        run: composer-unused -vvv --profile --ansi --no-interaction --no-progress --excludePackage=php
+        run: composer-unused -vvv --profile --ansi --no-interaction --no-progress --excludePackage=php --excludePackage=codeigniter4/settings
