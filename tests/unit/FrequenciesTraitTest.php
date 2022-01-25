@@ -1,5 +1,6 @@
 <?php
 
+use CodeIgniter\Tasks\FrequenciesTrait;
 use CodeIgniter\Test\CIUnitTestCase as TestCase;
 
 /**
@@ -14,7 +15,7 @@ final class FrequenciesTraitTest extends TestCase
         parent::setUp();
 
         $this->class = new class () {
-            use \CodeIgniter\Tasks\FrequenciesTrait;
+            use FrequenciesTrait;
         };
     }
 

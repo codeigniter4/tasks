@@ -66,9 +66,7 @@ class Lister extends TaskCommand
             ];
         }
 
-        usort($tasks, static function ($a, $b) {
-            return ($a['next_run'] < $b['next_run']) ? -1 : 1;
-        });
+        usort($tasks, static fn ($a, $b) => ($a['next_run'] < $b['next_run']) ? -1 : 1);
 
         CLI::table($tasks, [
             'Name',

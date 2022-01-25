@@ -2,6 +2,8 @@
 
 namespace CodeIgniter\Tasks;
 
+use Closure;
+
 class Scheduler
 {
     /**
@@ -24,7 +26,7 @@ class Scheduler
     /**
      * Schedules a closure to run.
      */
-    public function call(\Closure $func)
+    public function call(Closure $func)
     {
         return $this->createTask('closure', $func);
     }

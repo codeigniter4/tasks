@@ -4,6 +4,7 @@ use CodeIgniter\Tasks\Task;
 use CodeIgniter\Tasks\TaskRunner;
 use CodeIgniter\Test\CIUnitTestCase as TestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
+use Config\Services;
 
 /**
  * @internal
@@ -74,7 +75,7 @@ final class TaskRunnerTest extends TestCase
     {
         $scheduler = service('scheduler');
         $this->setPrivateProperty($scheduler, 'tasks', $tasks);
-        \Config\Services::injectMock('scheduler', $scheduler);
+        Services::injectMock('scheduler', $scheduler);
 
         return new TaskRunner();
     }

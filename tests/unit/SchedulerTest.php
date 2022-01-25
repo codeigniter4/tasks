@@ -23,13 +23,11 @@ final class SchedulerTest extends TestCase
 
     public function testCallSavesTask()
     {
-        $function = static function () {
-            return 'Hello';
-        };
+        $function = static fn () => 'Hello';
 
         $task = $this->scheduler->call($function);
 
-        $this->assertInstanceOf(\Closure::class, $function);
+        $this->assertInstanceOf(Closure::class, $function);
         $this->assertInstanceOf(Task::class, $task);
         $this->assertSame($function, $task->getAction());
         $this->assertSame('Hello', $task->getAction()());

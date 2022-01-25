@@ -4,6 +4,7 @@ namespace CodeIgniter\Tasks;
 
 use CodeIgniter\CLI\CLI;
 use CodeIgniter\I18n\Time;
+use Throwable;
 
 /**
  * Class TaskRunner
@@ -43,7 +44,7 @@ class TaskRunner
     {
         $tasks = $this->scheduler->getTasks();
 
-        if (! count($tasks)) {
+        if ($tasks === []) {
             return;
         }
 
@@ -67,7 +68,7 @@ class TaskRunner
                 $output = $task->run();
 
                 $this->cliWrite('Executed: ' . ($task->name ?: 'Task'), 'cyan');
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 $this->cliWrite('Failed: ' . ($task->name ?: 'Task'), 'red');
 
                 log_message('error', $e->getMessage(), $e->getTrace());
@@ -101,8 +102,6 @@ class TaskRunner
      * Sets a time that will be used.
      * Allows setting a specific time to test against.
      * Must be in a DateTime-compatible format.
-     *
-     * @return $this
      */
     public function withTestTime(string $time): TaskRunner
     {
@@ -156,7 +155,7 @@ class TaskRunner
         }
 
         // Make sure we have room for one more
-        if (count($logs) > setting('Tasks.maxLogsPerTask')) {
+        if ((is_countable($logs) ? count($logs) : 0) > setting('Tasks.maxLogsPerTask')) {
             array_pop($logs);
         }
 

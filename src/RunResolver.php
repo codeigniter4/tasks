@@ -19,7 +19,7 @@ class RunResolver
      * a Time instance that represents that next time that
      * expression would run.
      *
-     * @return \CodeIgniter\I18n\Time
+     * @return Time
      */
     public function nextRun(string $expression, Time $next)
     {
@@ -42,13 +42,11 @@ class RunResolver
 
         // We don't need to satisfy '*' values, so
         // remove them to have less to loop over.
-        $cron = array_filter($cron, static function ($item) {
-            return $item !== '*';
-        });
+        $cron = array_filter($cron, static fn ($item) => $item !== '*');
 
         // If there's nothing left then it's every minute
         // so set it to one minute from now.
-        if (! count($cron)) {
+        if ($cron === []) {
             return $next->addMinutes(1)->setSecond(0);
         }
 

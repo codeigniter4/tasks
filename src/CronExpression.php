@@ -3,6 +3,7 @@
 namespace CodeIgniter\Tasks;
 
 use CodeIgniter\I18n\Time;
+use Exception;
 
 class CronExpression
 {
@@ -83,7 +84,7 @@ class CronExpression
      * Sets a date/time that will be used in place
      * of the current time to help with testing.
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return $this
      */
@@ -154,7 +155,7 @@ class CronExpression
     /**
      * Sets the current time if it hasn't already been set.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function setTime()
     {

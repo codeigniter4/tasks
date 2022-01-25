@@ -1,5 +1,6 @@
 <?php
 
+use CodeIgniter\I18n\Time;
 use CodeIgniter\Tasks\CronExpression;
 use CodeIgniter\Test\CIUnitTestCase as TestCase;
 
@@ -164,24 +165,18 @@ final class CronExpressionTest extends TestCase
 
     public function hoursProvider()
     {
-        $hours24 = array_map(static function ($h) {
-            return [
-                $h . ':00',
-                $h . ':10',
-            ];
-        }, range(0, 23));
-        $hoursAM = array_map(static function ($h) {
-            return [
-                $h . ':00 AM',
-                $h . ':10 AM',
-            ];
-        }, range(1, 12));
-        $hoursPM = array_map(static function ($h) {
-            return [
-                $h . ':00 PM',
-                $h . ':10 PM',
-            ];
-        }, range(1, 12));
+        $hours24 = array_map(static fn ($h) => [
+            $h . ':00',
+            $h . ':10',
+        ], range(0, 23));
+        $hoursAM = array_map(static fn ($h) => [
+            $h . ':00 AM',
+            $h . ':10 AM',
+        ], range(1, 12));
+        $hoursPM = array_map(static fn ($h) => [
+            $h . ':00 PM',
+            $h . ':10 PM',
+        ], range(1, 12));
 
         return array_merge($hours24, $hoursAM, $hoursPM);
     }
@@ -219,7 +214,7 @@ final class CronExpressionTest extends TestCase
 
         $next = $this->cron->nextRun($exp);
 
-        $this->assertInstanceOf(\CodeIgniter\I18n\Time::class, $next);
+        $this->assertInstanceOf(Time::class, $next);
         $this->assertSame($expected, $next->format('F j, Y g:i a'));
     }
 }
