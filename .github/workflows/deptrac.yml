@@ -1,41 +1,40 @@
-# When a PR is opened or a push is made, perform an
-# architectural inspection on the code using Deptrac.
 name: Deptrac
 
 on:
   pull_request:
     branches:
-      - 'develop'
+      - develop
     paths:
-      - 'src/**'
-      - 'tests/**'
+      - '**.php'
       - 'composer.**'
       - 'depfile.yaml'
-      - '.github/workflows/inspect.yml'
+      - '.github/workflows/deptrac.yml'
   push:
     branches:
-      - 'develop'
+      - develop
     paths:
-      - 'src/**'
-      - 'tests/**'
+      - '**.php'
       - 'composer.**'
       - 'depfile.yaml'
-      - '.github/workflows/inspect.yml'
+      - '.github/workflows/deptrac.yml'
 
 jobs:
   build:
-    name: Architectural Inspection
+    name: Dependency Tracing
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup PHP
+      - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.0'
-          tools: composer, pecl, phive
+          tools: phive
           extensions: intl, json, mbstring, xml
+          coverage: none
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -43,14 +42,11 @@ jobs:
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-      - name: Create composer cache directory
-        run: mkdir -p ${{ steps.composer-cache.outputs.dir }}
-
       - name: Cache composer dependencies
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Create Deptrac cache directory
@@ -63,17 +59,16 @@ jobs:
           key: ${{ runner.os }}-deptrac-${{ github.sha }}
           restore-keys: ${{ runner.os }}-deptrac-
 
-      - name: Install dependencies (limited)
-        if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name }}
-        run: composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
+      - name: Install dependencies
+        run: |
+          composer -q config -g github-oauth.github.com "${{ secrets.GITHUB_TOKEN }}"
+          if [ -f composer.lock ]; then
+            composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+          else
+            composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
+          fi
 
-      - name: Install dependencies (authenticated)
-        if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name }}
-        run: composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
-        env:
-          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
-
-      - name: Run architectural inspection
+      - name: Trace dependencies
         run: |
           sudo phive --no-progress install --global --trust-gpg-keys B8F640134AB1782E,A98E898BB53EB748 qossmic/deptrac
           deptrac analyze --cache-file=build/deptrac.cache

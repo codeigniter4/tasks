@@ -1,7 +1,7 @@
 paths:
-  - ./src
-  - ./vendor/codeigniter4/codeigniter4/system
-  - ./vendor/codeigniter4/settings/src
+  - ./src/
+  - ./vendor/codeigniter4/framework/system/
+  - ./vendor/codeigniter4/settings/src/
 exclude_files:
   - '#.*test.*#i'
 layers:
@@ -109,6 +109,7 @@ ruleset:
     - Entity
     - Service
     - Vendor Config
+    - Vendor Entity
     - Vendor Model
   Service:
     - Config

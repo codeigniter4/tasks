@@ -18,22 +18,18 @@
         }
     ],
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "ext-json": "*",
         "codeigniter4/settings": "^2.0"
     },
     "require-dev": {
-        "codeigniter/coding-standard": "^1.1",
-        "codeigniter4/codeigniter4": "dev-develop",
-        "fakerphp/faker": "^1.9",
-        "mockery/mockery": "^1.0",
-        "nexusphp/cs-config": "^3.1",
-        "nexusphp/tachycardia": "^1.0",
-        "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "^1.0",
-        "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
-        "phpunit/phpunit": "^9.3"
+        "codeigniter4/devkit": "^1.0",
+        "codeigniter4/framework": "^4.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
     },
     "autoload": {
         "psr-4": {
@@ -67,11 +63,13 @@
             "@analyze",
             "@test",
             "@inspect",
+            "rector process",
             "@style"
         ],
         "deduplicate": "phpcpd app/ src/",
         "inspect": "deptrac analyze --cache-file=build/deptrac.cache",
         "mutate": "infection --threads=2 --skip-initial-tests --coverage=build/phpunit",
+        "retool": "retool",
         "style": "php-cs-fixer fix --verbose --ansi --using-cache=no",
         "test": "phpunit"
     }
