@@ -44,7 +44,7 @@ final class TaskLogTest extends TestCase
         $end   = new Time($end);
 
         $log = new TaskLog([
-            'task' => new Task('closure', static function () {}),
+            'task'     => new Task('closure', static function () {}),
             'output'   => '',
             'runStart' => $start,
             'runEnd'   => $end,

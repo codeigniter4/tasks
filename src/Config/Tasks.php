@@ -14,10 +14,8 @@ class Tasks extends BaseConfig
      *
      * If true, will log the time it takes for each task to run.
      * Requires the settings table to have been created previously.
-     *
-     * @var bool
      */
-    public $logPerformance = false;
+    public bool $logPerformance = false;
 
     /**
      * --------------------------------------------------------------------------
@@ -27,10 +25,8 @@ class Tasks extends BaseConfig
      * The maximum number of logs that should be saved per Task.
      * Lower numbers reduced the amount of database required to
      * store the logs.
-     *
-     * @var int
      */
-    public $maxLogsPerTask = 10;
+    public int $maxLogsPerTask = 10;
 
     /**
      * Register any tasks within this method for the application.

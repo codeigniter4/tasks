@@ -9,17 +9,13 @@ class CronExpression
 {
     /**
      * The timezone this should be considered under.
-     *
-     * @var string
      */
-    protected $timezone;
+    protected string $timezone;
 
     /**
      * The current date/time. Used for testing.
-     *
-     * @var Time|null
      */
-    protected $testTime;
+    protected ?Time $testTime = null;
 
     /**
      * Allows us to set global timezone for all tasks

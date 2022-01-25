@@ -11,8 +11,6 @@ abstract class TaskCommand extends BaseCommand
 {
     /**
      * Command grouping.
-     *
-     * @var string
      */
     protected $group = 'Tasks';
 

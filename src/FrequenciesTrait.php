@@ -14,7 +14,7 @@ trait FrequenciesTrait
      *
      * @var array<int|string, int|string>
      */
-    protected $expression = [
+    protected array $expression = [
         'min'        => '*',
         'hour'       => '*',
         'dayOfMonth' => '*',

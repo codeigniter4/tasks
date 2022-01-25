@@ -11,23 +11,14 @@ use Throwable;
  */
 class TaskRunner
 {
-    /**
-     * @var Scheduler
-     */
-    protected $scheduler;
-
-    /**
-     * @var string
-     */
-    protected $testTime;
+    protected Scheduler $scheduler;
+    protected string $testTime;
 
     /**
      * Stores aliases of tasks to run
      * If empty, All tasks will be executed as per their schedule
-     *
-     * @var array
      */
-    protected $only = [];
+    protected array $only = [];
 
     public function __construct()
     {

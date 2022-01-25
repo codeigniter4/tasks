@@ -9,10 +9,7 @@ use CodeIgniter\Test\CIUnitTestCase as TestCase;
  */
 final class SchedulerTest extends TestCase
 {
-    /**
-     * @var Scheduler
-     */
-    protected $scheduler;
+    protected Scheduler $scheduler;
 
     protected function setUp(): void
     {

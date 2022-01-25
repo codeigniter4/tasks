@@ -11,22 +11,16 @@ class Enable extends TaskCommand
 {
     /**
      * The Command's name
-     *
-     * @var string
      */
     protected $name = 'tasks:enable';
 
     /**
      * the Command's short description
-     *
-     * @var string
      */
     protected $description = 'Enables the task runner.';
 
     /**
      * the Command's usage
-     *
-     * @var string
      */
     protected $usage = 'tasks:enable';
 

@@ -12,22 +12,16 @@ class Lister extends TaskCommand
 {
     /**
      * The Command's name
-     *
-     * @var string
      */
     protected $name = 'tasks:list';
 
     /**
      * the Command's short description
-     *
-     * @var string
      */
     protected $description = 'Lists the tasks currently set to run.';
 
     /**
      * the Command's usage
-     *
-     * @var string
      */
     protected $usage = 'tasks:list';
 

@@ -6,10 +6,7 @@ use Closure;
 
 class Scheduler
 {
-    /**
-     * @var array
-     */
-    protected $tasks = [];
+    protected array $tasks = [];
 
     /**
      * Returns the created Tasks.

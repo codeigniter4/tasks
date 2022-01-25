@@ -11,22 +11,16 @@ class Disable extends TaskCommand
 {
     /**
      * The Command's name
-     *
-     * @var string
      */
     protected $name = 'tasks:disable';
 
     /**
      * the Command's short description
-     *
-     * @var string
      */
     protected $description = 'Disables the task runner.';
 
     /**
      * the Command's usage
-     *
-     * @var string
      */
     protected $usage = 'tasks:disable';
 

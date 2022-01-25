@@ -9,10 +9,7 @@ use CodeIgniter\Test\CIUnitTestCase as TestCase;
  */
 final class CronExpressionTest extends TestCase
 {
-    /**
-     * @var CronExpression
-     */
-    protected $cron;
+    protected CronExpression $cron;
 
     protected function setUp(): void
     {

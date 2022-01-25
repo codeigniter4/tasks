@@ -9,10 +9,8 @@ class RunResolver
     /**
      * The maximum number of times to loop
      * when looking for next run date.
-     *
-     * @var int
      */
-    protected $maxIterations = 1000;
+    protected int $maxIterations = 1000;
 
     /**
      * Takes a cron expression, i.e. '* * * * 4', and returns

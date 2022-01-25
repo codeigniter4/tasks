@@ -32,7 +32,7 @@ class Task
      *
      * @var string[]
      */
-    protected $types = [
+    protected array $types = [
         'command',
         'shell',
         'closure',
@@ -42,10 +42,8 @@ class Task
 
     /**
      * The type of action.
-     *
-     * @var string
      */
-    protected $type;
+    protected string $type;
 
     /**
      * The actual content that should be run.
@@ -57,17 +55,13 @@ class Task
     /**
      * If not empty, lists the allowed environments
      * this can run in.
-     *
-     * @var array
      */
-    protected $environments = [];
+    protected array $environments = [];
 
     /**
      * The alias this task can be run by
-     *
-     * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * @param mixed $action

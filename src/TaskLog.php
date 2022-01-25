@@ -8,32 +8,15 @@ use Throwable;
 
 class TaskLog
 {
-    /**
-     * @var Task
-     */
-    protected $task;
-
-    /**
-     * @var string|null
-     */
-    protected $output;
-
-    /**
-     * @var Time
-     */
-    protected $runStart;
-
-    /**
-     * @var Time
-     */
-    protected $runEnd;
+    protected Task $task;
+    protected ?string $output = null;
+    protected Time $runStart;
+    protected Time $runEnd;
 
     /**
      * The exception thrown during execution, if any.
-     *
-     * @var Throwable|null
      */
-    protected $error;
+    protected ?Throwable $error = null;
 
     /**
      * TaskLog constructor.
