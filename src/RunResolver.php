@@ -19,7 +19,7 @@ class RunResolver
      *
      * @return Time
      */
-    public function nextRun(string $expression, Time $next)
+    public function nextRun(string $expression, Time $next): Time
     {
         // Break the expression into separate parts
         [
