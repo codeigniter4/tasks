@@ -42,6 +42,13 @@ final class FrequenciesTraitTest extends TestCase
         $this->assertSame('08 16 * * *', $this->class->getExpression());
     }
 
+    public function testTime()
+    {
+        $this->class->time('4:08 pm');
+
+        $this->assertSame('08 16 * * *', $this->class->getExpression());
+    }
+
     public function testHourly()
     {
         $this->class->hourly();
