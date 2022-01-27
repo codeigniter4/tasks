@@ -9,19 +9,17 @@ class RunResolver
     /**
      * The maximum number of times to loop
      * when looking for next run date.
-     *
-     * @var int
      */
-    protected $maxIterations = 1000;
+    protected int $maxIterations = 1000;
 
     /**
      * Takes a cron expression, i.e. '* * * * 4', and returns
      * a Time instance that represents that next time that
      * expression would run.
      *
-     * @return \CodeIgniter\I18n\Time
+     * @return Time
      */
-    public function nextRun(string $expression, Time $next)
+    public function nextRun(string $expression, Time $next): Time
     {
         // Break the expression into separate parts
         [
@@ -42,13 +40,11 @@ class RunResolver
 
         // We don't need to satisfy '*' values, so
         // remove them to have less to loop over.
-        $cron = array_filter($cron, static function ($item) {
-            return $item !== '*';
-        });
+        $cron = array_filter($cron, static fn ($item) => $item !== '*');
 
         // If there's nothing left then it's every minute
         // so set it to one minute from now.
-        if (! count($cron)) {
+        if ($cron === []) {
             return $next->addMinutes(1)->setSecond(0);
         }
 

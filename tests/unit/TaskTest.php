@@ -19,7 +19,7 @@ final class TaskTest extends TasksTestCase
         $task = new Task('command', 'foo:bar');
 
         // Will build a random name
-        $this->assertTrue(strpos($task->name, 'command_') === 0);
+        $this->assertSame(0, strpos($task->name, 'command_'));
 
         $task = (new Task('command', 'foo:bar'))->named('foo');
 
@@ -100,9 +100,7 @@ final class TaskTest extends TasksTestCase
         helper('setting');
         setting('Tasks.logPerformance', true);
 
-        $task = new CodeIgniter\Tasks\Task('closure', static function () {
-            return 1;
-        });
+        $task = new Task('closure', static fn () => 1);
         $task->named('foo');
 
         // Should be dashes when not ran

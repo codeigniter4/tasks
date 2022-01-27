@@ -3,22 +3,19 @@
 namespace CodeIgniter\Tasks;
 
 use CodeIgniter\I18n\Time;
+use Exception;
 
 class CronExpression
 {
     /**
      * The timezone this should be considered under.
-     *
-     * @var string
      */
-    protected $timezone;
+    protected string $timezone;
 
     /**
      * The current date/time. Used for testing.
-     *
-     * @var Time|null
      */
-    protected $testTime;
+    protected ?Time $testTime = null;
 
     /**
      * Allows us to set global timezone for all tasks
@@ -83,7 +80,7 @@ class CronExpression
      * Sets a date/time that will be used in place
      * of the current time to help with testing.
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return $this
      */
@@ -154,7 +151,7 @@ class CronExpression
     /**
      * Sets the current time if it hasn't already been set.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function setTime()
     {

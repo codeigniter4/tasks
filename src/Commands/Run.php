@@ -12,15 +12,11 @@ class Run extends TaskCommand
 {
     /**
      * The Command's name
-     *
-     * @var string
      */
     protected $name = 'tasks:run';
 
     /**
      * The Command's Options
-     *
-     * @var array
      */
     protected $options = [
         '--task' => 'Run specific task by alias.',
@@ -28,15 +24,11 @@ class Run extends TaskCommand
 
     /**
      * the Command's short description
-     *
-     * @var string
      */
     protected $description = 'Runs tasks based on the schedule, should be configured as a crontask to run every minute.';
 
     /**
      * the Command's usage
-     *
-     * @var string
      */
     protected $usage = 'tasks:run';
 

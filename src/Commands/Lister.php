@@ -12,22 +12,16 @@ class Lister extends TaskCommand
 {
     /**
      * The Command's name
-     *
-     * @var string
      */
     protected $name = 'tasks:list';
 
     /**
      * the Command's short description
-     *
-     * @var string
      */
     protected $description = 'Lists the tasks currently set to run.';
 
     /**
      * the Command's usage
-     *
-     * @var string
      */
     protected $usage = 'tasks:list';
 
@@ -66,9 +60,7 @@ class Lister extends TaskCommand
             ];
         }
 
-        usort($tasks, static function ($a, $b) {
-            return ($a['next_run'] < $b['next_run']) ? -1 : 1;
-        });
+        usort($tasks, static fn ($a, $b) => ($a['next_run'] < $b['next_run']) ? -1 : 1);
 
         CLI::table($tasks, [
             'Name',

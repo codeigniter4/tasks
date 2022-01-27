@@ -2,12 +2,11 @@
 
 namespace CodeIgniter\Tasks;
 
+use Closure;
+
 class Scheduler
 {
-    /**
-     * @var array
-     */
-    protected $tasks = [];
+    protected array $tasks = [];
 
     /**
      * Returns the created Tasks.
@@ -24,7 +23,7 @@ class Scheduler
     /**
      * Schedules a closure to run.
      */
-    public function call(\Closure $func)
+    public function call(Closure $func)
     {
         return $this->createTask('closure', $func);
     }

@@ -9,10 +9,7 @@ use Tests\Support\TasksTestCase;
  */
 final class MockTest extends TasksTestCase
 {
-    /**
-     * @var MockScheduler
-     */
-    protected $scheduler;
+    protected MockScheduler $scheduler;
 
     protected function setUp(): void
     {

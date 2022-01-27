@@ -6,6 +6,10 @@ use CodeIgniter\Events\Events;
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Tasks\Exceptions\TasksException;
 use Config\Services;
+use InvalidArgumentException;
+use ReflectionException;
+use ReflectionFunction;
+use SplFileObject;
 
 /**
  * Class Task
@@ -28,7 +32,7 @@ class Task
      *
      * @var string[]
      */
-    protected $types = [
+    protected array $types = [
         'command',
         'shell',
         'closure',
@@ -38,10 +42,8 @@ class Task
 
     /**
      * The type of action.
-     *
-     * @var string
      */
-    protected $type;
+    protected string $type;
 
     /**
      * The actual content that should be run.
@@ -53,17 +55,13 @@ class Task
     /**
      * If not empty, lists the allowed environments
      * this can run in.
-     *
-     * @var array
      */
-    protected $environments = [];
+    protected array $environments = [];
 
     /**
      * The alias this task can be run by
-     *
-     * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * @param mixed $action
@@ -201,7 +199,7 @@ class Task
     /**
      * Runs a framework Command.
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      *
      * @return string Buffered output from the Command
      */
@@ -258,7 +256,7 @@ class Task
      * Builds a unique name for the task.
      * Used when an existing name doesn't exist.
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      *
      * @return string
      */
@@ -267,8 +265,8 @@ class Task
         // Get a hash based on the action
         // Closures cannot be serialized so do it the hard way
         if ($this->getType() === 'closure') {
-            $ref  = new \ReflectionFunction($this->getAction());
-            $file = new \SplFileObject($ref->getFileName());
+            $ref  = new ReflectionFunction($this->getAction());
+            $file = new SplFileObject($ref->getFileName());
             $file->seek($ref->getStartLine() - 1);
             $content = '';
 

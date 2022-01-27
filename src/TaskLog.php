@@ -2,34 +2,21 @@
 
 namespace CodeIgniter\Tasks;
 
+use CodeIgniter\I18n\Time;
+use Exception;
+use Throwable;
+
 class TaskLog
 {
-    /**
-     * @var Task
-     */
-    protected $task;
-
-    /**
-     * @var string|null
-     */
-    protected $output;
-
-    /**
-     * @var \CodeIgniter\I18n\Time
-     */
-    protected $runStart;
-
-    /**
-     * @var \CodeIgniter\I18n\Time
-     */
-    protected $runEnd;
+    protected Task $task;
+    protected ?string $output = null;
+    protected Time $runStart;
+    protected Time $runEnd;
 
     /**
      * The exception thrown during execution, if any.
-     *
-     * @var \Throwable|null
      */
-    protected $error;
+    protected ?Throwable $error = null;
 
     /**
      * TaskLog constructor.
@@ -46,7 +33,7 @@ class TaskLog
     /**
      * Returns the duration of the task in seconds and fractions of a second.
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return string
      */

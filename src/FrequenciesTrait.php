@@ -14,7 +14,7 @@ trait FrequenciesTrait
      *
      * @var array<int|string, int|string>
      */
-    protected $expression = [
+    protected array $expression = [
         'min'        => '*',
         'hour'       => '*',
         'dayOfMonth' => '*',
@@ -79,7 +79,7 @@ trait FrequenciesTrait
      */
     public function hourly(?int $minute = null)
     {
-        $this->expression['min']  = null === $minute ? '00' : $minute;
+        $this->expression['min']  = $minute ?? '00';
         $this->expression['hour'] = '*';
 
         return $this;
@@ -94,7 +94,7 @@ trait FrequenciesTrait
      */
     public function everyHour(int $hour = 1, $minute = null)
     {
-        $this->expression['min']  = null === $minute ? '0' : $minute;
+        $this->expression['min']  = $minute ?? '0';
         $this->expression['hour'] = ($hour === 1) ? '*' : '*/' . $hour;
 
         return $this;

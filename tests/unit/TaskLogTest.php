@@ -1,6 +1,7 @@
 <?php
 
 use CodeIgniter\I18n\Time;
+use CodeIgniter\Tasks\Task;
 use CodeIgniter\Tasks\TaskLog;
 use CodeIgniter\Test\CIUnitTestCase as TestCase;
 
@@ -43,8 +44,7 @@ final class TaskLogTest extends TestCase
         $end   = new Time($end);
 
         $log = new TaskLog([
-            'task' => static function () {
-            },
+            'task'     => new Task('closure', static function () {}),
             'output'   => '',
             'runStart' => $start,
             'runEnd'   => $end,
