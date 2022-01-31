@@ -74,10 +74,6 @@ trait FrequenciesTrait
 
     /**
      * Runs at a specific time of the day
-     *
-     * @param string|null $time
-     *
-     * @return $this
      */
     public function time(string $time)
     {
