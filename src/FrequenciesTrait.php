@@ -116,6 +116,7 @@ trait FrequenciesTrait
      * Runs on a specific chosen hours
      *
      * @param array|int $hours
+     *
      * @return self
      */
     public function hours($hours = [])
@@ -189,6 +190,7 @@ trait FrequenciesTrait
      * Runs on a specific chosen minutes
      *
      * @param array|int $minutes
+     *
      * @return self
      */
     public function minutes($minutes = [])
