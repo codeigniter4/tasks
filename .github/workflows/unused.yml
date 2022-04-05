@@ -6,14 +6,14 @@ on:
       - develop
     paths:
       - '**.php'
-      - 'composer.**'
+      - 'composer.*'
       - '.github/workflows/unused.yml'
   push:
     branches:
       - develop
     paths:
       - '**.php'
-      - 'composer.**'
+      - 'composer.*'
       - '.github/workflows/unused.yml'
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -47,16 +47,6 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Create PHPStan cache directory
-        run: mkdir -p build/phpstan
-
-      - name: Cache PHPStan results
-        uses: actions/cache@v2
-        with:
-          path: build/phpstan
-          key: ${{ runner.os }}-phpstan-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-phpstan-
-
       - name: Install dependencies
         run: |
           composer -q config -g github-oauth.github.com "${{ secrets.GITHUB_TOKEN }}"
@@ -67,4 +57,4 @@ jobs:
           fi
 
       - name: Detect unused packages
-        run: composer-unused -vvv --profile --ansi --no-interaction --no-progress --excludePackage=php --excludePackage=codeigniter4/settings
+        run: composer-unused -vvv --output-format=github --ansi --no-interaction --no-progress
