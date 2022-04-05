@@ -3,6 +3,7 @@
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Tasks\Task;
 use CodeIgniter\Test\DatabaseTestTrait;
+use CodeIgniter\Test\Filters\CITestStreamFilter;
 use Tests\Support\TasksTestCase;
 
 /**
@@ -13,6 +14,28 @@ final class TaskTest extends TasksTestCase
     use DatabaseTestTrait;
 
     protected $namespace;
+    protected $streamFilter;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        CITestStreamFilter::$buffer = '';
+        $this->streamFilter         = stream_filter_append(STDOUT, 'CITestStreamFilter');
+        $this->streamFilter         = stream_filter_append(STDERR, 'CITestStreamFilter');
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        stream_filter_remove($this->streamFilter);
+    }
+
+    protected function getBuffer(): string
+    {
+        return CITestStreamFilter::$buffer;
+    }
 
     public function testNamed()
     {
@@ -55,7 +78,10 @@ final class TaskTest extends TasksTestCase
 
         $task->run();
 
-        $this->assertTrue($_SESSION['command_tasks_test_did_run']);
+        $this->assertStringContainsString(
+            'Commands can output text.',
+            $this->getBuffer()
+        );
     }
 
     /**
