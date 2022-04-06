@@ -10,7 +10,6 @@ parameters:
 		- src/Config/Routes.php
 		- src/Views/*
 	ignoreErrors:
-		- '#Access to protected property CodeIgniter\\Tasks\\TaskLog::\$[A-Za-z]+#'
 		- '#Unsafe usage of new static\(\)*#'
 	universalObjectCratesClasses:
 		- CodeIgniter\Entity

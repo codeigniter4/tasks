@@ -112,6 +112,8 @@ class Task
      * Runs this Task's action.
      *
      * @throws TasksException
+     *
+     * @return mixed
      */
     public function run()
     {
@@ -162,7 +164,7 @@ class Task
     /**
      * Returns the date this was last ran.
      *
-     * @return mixed
+     * @return string|Time
      */
     public function lastRun()
     {

@@ -23,7 +23,7 @@ class Scheduler
     /**
      * Schedules a closure to run.
      */
-    public function call(Closure $func)
+    public function call(Closure $func): Task
     {
         return $this->createTask('closure', $func);
     }
@@ -31,7 +31,7 @@ class Scheduler
     /**
      * Schedules a console command to run.
      */
-    public function command(string $command)
+    public function command(string $command): Task
     {
         return $this->createTask('command', $command);
     }
@@ -39,7 +39,7 @@ class Scheduler
     /**
      * Schedules a local function to be exec'd
      */
-    public function shell(string $command)
+    public function shell(string $command): Task
     {
         return $this->createTask('shell', $command);
     }
@@ -49,7 +49,7 @@ class Scheduler
      *
      * @param string $name Name of the event to trigger
      */
-    public function event(string $name)
+    public function event(string $name): Task
     {
         return $this->createTask('event', $name);
     }
@@ -57,7 +57,7 @@ class Scheduler
     /**
      * Schedules a cURL command to a remote URL
      */
-    public function url(string $url)
+    public function url(string $url): Task
     {
         return $this->createTask('url', $url);
     }
@@ -66,10 +66,8 @@ class Scheduler
 
     /**
      * @param mixed $action
-     *
-     * @return Task
      */
-    protected function createTask(string $type, $action)
+    protected function createTask(string $type, $action): Task
     {
         $task          = new Task($type, $action);
         $this->tasks[] = $task;

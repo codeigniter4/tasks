@@ -17,6 +17,8 @@ class MockTask extends Task
      * Pretends to run this Task's action.
      *
      * @throws TasksException
+     *
+     * @return array
      */
     public function run()
     {

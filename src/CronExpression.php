@@ -153,7 +153,7 @@ class CronExpression
      *
      * @throws Exception
      */
-    private function setTime()
+    private function setTime(): void
     {
         // Set our current time
         if ($this->testTime instanceof Time) {

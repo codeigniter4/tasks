@@ -6,6 +6,12 @@ use CodeIgniter\I18n\Time;
 use Exception;
 use Throwable;
 
+/**
+ * @property ?Throwable $error
+ * @property ?string    $output
+ * @property Time       $runStart
+ * @property Task       $task
+ */
 class TaskLog
 {
     protected Task $task;
