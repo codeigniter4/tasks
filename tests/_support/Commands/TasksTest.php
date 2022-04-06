@@ -18,7 +18,5 @@ final class TasksTest extends BaseCommand
     public function run(array $params = [])
     {
         CLI::write('Commands can output text.');
-
-        $_SESSION['command_tasks_test_did_run'] = true;
     }
 }
