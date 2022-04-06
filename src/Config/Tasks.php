@@ -38,6 +38,8 @@ class Tasks extends BaseConfig
 
         $schedule->shell('cp foo bar')->daily('11:00 pm');
 
-//         $schedule->call(function() { do something.... })->everyMonday()->named('foo');
+//        $schedule->call(static function () {
+//            // do something....
+//        })->mondays()->named('foo');
     }
 }
