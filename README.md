@@ -18,3 +18,42 @@ My "to-do list" for this module:
 - should collect performance information (in writeable as csv)
 - command to view performance (https://github.com/codestudiohq/laravel-totem)
 - provide a debug toolbar pane
+
+## How to Try
+
+1. Add the following in your project's `composer.json`:
+
+```
+    "require": {
+        "codeigniter4/tasks": "dev-develop"
+    },
+```
+
+```
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/codeigniter4/tasks.git"
+        }
+    ],
+```
+
+2. Run `composer update`.
+
+3. Run `php spark migrate --all`.
+
+4. Copy `vendor/codeigniter4/settings/src/Config/Tasks.php` into `app/Config/`.
+
+5. Update the namespace in `app/Config/Tasks.php`.
+
+```php
+<?php
+
+namespace CodeIgniter\Tasks\Config;
+```
+↓
+```php
+<?php
+
+namespace Config;
+```

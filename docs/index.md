@@ -22,7 +22,7 @@ correct tasks that should be run and execute them.
 Tasks are configured with the `app/Config/Tasks.php` config file, inside the `init()` method.
 Lets start with a simple example: 
 
-```
+```php
 <?php namespace CodeIgniter\Tasks\Config;
 
 use CodeIgniter\Config\BaseConfig;
@@ -39,7 +39,7 @@ class Tasks extends BaseConfig
     {
         $schedule->call(function() { 
             DemoContent::refresh();
-        })->everyMonday();
+        })->mondays();
     }
 }
 ```
@@ -54,7 +54,7 @@ below.
 If you have written your own [CLI Commands](https://codeigniter.com/user_guide/cli/cli_commands.html), you 
 can schedule them to run using the `command()` method.
 
-```
+```php
 $schedule->command('demo:refresh --all');
 ```  
 
@@ -64,7 +64,7 @@ The only argument is a string that calls the command, complete with an options o
 
 You can call out to the server and execute a command using the `shell()` method.
 
-```
+```php
 $schedule->shell('cp foo bar')->daily()->at('11:00 pm');
 ``` 
 
@@ -78,7 +78,7 @@ Simply provide the command to call and any arguments, and it will be executed us
 If you want to trigger an [Event](https://codeigniter.com/user_guide/extending/events.html) you can 
 use the `event()` method to do that for you, passing in the name of the event to trigger.
 
-```
+```php
 $schedule->event('Foo')->hourly();
 ```
 
@@ -88,7 +88,7 @@ If you need to ping a URL on a regular basis, you can use the `url()` method to 
 GET request using cURL to the URL you pass in. If you need more dynamism than can be provided in 
 a simple URL string, you can use a closure or command instead.
 
-```
+```php
 $schedule->url('https://my-status-cloud.com?site=foo.com')->everyFiveMinutes();
 ```
 
@@ -131,7 +131,7 @@ There are a number of ways available to specify how often the task is called.
 
 These methods can be combined to create even more nuanced timings: 
 
-```
+```php
 $schdule->command('foo)
     ->weekdays()
     ->hourly()
@@ -144,7 +144,7 @@ This would run the task at the top of every hour, Monday - Friday, but only in d
 
 You can name tasks so they can be easily referenced later, such as through the CLI with the `named()` method:
 
-```
+```php
 $schedule->command('foo')->nightly()->named('foo-task');
 ```
 

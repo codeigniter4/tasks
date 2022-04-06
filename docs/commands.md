@@ -49,4 +49,3 @@ the name of the task. You can either name a task using the `->named('foo')` meth
 schedule, or one will be automatically generated. The name can be found using `tasks:list`.
 
     > php spark tasks:run --task emails
-
