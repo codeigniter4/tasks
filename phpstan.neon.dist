@@ -9,8 +9,6 @@ parameters:
 	excludePaths:
 		- src/Config/Routes.php
 		- src/Views/*
-	ignoreErrors:
-		- '#Unsafe usage of new static\(\)*#'
 	universalObjectCratesClasses:
 		- CodeIgniter\Entity
 		- CodeIgniter\Entity\Entity

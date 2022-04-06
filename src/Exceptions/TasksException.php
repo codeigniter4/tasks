@@ -4,10 +4,15 @@ namespace CodeIgniter\Tasks\Exceptions;
 
 use RuntimeException;
 
-class TasksException extends RuntimeException
+final class TasksException extends RuntimeException
 {
     public static function forInvalidTaskType(string $type)
     {
-        return new static(lang('Tasks.invalidTaskType', [$type]));
+        return new self(lang('Tasks.invalidTaskType', [$type]));
+    }
+
+    public static function forInvalidCronExpression(string $string)
+    {
+        return new self(lang('Tasks.invalidCronExpression', [$string]));
     }
 }
