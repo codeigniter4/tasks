@@ -3,6 +3,7 @@
 namespace CodeIgniter\Tasks\Test;
 
 use CodeIgniter\Tasks\Scheduler;
+use CodeIgniter\Tasks\Task;
 
 /**
  * Mock Scheduler Class
@@ -17,7 +18,7 @@ class MockScheduler extends Scheduler
      *
      * @return MockTask
      */
-    protected function createTask(string $type, $action)
+    protected function createTask(string $type, $action): Task
     {
         $task          = new MockTask($type, $action);
         $this->tasks[] = $task;

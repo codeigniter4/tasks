@@ -12,7 +12,7 @@ use Throwable;
 class TaskRunner
 {
     protected Scheduler $scheduler;
-    protected string $testTime;
+    protected ?string $testTime = null;
 
     /**
      * Stores aliases of tasks to run

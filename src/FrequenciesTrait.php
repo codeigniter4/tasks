@@ -90,7 +90,7 @@ trait FrequenciesTrait
      *
      * @param int|string|null $minute
      *
-     * @return self
+     * @return $this
      */
     public function everyHour(int $hour = 1, $minute = null)
     {
@@ -103,7 +103,7 @@ trait FrequenciesTrait
     /**
      * Runs in a specific range of hours
      *
-     * @return self
+     * @return $this
      */
     public function betweenHours(int $fromHour, int $toHour)
     {
@@ -115,7 +115,7 @@ trait FrequenciesTrait
     /**
      * Runs on a specific choosen hours
      *
-     * @return self
+     * @return $this
      */
     public function hours(array $hours = [])
     {
@@ -175,7 +175,7 @@ trait FrequenciesTrait
     /**
      * Runs in a specific range of minutes
      *
-     * @return self
+     * @return $this
      */
     public function betweenMinutes(int $fromMinute, int $toMinute)
     {
@@ -187,7 +187,7 @@ trait FrequenciesTrait
     /**
      * Runs on a specific choosen minutes
      *
-     * @return self
+     * @return $this
      */
     public function minutes(array $minutes = [])
     {
@@ -205,7 +205,7 @@ trait FrequenciesTrait
      *
      * @param array|int $days [0 : Sunday - 6 : Saturday]
      *
-     * @return self
+     * @return $this
      */
     public function days($days)
     {
@@ -313,7 +313,7 @@ trait FrequenciesTrait
      *
      * @param array|int $days [1-31]
      *
-     * @return self
+     * @return $this
      */
     public function daysOfMonth($days)
     {
@@ -329,7 +329,7 @@ trait FrequenciesTrait
     /**
      * Runs on specific months
      *
-     * @return self
+     * @return $this
      */
     public function months(array $months = [])
     {
@@ -444,7 +444,7 @@ trait FrequenciesTrait
     /**
      * Parses a time string (like 4:08 pm) into mins and hours
      */
-    protected function parseTime(string $time)
+    protected function parseTime(string $time): array
     {
         $time = strtotime($time);
 
