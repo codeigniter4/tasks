@@ -41,14 +41,11 @@ final class TaskRunnerTest extends TestCase
         $runner = $this->getRunner([$task1, $task2]);
 
         ob_start();
+        $runner->withTestTime('12:00am')->run();
+        $output = ob_get_clean();
 
-        $runner->withTestTime('12:00am')
-            ->run();
-
-        // Only task 2 should have ran
-        $this->assertSame('Task 2', $this->getActualOutput());
-
-        ob_end_clean();
+        // Only task 2 should have run
+        $this->assertSame('Task 2', $output);
 
         // Should have logged the stats
         $expected = [
