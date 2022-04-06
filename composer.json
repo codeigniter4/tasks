@@ -71,6 +71,7 @@
         "mutate": "infection --threads=2 --skip-initial-tests --coverage=build/phpunit",
         "retool": "retool",
         "style": "php-cs-fixer fix --verbose --ansi --using-cache=no",
+        "cs-fix": "@style",
         "test": "phpunit"
     }
 }

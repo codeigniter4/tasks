@@ -16,8 +16,6 @@ class RunResolver
      * Takes a cron expression, i.e. '* * * * 4', and returns
      * a Time instance that represents that next time that
      * expression would run.
-     *
-     * @return Time
      */
     public function nextRun(string $expression, Time $next): Time
     {

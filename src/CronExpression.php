@@ -126,7 +126,7 @@ class CronExpression
 
         // Handle repeating times (i.e. /5 or */5 for every 5 minutes)
         if (strpos($time, '/') !== false) {
-            $period = substr($time, strpos($time, '/') + 1);
+            $period = substr($time, strpos($time, '/') + 1) ?: '';
 
             return ($currentTime % $period) === 0;
         }
