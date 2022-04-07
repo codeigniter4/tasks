@@ -24,7 +24,8 @@
     },
     "require-dev": {
         "codeigniter4/devkit": "^1.0",
-        "codeigniter4/framework": "^4.1"
+        "codeigniter4/framework": "^4.1",
+        "rector/rector": "0.12.20"
     },
     "config": {
         "allow-plugins": {
