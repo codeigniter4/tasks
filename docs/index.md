@@ -23,7 +23,9 @@ Tasks are configured with the `app/Config/Tasks.php` config file, inside the `in
 Lets start with a simple example: 
 
 ```php
-<?php namespace CodeIgniter\Tasks\Config;
+<?php 
+
+namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Tasks\Scheduler;
