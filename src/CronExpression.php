@@ -21,7 +21,7 @@ class CronExpression
     /**
      * The current Cron expression string to process
      */
-    private ?string $currentExpression;
+    private ?string $currentExpression = null;
 
     /**
      * Allows us to set global timezone for all tasks
