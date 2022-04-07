@@ -422,7 +422,7 @@ trait FrequenciesTrait
     }
 
     /**
-     * Internal function used by the everyMonday, etc functions.
+     * Internal function used by the mondays(), etc. functions.
      *
      * @return $this
      */

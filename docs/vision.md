@@ -33,9 +33,8 @@ sense here.
 
 ```php
 	$schedule->call(function() { 
-		do something.... 
-	})
-		->everyMonday();
+		// do something.... 
+	})->mondays();
 ```
 
 4. Events. These trigger pre-defined framework [Events](https://codeigniter4.github.io/CodeIgniter4/extending/events.html)
@@ -63,7 +62,7 @@ would be:
 - `daily()` which runs every day at midnight. Optionally pass a time as the only argument, ie. `04:00 am`
 - `weekdays()` runs M-F at midnight. Optionally pass a time as the only argument, ie. `04:00 am` 
 - `weekends()` runs on Saturday and Sunday at midnight. Optionally pass a time as the only argument, ie. `04:00 am`
-- `everyMonday()` runs every Monday at midnight. Optionally pass a time as the only argument, ie. `04:00 am`
+- `mondays()` runs every Monday at midnight. Optionally pass a time as the only argument, ie. `04:00 am`
 - `everyMinute()`, `everyFiveMinutes()`, allows scheduling some common intervals
 - `hourly()` runs the task at the top of every hour
 - `environments()` specifies one or more environments the tasks should run in
