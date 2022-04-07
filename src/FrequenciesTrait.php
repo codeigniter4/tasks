@@ -73,6 +73,19 @@ trait FrequenciesTrait
     }
 
     /**
+     * Runs at a specific time of the day
+     */
+    public function time(string $time)
+    {
+        [$min, $hour] = $this->parseTime($time);
+
+        $this->expression['min']  = $min;
+        $this->expression['hour'] = $hour;
+
+        return $this;
+    }
+
+    /**
      * Runs at the top of every hour or at a specific minute.
      *
      * @return $this
