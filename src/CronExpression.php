@@ -3,6 +3,7 @@
 namespace CodeIgniter\Tasks;
 
 use CodeIgniter\I18n\Time;
+use CodeIgniter\Tasks\Exceptions\TasksException;
 use Exception;
 
 class CronExpression
@@ -16,6 +17,11 @@ class CronExpression
      * The current date/time. Used for testing.
      */
     protected ?Time $testTime = null;
+
+    /**
+     * The current Cron expression string to process
+     */
+    private ?string $currentExpression = null;
 
     /**
      * Allows us to set global timezone for all tasks
@@ -39,6 +45,8 @@ class CronExpression
     public function shouldRun(string $expression): bool
     {
         $this->setTime();
+
+        $this->currentExpression = $expression;
 
         // Break the expression into separate parts
         [
@@ -127,6 +135,10 @@ class CronExpression
         // Handle repeating times (i.e. /5 or */5 for every 5 minutes)
         if (strpos($time, '/') !== false) {
             $period = substr($time, strpos($time, '/') + 1) ?: '';
+
+            if ($period === '' || ! ctype_digit($period)) {
+                throw TasksException::forInvalidCronExpression($this->currentExpression);
+            }
 
             return ($currentTime % $period) === 0;
         }

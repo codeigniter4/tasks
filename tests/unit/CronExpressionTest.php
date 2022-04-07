@@ -2,6 +2,7 @@
 
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Tasks\CronExpression;
+use CodeIgniter\Tasks\Exceptions\TasksException;
 use CodeIgniter\Test\CIUnitTestCase as TestCase;
 
 /**
@@ -33,6 +34,26 @@ final class CronExpressionTest extends TestCase
         $this->assertTrue($this->cron->shouldRun('/4 * * * *'));
         $this->assertTrue($this->cron->shouldRun('/2 * * * *'));
         $this->assertFalse($this->cron->shouldRun('/5 * * * *'));
+    }
+
+    public function testMinutesInvalidNoNumber()
+    {
+        $this->cron->testTime('2020-05-01 10:04 am');
+
+        $this->expectException(TasksException::class);
+        $this->expectExceptionMessage('"/ * * * *" is not a valid cron expression.');
+
+        $this->assertFalse($this->cron->shouldRun('/ * * * *'));
+    }
+
+    public function testMinutesInvalidNotANumber()
+    {
+        $this->cron->testTime('2020-05-01 10:04 am');
+
+        $this->expectException(TasksException::class);
+        $this->expectExceptionMessage('"/a * * * *" is not a valid cron expression.');
+
+        $this->assertFalse($this->cron->shouldRun('/a * * * *'));
     }
 
     public function testHours()
