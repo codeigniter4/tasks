@@ -6,7 +6,7 @@ on:
       - develop
     paths:
       - '**.php'
-      - 'composer.**'
+      - 'composer.*'
       - 'phpunit*'
       - '.github/workflows/phpunit.yml'
   push:
@@ -14,7 +14,7 @@ on:
       - develop
     paths:
       - '**.php'
-      - 'composer.**'
+      - 'composer.*'
       - 'phpunit*'
       - '.github/workflows/phpunit.yml'
 
@@ -54,7 +54,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer -q config -g github-oauth.github.com "${{ secrets.GITHUB_TOKEN }}"
           if [ -f composer.lock ]; then
             composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
           else
