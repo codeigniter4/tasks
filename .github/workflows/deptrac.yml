@@ -6,7 +6,7 @@ on:
       - develop
     paths:
       - '**.php'
-      - 'composer.**'
+      - 'composer.*'
       - 'depfile.yaml'
       - '.github/workflows/deptrac.yml'
   push:
@@ -14,7 +14,7 @@ on:
       - develop
     paths:
       - '**.php'
-      - 'composer.**'
+      - 'composer.*'
       - 'depfile.yaml'
       - '.github/workflows/deptrac.yml'
 

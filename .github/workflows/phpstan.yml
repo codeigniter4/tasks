@@ -6,7 +6,7 @@ on:
       - develop
     paths:
       - '**.php'
-      - 'composer.**'
+      - 'composer.*'
       - 'phpstan*'
       - '.github/workflows/phpstan.yml'
   push:
@@ -14,7 +14,7 @@ on:
       - develop
     paths:
       - '**.php'
-      - 'composer.**'
+      - 'composer.*'
       - 'phpstan*'
       - '.github/workflows/phpstan.yml'
 

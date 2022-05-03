@@ -6,7 +6,7 @@ on:
       - develop
     paths:
       - '**.php'
-      - 'composer.**'
+      - 'composer.*'
       - 'phpunit*'
       - '.github/workflows/phpunit.yml'
   push:
@@ -14,7 +14,7 @@ on:
       - develop
     paths:
       - '**.php'
-      - 'composer.**'
+      - 'composer.*'
       - 'phpunit*'
       - '.github/workflows/phpunit.yml'
 
