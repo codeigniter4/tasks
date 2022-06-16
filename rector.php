@@ -114,6 +114,6 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rule(NormalizeNamespaceByPSR4ComposerAutoloadRector::class);
     $rectorConfig
         ->ruleWithConfiguration(TypedPropertyRector::class, [
-            TypedPropertyRector::INLINE_PUBLIC => false,
+            TypedPropertyRector::INLINE_PUBLIC => true,
         ]);
 };

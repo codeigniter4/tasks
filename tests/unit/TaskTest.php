@@ -145,7 +145,7 @@ final class TaskTest extends TasksTestCase
         ]]);
 
         // Should return the current time
-        $this->assertInstanceOf(Time::class, $task->lastRun());
+        $this->assertInstanceOf(Time::class, $task->lastRun()); // @phpstan-ignore-line
         $this->assertSame($date, $task->lastRun()->format('Y-m-d H:i:s'));
     }
 }
