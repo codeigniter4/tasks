@@ -1,15 +1,14 @@
 {
     "name": "codeigniter4/tasks",
-    "type": "library",
     "description": "Task Scheduler for CodeIgniter 4",
+    "license": "MIT",
+    "type": "library",
     "keywords": [
         "codeigniter",
         "codeigniter4",
         "task scheduling",
         "cron"
     ],
-    "homepage": "https://github.com/codeigniter4/tasks",
-    "license": "MIT",
     "authors": [
         {
             "name": "Lonnie Ezell",
@@ -17,6 +16,7 @@
             "role": "Developer"
         }
     ],
+    "homepage": "https://github.com/codeigniter4/tasks",
     "require": {
         "php": "^7.4 || ^8.0",
         "ext-json": "*",
@@ -27,11 +27,8 @@
         "codeigniter4/framework": "^4.1",
         "rector/rector": "0.12.23"
     },
-    "config": {
-        "allow-plugins": {
-            "phpstan/extension-installer": true
-        }
-    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "CodeIgniter\\Tasks\\": "src"
@@ -45,19 +42,19 @@
             "Tests\\Support\\": "tests/_support"
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/codeigniter4/CodeIgniter4"
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
         }
-    ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    },
     "scripts": {
         "post-update-cmd": [
             "bash admin/setup.sh"
         ],
-        "analyze": "phpstan analyze",
+        "analyze": [
+            "phpstan analyze",
+            "psalm"
+        ],
         "ci": [
             "Composer\\Config::disableProcessTimeout",
             "@deduplicate",

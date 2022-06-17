@@ -17,5 +17,5 @@ abstract class TaskCommand extends BaseCommand
     /**
      * location to save.
      */
-    protected $path = WRITEPATH . 'tasks';
+    protected string $path = WRITEPATH . 'tasks';
 }
