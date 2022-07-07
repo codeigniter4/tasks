@@ -25,7 +25,7 @@
     "require-dev": {
         "codeigniter4/devkit": "^1.0",
         "codeigniter4/framework": "^4.1",
-        "rector/rector": "0.13.7"
+        "rector/rector": "0.13.8"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
