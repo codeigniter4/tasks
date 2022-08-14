@@ -8,14 +8,14 @@ use Throwable;
 
 /**
  * @property ?Throwable $error
- * @property ?string    $output
+ * @property ?array   $output
  * @property Time       $runStart
  * @property Task       $task
  */
 class TaskLog
 {
     protected Task $task;
-    protected ?string $output = null;
+    protected ?array $output = null;
     protected Time $runStart;
     protected Time $runEnd;
 
