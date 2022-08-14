@@ -8,7 +8,7 @@ use Throwable;
 
 /**
  * @property ?Throwable $error
- * @property ?array   $output
+ * @property ?array     $output
  * @property Time       $runStart
  * @property Task       $task
  */
