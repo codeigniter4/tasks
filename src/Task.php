@@ -230,12 +230,12 @@ class Task
 
     /**
      * Triggers an Event.
-     *
-     * @return bool Result of the trigger
      */
-    protected function runEvent(): bool
+    protected function runEvent(): string
     {
-        return Events::trigger($this->getAction());
+        $event = Events::trigger($this->getAction());
+
+        return $event ? "true" : "false";
     }
 
     /**
