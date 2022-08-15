@@ -112,10 +112,8 @@ class Task
      * Runs this Task's action.
      *
      * @throws TasksException
-     *
-     * @return mixed
      */
-    public function run()
+    public function run(): ?string
     {
         $method = 'run' . ucfirst($this->type);
         if (! method_exists($this, $method)) {
@@ -212,14 +210,12 @@ class Task
 
     /**
      * Executes a shell script.
-     *
-     * @return array Lines of output from exec
      */
-    protected function runShell(): array
+    protected function runShell(): ?string
     {
         exec($this->getAction(), $output);
 
-        return $output;
+        return empty($output) ? null : json_encode($output);
     }
 
     /**
