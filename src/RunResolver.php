@@ -191,7 +191,7 @@ class RunResolver
         // If it doesn't contain any letters, just return it.
         preg_match('/\w/', $origValue, $matches);
 
-        if (! count($matches)) {
+        if ($matches === []) {
             return $origValue;
         }
 
