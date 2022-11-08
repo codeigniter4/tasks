@@ -39,9 +39,9 @@ class TaskLog
     /**
      * Returns the duration of the task in seconds and fractions of a second.
      *
-     * @throws Exception
-     *
      * @return string
+     *
+     * @throws Exception
      */
     public function duration()
     {

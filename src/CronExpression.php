@@ -88,9 +88,9 @@ class CronExpression
      * Sets a date/time that will be used in place
      * of the current time to help with testing.
      *
-     * @throws Exception
-     *
      * @return $this
+     *
+     * @throws Exception
      */
     public function testTime(string $dateTime)
     {

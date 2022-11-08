@@ -111,9 +111,9 @@ class Task
     /**
      * Runs this Task's action.
      *
-     * @throws TasksException
-     *
      * @return mixed
+     *
+     * @throws TasksException
      */
     public function run()
     {
@@ -201,9 +201,9 @@ class Task
     /**
      * Runs a framework Command.
      *
-     * @throws InvalidArgumentException
-     *
      * @return string Buffered output from the Command
+     *
+     * @throws InvalidArgumentException
      */
     protected function runCommand(): string
     {
@@ -258,9 +258,9 @@ class Task
      * Builds a unique name for the task.
      * Used when an existing name doesn't exist.
      *
-     * @throws ReflectionException
-     *
      * @return string
+     *
+     * @throws ReflectionException
      */
     protected function buildName()
     {
