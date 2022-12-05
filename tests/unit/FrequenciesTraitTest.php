@@ -8,7 +8,7 @@ use CodeIgniter\Test\CIUnitTestCase as TestCase;
  */
 final class FrequenciesTraitTest extends TestCase
 {
-    protected $class;
+    protected object $class;
 
     protected function setUp(): void
     {

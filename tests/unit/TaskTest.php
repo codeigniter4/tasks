@@ -14,6 +14,9 @@ final class TaskTest extends TasksTestCase
     use DatabaseTestTrait;
 
     protected $namespace;
+    /**
+     * @var resource|bool
+     */
     protected $streamFilter;
 
     protected function setUp(): void
