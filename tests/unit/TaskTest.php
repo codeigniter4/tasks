@@ -24,16 +24,17 @@ final class TaskTest extends TasksTestCase
     {
         parent::setUp();
 
-        CITestStreamFilter::$buffer = '';
-        $this->streamFilter         = stream_filter_append(STDOUT, 'CITestStreamFilter');
-        $this->streamFilter         = stream_filter_append(STDERR, 'CITestStreamFilter');
+        CITestStreamFilter::registration();
+        CITestStreamFilter::addOutputFilter();
+        CITestStreamFilter::addErrorFilter();
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
 
-        stream_filter_remove($this->streamFilter);
+        CITestStreamFilter::removeOutputFilter();
+        CITestStreamFilter::removeErrorFilter();
     }
 
     protected function getBuffer(): string
