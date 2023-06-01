@@ -196,7 +196,7 @@ final class CronExpressionTest extends TestCase
             $h . ':10 PM',
         ], range(1, 12));
 
-        return array_merge($hours24, $hoursAM, $hoursPM);
+        return [...$hours24, ...$hoursAM, ...$hoursPM];
     }
 
     public function nextRunProvider()
