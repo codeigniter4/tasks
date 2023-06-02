@@ -146,7 +146,9 @@ class TaskRunner
         }
 
         // Make sure we have room for one more
-        if ((is_countable($logs) ? count($logs) : 0) > setting('Tasks.maxLogsPerTask')) {
+        /** @var int $maxLogsPerTask */
+        $maxLogsPerTask = setting('Tasks.maxLogsPerTask');
+        if ((is_countable($logs) ? count($logs) : 0) > $maxLogsPerTask) {
             array_pop($logs);
         }
 
