@@ -43,7 +43,7 @@ class Run extends TaskCommand
             CLI::write(CLI::color('WARNING: Task running is currently disabled.', 'red'));
             CLI::write('To re-enable tasks run: tasks:enable');
 
-            return false;
+            return EXIT_ERROR;
         }
 
         CLI::write('Running Tasks...');
@@ -59,5 +59,7 @@ class Run extends TaskCommand
         $runner->run();
 
         CLI::write(CLI::color('Completed Running Tasks', 'green'));
+
+        return EXIT_SUCCESS;
     }
 }
