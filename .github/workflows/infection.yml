@@ -9,14 +9,6 @@ on:
       - 'composer.*'
       - 'phpunit*'
       - '.github/workflows/infection.yml'
-  push:
-    branches:
-      - develop
-    paths:
-      - '**.php'
-      - 'composer.*'
-      - 'phpunit*'
-      - '.github/workflows/infection.yml'
 
 jobs:
   main:
