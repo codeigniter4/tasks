@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use CodeIgniter\Tasks\Task;
 use CodeIgniter\Tasks\TaskRunner;
 use CodeIgniter\Test\CIUnitTestCase as TestCase;

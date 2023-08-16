@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CodeIgniter\Tasks\Commands;
 
 use CodeIgniter\CLI\CLI;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Tasks\Task;
 use CodeIgniter\Tasks\TaskLog;
@@ -10,7 +12,7 @@ use CodeIgniter\Test\CIUnitTestCase as TestCase;
  */
 final class TaskLogTest extends TestCase
 {
-    public function durationProvider()
+    public static function provideDuration(): iterable
     {
         return [
             [
@@ -32,7 +34,7 @@ final class TaskLogTest extends TestCase
     }
 
     /**
-     * @dataProvider durationProvider
+     * @dataProvider provideDuration
      *
      * @param mixed $start
      * @param mixed $end
