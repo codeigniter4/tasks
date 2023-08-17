@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CodeIgniter\Tasks\Exceptions;
 
 use RuntimeException;

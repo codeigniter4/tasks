@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CodeIgniter\Tasks;
 
 /**
@@ -25,8 +27,6 @@ trait FrequenciesTrait
     /**
      * If listed, will restrict this to running
      * within only those environments.
-     *
-     * @var null
      */
     protected $allowedEnvironments;
 

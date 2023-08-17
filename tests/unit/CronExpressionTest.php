@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Tasks\CronExpression;
 use CodeIgniter\Tasks\Exceptions\TasksException;
@@ -129,7 +131,7 @@ final class CronExpressionTest extends TestCase
     }
 
     /**
-     * @dataProvider hoursProvider
+     * @dataProvider provideEveryHour
      *
      * @param mixed $hourTrue
      * @param mixed $hourFalse
@@ -181,7 +183,7 @@ final class CronExpressionTest extends TestCase
         $this->assertFalse($this->cron->shouldRun('0 20 * 10 1-5'));
     }
 
-    public function hoursProvider()
+    public static function provideEveryHour(): iterable
     {
         $hours24 = array_map(static fn ($h) => [
             $h . ':00',
@@ -199,7 +201,7 @@ final class CronExpressionTest extends TestCase
         return [...$hours24, ...$hoursAM, ...$hoursPM];
     }
 
-    public function nextRunProvider()
+    public static function provideNextRun(): iterable
     {
         return [
             ['* * * * *', 'October 5, 2020 8:01 pm'],
@@ -224,7 +226,7 @@ final class CronExpressionTest extends TestCase
     }
 
     /**
-     * @dataProvider nextRunProvider
+     * @dataProvider provideNextRun
      */
     public function testNextRun(string $exp, string $expected)
     {
