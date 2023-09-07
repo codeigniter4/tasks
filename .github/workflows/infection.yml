@@ -2,59 +2,8 @@ name: Infection
 
 on:
   pull_request:
-    branches:
-      - develop
-    paths:
-      - '**.php'
-      - 'composer.*'
-      - 'phpunit*'
-      - '.github/workflows/infection.yml'
+  push:
 
 jobs:
-  main:
-    name: Mutation Testing
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.1'
-          tools: infection, phpunit
-          extensions: intl, json, mbstring, gd, xml, sqlite3
-          coverage: xdebug
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up problem matchers for PHPUnit
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-
-      - name: Configure matchers
-        uses: mheap/phpunit-matcher-action@v1
-
-      - name: Get composer cache directory
-        run: echo "COMPOSER_CACHE_FILES_DIR=$(composer config cache-files-dir)" >> $GITHUB_ENV
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.COMPOSER_CACHE_FILES_DIR }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install dependencies
-        run: |
-          if [ -f composer.lock ]; then
-            composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
-          else
-            composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
-          fi
-
-      - name: Run Infection for added files only
-        run: |
-          git fetch --depth=1 origin $GITHUB_BASE_REF
-          infection --threads=max --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations --only-covered --logger-github
+  infection:
+    uses: codeigniter4/.github/.github/workflows/infection.yml@main
