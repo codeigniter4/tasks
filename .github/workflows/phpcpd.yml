@@ -2,7 +2,17 @@ name: PHPCPD
 
 on:
   pull_request:
+    branches:
+      - develop
+    paths:
+      - '**.php'
+      - '.github/workflows/phpcpd.yml'
   push:
+    branches:
+      - develop
+    paths:
+      - '**.php'
+      - '.github/workflows/phpcpd.yml'
 
 jobs:
   phpcpd:
