@@ -2,7 +2,13 @@ name: Infection
 
 on:
   pull_request:
-  push:
+    branches:
+      - develop
+    paths:
+      - '**.php'
+      - 'composer.*'
+      - 'phpunit*'
+      - '.github/workflows/infection.yml'
 
 jobs:
   infection:
