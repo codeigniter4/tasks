@@ -34,7 +34,7 @@ class Lister extends TaskCommand
     {
         helper('setting');
 
-        if (setting('Tasks.logPerformance') === false) {
+        if (setting('Tasks.enabled') === false) {
             CLI::write('WARNING: Task running is currently disabled.', 'red');
             CLI::write('To re-enable tasks run: tasks:enable');
             CLI::newLine();
