@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CodeIgniter\Tasks\Commands;
 
-use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use CodeIgniter\Publisher\Publisher;
 use Throwable;
