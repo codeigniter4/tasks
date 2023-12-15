@@ -1,13 +1,6 @@
 # Installation
 
-- [Installation](#installation)
-    - [With Composer](#with-composer)
-    - [Manual](#manual)
-- [Database Migration](#database-migration)
-
-## Installation
-
-### With Composer
+## Composer Installation
 
 The only thing you have to do is to run this command, and you're ready to go.
 
@@ -15,7 +8,7 @@ The only thing you have to do is to run this command, and you're ready to go.
 composer require codeigniter4/tasks
 ```
 
-### Manual
+## Manual Installation
 
 In the example below we will assume, that files from this project will be located in `app/ThirdParty/tasks` directory.
 
