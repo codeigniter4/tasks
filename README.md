@@ -1,59 +1,50 @@
-# CodeIgniter 4 Tasks
+# CodeIgniter Tasks
 
-A task scheduler for CodeIgniter 4. 
+A task scheduler for CodeIgniter 4.
 
-**NOTE: Just starting development. Not for active consumption or it WILL make your app sick.**
+## Installation
 
-My "to-do list" for this module: 
+Install via Composer:
 
-- provides commands to view when tasks are scheduled to run. Can list all for this week, or on a specific day.
-- command to run any job manually
-- command to disable/enable a job
-- should have a variety of ways to notify when done, like logging, email, etc
-- must be able to call shell commands
-- must be able to run closures
-- must be able to run commands
-- restrict by environment
-- can specify the timezone
-- should collect performance information (in writeable as csv)
-- command to view performance (https://github.com/codestudiohq/laravel-totem)
-- provide a debug toolbar pane
+    composer require codeigniter4/tasks
 
-## How to Try
+Migrate the database:
 
-1. Add the following in your project's `composer.json`:
+    php spark migrate --all
 
-```
-    "require": {
-        "codeigniter4/tasks": "dev-develop"
-    },
-```
+## Configuration
 
-```
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/codeigniter4/tasks.git"
-        }
-    ],
-```
+Publish the config file:
 
-2. Run `composer update`.
+    php spark tasks:publish
 
-3. Run `php spark migrate --all`.
+## Defining tasks
 
-4. Copy `vendor/codeigniter4/settings/src/Config/Tasks.php` into `app/Config/`.
-
-5. Update the namespace in `app/Config/Tasks.php`.
+Define your tasks in the `init()` method:
 
 ```php
-<?php
-
-namespace CodeIgniter\Tasks\Config;
-```
-↓
-```php
+// app/Config/Tasks.php
 <?php
 
 namespace Config;
+
+use CodeIgniter\Tasks\Config\Tasks as BaseTasks;
+use CodeIgniter\Tasks\Scheduler;
+
+class Tasks extends BaseTasks
+{
+    /**
+     * Register any tasks within this method for the application.
+     *
+     * @param Scheduler $schedule
+     */
+    public function init(Scheduler $schedule)
+    {
+        $schedule->command('demo:refresh --all')->mondays('11:00 pm');
+    }
+}
 ```
+
+## Docs
+
+Read the full documentation: https://codeigniter4.github.io/tasks/
