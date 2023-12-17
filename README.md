@@ -60,6 +60,6 @@ Read the full documentation: https://tasks.codeigniter.com
 
 ## Contributing
 
-We does accept and encourage contributions from the community in any shape. It doesn't matter
+We accept and encourage contributions from the community in any shape. It doesn't matter
 whether you can code, write documentation, or help find bugs, all contributions are welcome.
 See the [CONTRIBUTING.md](CONTRIBUTING.md) file for details.
