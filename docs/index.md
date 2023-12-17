@@ -9,6 +9,11 @@ Besides that, it provides CLI tools to help you manage the tasks that should be 
 This library relies on [CodeIgniter\Settings](https://github.com/codeigniter4/settings) library to store
 information, which provides a convenient way of storing settings in the database or a config file.
 
+### Requirements
+
+![PHP](https://img.shields.io/badge/PHP-%5E7.4-red)
+![CodeIgniter](https://img.shields.io/badge/CodeIgniter-%5E4.1-red)
+
 ### Quickstart
 
 Install via Composer:
@@ -31,3 +36,14 @@ class Tasks extends BaseTasks
     }
 }
 ```
+
+### Acknowledgements
+
+Every open-source project depends on its contributors to be a success. The following users have
+contributed in one manner or another in making this project:
+
+<a href="https://github.com/codeigniter4/tasks/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=codeigniter4/tasks" alt="Contributors">
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
