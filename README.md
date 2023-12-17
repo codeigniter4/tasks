@@ -9,6 +9,7 @@ A task scheduler for CodeIgniter 4.
 
 ![PHP](https://img.shields.io/badge/PHP-%5E7.4-blue)
 ![CodeIgniter](https://img.shields.io/badge/CodeIgniter-%5E4.1-blue)
+![License](https://img.shields.io/badge/License-MIT-blue)
 
 ## Installation
 
@@ -55,4 +56,10 @@ class Tasks extends BaseTasks
 
 ## Docs
 
-Read the full documentation: https://codeigniter4.github.io/tasks/
+Read the full documentation: https://tasks.codeigniter.com
+
+## Contributing
+
+We does accept and encourage contributions from the community in any shape. It doesn't matter
+whether you can code, write documentation, or help find bugs, all contributions are welcome.
+See the [CONTRIBUTING.md](CONTRIBUTING.md) file for details.
