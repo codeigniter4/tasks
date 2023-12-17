@@ -33,14 +33,11 @@ class Publish extends TaskCommand
         }
 
         foreach ($publisher->getPublished() as $file) {
-            $publisher->replace(
-                $file,
-                [
-                    'namespace CodeIgniter\\Tasks\\Config' => 'namespace Config',
-                    'use CodeIgniter\\Config\\BaseConfig'  => 'use CodeIgniter\\Tasks\\Config\\Tasks as BaseTasks',
-                    'class Tasks extends BaseConfig'       => 'class Tasks extends BaseTasks',
-                ]
-            );
+            $contents = file_get_contents($file);
+            $contents = str_replace('namespace CodeIgniter\\Tasks\\Config', 'namespace Config', $contents);
+            $contents = str_replace('use CodeIgniter\\Config\\BaseConfig', 'use CodeIgniter\\Tasks\\Config\\Tasks as BaseTasks', $contents);
+            $contents = str_replace('class Tasks extends BaseConfig', 'class Tasks extends BaseTasks', $contents);
+            file_put_contents($file, $contents);
         }
 
         CLI::write(CLI::color('  Published! ', 'green') . 'You can customize the configuration by editing the "app/Config/Tasks.php" file.');
