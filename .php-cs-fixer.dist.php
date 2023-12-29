@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of CodeIgniter Tasks.
+ *
+ * (c) CodeIgniter Foundation <admin@codeigniter.com>
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ */
+
 use CodeIgniter\CodingStandard\CodeIgniter4;
 use Nexus\CsConfig\Factory;
 use PhpCsFixer\Finder;
@@ -31,4 +40,8 @@ $options = [
     'cacheFile' => 'build/.php-cs-fixer.cache',
 ];
 
-return Factory::create(new CodeIgniter4(), $overrides, $options)->forProjects();
+return Factory::create(new CodeIgniter4(), $overrides, $options)->forLibrary(
+    'CodeIgniter Tasks',
+    'CodeIgniter Foundation',
+    'admin@codeigniter.com'
+);
