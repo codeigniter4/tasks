@@ -8,6 +8,31 @@ The only thing you have to do is to run this command, and you're ready to go.
 composer require codeigniter4/tasks
 ```
 
+#### A composer error occurred?
+
+If you get the following error:
+
+```console
+Could not find a version of package codeigniter4/tasks matching your minimum-stability (stable).
+Require it with an explicit version constraint allowing its desired stability.
+```
+
+1. Run the following commands to change your [minimum-stability](https://getcomposer.org/doc/articles/versions.md#minimum-stability) in your project `composer.json`:
+
+    ```console
+    composer config minimum-stability dev
+    composer config prefer-stable true
+    ```
+
+2. Or specify an explicit version:
+
+    ```console
+    composer require codeigniter4/tasks:dev-develop
+    ```
+
+   The above specifies `develop` branch.
+   See <https://getcomposer.org/doc/articles/versions.md#branches>
+
 ## Manual Installation
 
 In the example below we will assume, that files from this project will be located in `app/ThirdParty/tasks` directory.
