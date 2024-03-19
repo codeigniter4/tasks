@@ -367,22 +367,16 @@ trait FrequenciesTrait
     }
 
     /**
-     * Runs on specific range months
+     * Runs on specific range of months
      *
-     * @param int|null $from Month [1-12]
-     * @param int|null $to   Month [1-12]
+     * @param int $from Month [1-12]
+     * @param int $to   Month [1-12]
      *
      * @return $this
      */
-    public function monthRange(?int $from = null, ?int $to = null)
+    public function betweenMonths(int $from, int $to)
     {
-        if ($from === null || $to === null) {
-            $this->expression['month'] = '*';
-
-            return $this;
-        }
-
-        $this->expression['month'] = $from <= $to ? $from . '-' . $to : $to . '-' . $from;
+        $this->expression['month'] = $from . '-' . $to;
 
         return $this;
     }

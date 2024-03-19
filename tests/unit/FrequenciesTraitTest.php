@@ -361,17 +361,10 @@ final class FrequenciesTraitTest extends TestCase
         $this->assertSame('* * * 1,7 *', $this->class->getExpression());
     }
 
-    public function testMonthsRange()
+    public function testBetweenMonths()
     {
-        $this->class->monthRange(1, 7);
+        $this->class->betweenMonths(1, 7);
 
         $this->assertSame('* * * 1-7 *', $this->class->getExpression());
-    }
-
-    public function testMonthsRangeNull()
-    {
-        $this->class->monthRange();
-
-        $this->assertSame('* * * * *', $this->class->getExpression());
     }
 }
