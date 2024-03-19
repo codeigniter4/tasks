@@ -298,6 +298,20 @@ final class FrequenciesTraitTest extends TestCase
         $this->assertSame('* 12,16 * * *', $this->class->getExpression());
     }
 
+    public function testEveryMonth()
+    {
+        $this->class->everyMonth();
+
+        $this->assertSame('* * * * *', $this->class->getExpression());
+    }
+
+    public function testEveryMonthWithParameter()
+    {
+        $this->class->everyMonth(4);
+
+        $this->assertSame('* * * */4 *', $this->class->getExpression());
+    }
+
     public function testEveryMinute()
     {
         $this->class->everyMinute();
@@ -345,5 +359,19 @@ final class FrequenciesTraitTest extends TestCase
         $this->class->months([1, 7]);
 
         $this->assertSame('* * * 1,7 *', $this->class->getExpression());
+    }
+
+    public function testMonthsRange()
+    {
+        $this->class->monthRange(1, 7);
+
+        $this->assertSame('* * * 1-7 *', $this->class->getExpression());
+    }
+
+    public function testMonthsRangeNull()
+    {
+        $this->class->monthRange();
+
+        $this->assertSame('* * * * *', $this->class->getExpression());
     }
 }

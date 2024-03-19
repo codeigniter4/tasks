@@ -353,6 +353,41 @@ trait FrequenciesTrait
     }
 
     /**
+     * Set the execution time to every month or every x months.
+     *
+     * @param int|string|null $month When set, specifies that the job will be run every $month months
+     *
+     * @return $this
+     */
+    public function everyMonth($month = null)
+    {
+        $this->expression['month'] = null === $month ? '*' : '*/' . $month;
+
+        return $this;
+    }
+
+    /**
+     * Runs on specific range months
+     *
+     * @param int|null $from Month [1-12]
+     * @param int|null $to   Month [1-12]
+     *
+     * @return $this
+     */
+    public function monthRange(?int $from = null, ?int $to = null)
+    {
+        if ($from === null || $to === null) {
+            $this->expression['month'] = '*';
+
+            return $this;
+        }
+
+        $this->expression['month'] = $from <= $to ? $from . '-' . $to : $to . '-' . $from;
+
+        return $this;
+    }
+
+    /**
      * Runs on specific months
      *
      * @return $this
@@ -381,7 +416,8 @@ trait FrequenciesTrait
         $this->expression['min']        = $min;
         $this->expression['hour']       = $hour;
         $this->expression['dayOfMonth'] = 1;
-        $this->expression['month']      = '*/3';
+
+        $this->everyMonth(3);
 
         return $this;
     }
