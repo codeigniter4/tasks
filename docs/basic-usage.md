@@ -110,7 +110,7 @@ There are a number of ways available to specify how often the task is called.
 | `->saturdays('3:15am')`           | Runs every Saturday at midnight, unless time passed in.               |
 | `->monthly('12:21pm')`            | Runs the first day of every month at 12:00am unless time passed in.   |
 | `->daysOfMonth([1,15])`           | Runs only on days 1 and 15.                                           |
-| `->everyMonth(4)`                 | Runs every 4 month.                                                   |
+| `->everyMonth(4)`                 | Runs every 4 months.                                                   |
 | `->betweenMonths(4,7)`            | Runs between months 4 and 7.                                          |
 | `->months([1,7])`                 | Runs only on January and July.                                        |
 | `->quarterly('5:00am')`           | Runs the first day of each quarter (Jan 1, Apr 1, July 1, Oct 1)      |
