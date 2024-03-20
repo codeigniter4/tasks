@@ -22,7 +22,7 @@ class Scheduler
     /**
      * Returns the created Tasks.
      *
-     * @return Task[]
+     * @return list<Task>
      */
     public function getTasks(): array
     {
