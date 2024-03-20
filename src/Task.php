@@ -41,7 +41,7 @@ class Task
     /**
      * Supported action types.
      *
-     * @var string[]
+     * @var list<string>
      */
     protected array $types = [
         'command',
