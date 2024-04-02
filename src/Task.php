@@ -16,7 +16,6 @@ namespace CodeIgniter\Tasks;
 use CodeIgniter\Events\Events;
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Tasks\Exceptions\TasksException;
-use Config\Services;
 use InvalidArgumentException;
 use ReflectionException;
 use ReflectionFunction;
@@ -260,7 +259,7 @@ class Task
      */
     protected function runUrl()
     {
-        $response = Services::curlrequest()->request('GET', $this->getAction());
+        $response = service('curlrequest')->request('GET', $this->getAction());
 
         return $response->getBody();
     }
