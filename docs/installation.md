@@ -61,7 +61,12 @@ Regardless of which installation method you chose, we also need to migrate the d
 
 You can do this with the following command:
 
+#### for Unix
 ```console
-php spark migrate --all
+php spark migrate -n CodeIgniter\\Settings
 ```
 
+#### for Windows
+```console
+php spark migrate -n CodeIgniter\Settings
+```
