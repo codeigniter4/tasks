@@ -19,7 +19,10 @@ Install via Composer:
 
 Migrate the database:
 
-    php spark migrate --all
+#### for Unix
+    php spark migrate -n CodeIgniter\\Settings
+#### for Windows
+    php spark migrate -n CodeIgniter\Settings
 
 ## Configuration
 
