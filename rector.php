@@ -33,7 +33,6 @@ use Rector\EarlyReturn\Rector\If_\ChangeIfElseValueAssignToEarlyReturnRector;
 use Rector\EarlyReturn\Rector\If_\RemoveAlwaysElseRector;
 use Rector\EarlyReturn\Rector\Return_\PreparedValueToEarlyReturnRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
-use Rector\Php73\Rector\FuncCall\JsonThrowOnErrorRector;
 use Rector\Php73\Rector\FuncCall\StringifyStrNeedlesRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\LevelSetList;
@@ -41,7 +40,7 @@ use Rector\Set\ValueObject\SetList;
 use Rector\ValueObject\PhpVersion;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->sets([SetList::DEAD_CODE, LevelSetList::UP_TO_PHP_74, PHPUnitSetList::PHPUNIT_SPECIFIC_METHOD, PHPUnitSetList::PHPUNIT_80]);
+    $rectorConfig->sets([SetList::DEAD_CODE, LevelSetList::UP_TO_PHP_74, PHPUnitSetList::PHPUNIT_80]);
     $rectorConfig->parallel();
     // The paths to refactor (can also be supplied with CLI arguments)
     $rectorConfig->paths([
@@ -73,7 +72,6 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->skip([
         __DIR__ . '/src/Views',
 
-        JsonThrowOnErrorRector::class,
         StringifyStrNeedlesRector::class,
 
         // Note: requires php 8
