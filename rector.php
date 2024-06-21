@@ -41,7 +41,7 @@ use Rector\Set\ValueObject\SetList;
 use Rector\ValueObject\PhpVersion;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->sets([SetList::DEAD_CODE, LevelSetList::UP_TO_PHP_74, PHPUnitSetList::PHPUNIT_SPECIFIC_METHOD, PHPUnitSetList::PHPUNIT_80]);
+    $rectorConfig->sets([SetList::DEAD_CODE, LevelSetList::UP_TO_PHP_74, PHPUnitSetList::PHPUNIT_80]);
     $rectorConfig->parallel();
     // The paths to refactor (can also be supplied with CLI arguments)
     $rectorConfig->paths([
