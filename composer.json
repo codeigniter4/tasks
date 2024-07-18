@@ -23,8 +23,10 @@
         "codeigniter4/settings": "^2.0"
     },
     "require-dev": {
+        "codeigniter/coding-standard": "1.7.*",
         "codeigniter4/devkit": "^1.0",
         "codeigniter4/framework": "^4.1",
+        "phpunit/phpunit": "^9.6",
         "rector/rector": "1.1.1"
     },
     "minimum-stability": "dev",
