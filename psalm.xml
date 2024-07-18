@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <psalm
+    phpVersion="8.1"
     errorLevel="7"
     resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -7,6 +8,8 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     autoloader="psalm_autoload.php"
     cacheDirectory="build/psalm/"
+    findUnusedBaselineEntry="false"
+    findUnusedCode="false"
 >
     <projectFiles>
         <directory name="src/" />
