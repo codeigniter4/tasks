@@ -142,6 +142,7 @@ class CronExpression
         }
 
         $currentTime = $this->testTime->format($format);
+        assert(ctype_digit($currentTime));
 
         // Handle repeating times (i.e. /5 or */5 for every 5 minutes)
         if (strpos($time, '/') !== false) {
