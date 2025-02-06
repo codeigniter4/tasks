@@ -11,7 +11,7 @@ information, which provides a convenient way of storing settings in the database
 
 ### Requirements
 
-![PHP](https://img.shields.io/badge/PHP-%5E7.4-red)
+![PHP](https://img.shields.io/badge/PHP-%5E8.1-red)
 ![CodeIgniter](https://img.shields.io/badge/CodeIgniter-%5E4.1-red)
 
 ### Quickstart

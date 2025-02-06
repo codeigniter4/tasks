@@ -48,7 +48,7 @@ class Publish extends TaskCommand
                     'namespace CodeIgniter\\Tasks\\Config' => 'namespace Config',
                     'use CodeIgniter\\Config\\BaseConfig'  => 'use CodeIgniter\\Tasks\\Config\\Tasks as BaseTasks',
                     'class Tasks extends BaseConfig'       => 'class Tasks extends BaseTasks',
-                ]
+                ],
             );
         }
 

@@ -90,13 +90,13 @@ final class TaskTest extends TasksTestCase
 
     public function testCommandRunsCommand()
     {
-        $task = new Task('command', 'tasks:test');
+        $task = new Task('command', 'tasks:example');
 
         $task->run();
 
         $this->assertStringContainsString(
             'Commands can output text.',
-            $this->getBuffer()
+            $this->getBuffer(),
         );
     }
 

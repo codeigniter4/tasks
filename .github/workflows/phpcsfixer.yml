@@ -16,4 +16,4 @@ on:
 
 jobs:
   phpcsfixer:
-    uses: codeigniter4/.github/.github/workflows/phpcsfixer.yml@main
+    uses: codeigniter4/.github/.github/workflows/phpcsfixer.yml@CI46

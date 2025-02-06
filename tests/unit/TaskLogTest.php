@@ -15,6 +15,7 @@ use CodeIgniter\I18n\Time;
 use CodeIgniter\Tasks\Task;
 use CodeIgniter\Tasks\TaskLog;
 use CodeIgniter\Test\CIUnitTestCase as TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -46,12 +47,11 @@ final class TaskLogTest extends TestCase
     }
 
     /**
-     * @dataProvider provideDuration
-     *
      * @param array|bool|int|string|null $output
      *
      * @throws Exception
      */
+    #[DataProvider('provideDuration')]
     public function testDuration(string $start, string $end, string $expected, $output)
     {
         $start = new Time($start);

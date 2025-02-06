@@ -82,19 +82,19 @@ class RunResolver
                     $satisfied = true;
                 }
                 // If the value is a list
-                elseif (strpos($value, ',') !== false) {
+                elseif (str_contains($value, ',')) {
                     if ($this->isInList($nextValue, $value)) {
                         $satisfied = true;
                     }
                 }
                 // If the value is a range
-                elseif (strpos($value, '-') !== false) {
+                elseif (str_contains($value, '-')) {
                     if ($this->isInRange($nextValue, $value)) {
                         $satisfied = true;
                     }
                 }
                 // If the value is an increment
-                elseif (strpos($value, '/') !== false) {
+                elseif (str_contains($value, '/')) {
                     if ($this->isInIncrement($nextValue, $value)) {
                         $satisfied = true;
                     }
@@ -207,13 +207,13 @@ class RunResolver
         }
 
         $days = [
-            'sun' => 0,
-            'mon' => 1,
-            'tue' => 2,
-            'wed' => 3,
-            'thu' => 4,
-            'fri' => 5,
-            'sat' => 6,
+            'sun' => '0',
+            'mon' => '1',
+            'tue' => '2',
+            'wed' => '3',
+            'thu' => '4',
+            'fri' => '5',
+            'sat' => '6',
         ];
 
         return str_replace(array_keys($days), array_values($days), $origValue);

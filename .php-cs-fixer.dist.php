@@ -43,5 +43,5 @@ $options = [
 return Factory::create(new CodeIgniter4(), $overrides, $options)->forLibrary(
     'CodeIgniter Tasks',
     'CodeIgniter Foundation',
-    'admin@codeigniter.com'
+    'admin@codeigniter.com',
 );

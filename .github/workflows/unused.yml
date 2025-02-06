@@ -1,4 +1,4 @@
-name: Rector
+name: Unused
 
 on:
   pull_request:
@@ -18,4 +18,4 @@ on:
 
 jobs:
   rector:
-    uses: codeigniter4/.github/.github/workflows/rector.yml@main
+    uses: codeigniter4/.github/.github/workflows/unused.yml@CI46

@@ -19,12 +19,12 @@ use CodeIgniter\CLI\CLI;
 /**
  * @internal
  */
-final class TasksTest extends BaseCommand
+final class TasksExample extends BaseCommand
 {
     protected $group       = 'Testing';
-    protected $name        = 'tasks:test';
-    protected $description = 'Tests Tasks';
-    protected $usage       = 'tasks:test';
+    protected $name        = 'tasks:example';
+    protected $description = 'Tests Example';
+    protected $usage       = 'tasks:example';
 
     public function run(array $params = [])
     {

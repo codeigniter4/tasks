@@ -15,6 +15,7 @@ use CodeIgniter\I18n\Time;
 use CodeIgniter\Tasks\CronExpression;
 use CodeIgniter\Tasks\Exceptions\TasksException;
 use CodeIgniter\Test\CIUnitTestCase as TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -140,11 +141,10 @@ final class CronExpressionTest extends TestCase
     }
 
     /**
-     * @dataProvider provideEveryHour
-     *
      * @param mixed $hourTrue
      * @param mixed $hourFalse
      */
+    #[DataProvider('provideEveryHour')]
     public function testEveryHour($hourTrue, $hourFalse)
     {
         $this->cron->testTime($hourTrue);
@@ -234,9 +234,7 @@ final class CronExpressionTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideNextRun
-     */
+    #[DataProvider('provideNextRun')]
     public function testNextRun(string $exp, string $expected)
     {
         $this->cron->testTime('October 5, 2020 8:00 pm');
