@@ -52,11 +52,11 @@ class TaskRunner
 
         foreach ($tasks as $task) {
             // If specific tasks were chosen then skip executing remaining tasks
-            if (! empty($this->only) && ! in_array($task->name, $this->only, true)) {
+            if ($this->only !== [] && ! in_array($task->name, $this->only, true)) {
                 continue;
             }
 
-            if (! $task->shouldRun($this->testTime) && empty($this->only)) {
+            if (! $task->shouldRun($this->testTime) && $this->only === []) {
                 continue;
             }
 

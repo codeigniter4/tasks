@@ -20,7 +20,7 @@ use Tests\Support\TasksTestCase;
  */
 final class MockTest extends TasksTestCase
 {
-    protected MockScheduler $scheduler;
+    private MockScheduler $scheduler;
 
     protected function setUp(): void
     {

@@ -19,7 +19,7 @@ use CodeIgniter\Test\CIUnitTestCase as TestCase;
  */
 final class FrequenciesTraitTest extends TestCase
 {
-    protected object $class;
+    private object $class;
 
     protected function setUp(): void
     {

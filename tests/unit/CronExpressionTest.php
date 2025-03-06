@@ -22,7 +22,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 final class CronExpressionTest extends TestCase
 {
-    protected CronExpression $cron;
+    private CronExpression $cron;
 
     protected function setUp(): void
     {
@@ -207,7 +207,11 @@ final class CronExpressionTest extends TestCase
             $h . ':10 PM',
         ], range(1, 12));
 
-        return [...$hours24, ...$hoursAM, ...$hoursPM];
+        return [
+            ...$hours24,
+            ...$hoursAM,
+            ...$hoursPM,
+        ];
     }
 
     public static function provideNextRun(): iterable
