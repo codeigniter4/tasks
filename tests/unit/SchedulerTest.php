@@ -20,7 +20,7 @@ use CodeIgniter\Test\CIUnitTestCase as TestCase;
  */
 final class SchedulerTest extends TestCase
 {
-    protected Scheduler $scheduler;
+    private Scheduler $scheduler;
 
     protected function setUp(): void
     {

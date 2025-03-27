@@ -26,11 +26,6 @@ final class TaskTest extends TasksTestCase
 
     protected $namespace;
 
-    /**
-     * @var bool|resource
-     */
-    protected $streamFilter;
-
     protected function setUp(): void
     {
         parent::setUp();

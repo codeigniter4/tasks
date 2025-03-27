@@ -56,13 +56,6 @@ class Task
     protected string $type;
 
     /**
-     * The actual content that should be run.
-     *
-     * @var mixed
-     */
-    protected $action;
-
-    /**
      * If not empty, lists the allowed environments
      * this can run in.
      */
@@ -74,18 +67,17 @@ class Task
     protected string $name;
 
     /**
-     * @param mixed $action
+     * @param $action mixed The actual content that should be run.
      *
      * @throws TasksException
      */
-    public function __construct(string $type, $action)
+    public function __construct(string $type, protected mixed $action)
     {
         if (! in_array($type, $this->types, true)) {
             throw TasksException::forInvalidTaskType($type);
         }
 
-        $this->type   = $type;
-        $this->action = $action;
+        $this->type = $type;
     }
 
     /**
@@ -144,12 +136,12 @@ class Task
         $cron = service('cronExpression');
 
         // Allow times to be set during testing
-        if (! empty($testTime)) {
+        if ($testTime !== null && $testTime !== '' && $testTime !== '0') {
             $cron->testTime($testTime);
         }
 
         // Are we restricting to environments?
-        if (! empty($this->environments) && ! $this->runsInEnvironment($_SERVER['CI_ENVIRONMENT'])) {
+        if ($this->environments !== [] && ! $this->runsInEnvironment($_SERVER['CI_ENVIRONMENT'])) {
             return false;
         }
 
@@ -201,7 +193,7 @@ class Task
     protected function runsInEnvironment(string $environment): bool
     {
         // If nothing is specified then it should run
-        if (empty($this->environments)) {
+        if ($this->environments === []) {
             return true;
         }
 

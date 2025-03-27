@@ -13,6 +13,18 @@ parameters:
 			path: src/Commands/Lister.php
 
 		-
+			message: '#^Call to an undefined method CodeIgniter\\I18n\\Time\:\:getMonthDay\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/RunResolver.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\I18n\\Time\:\:getWeekDay\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/RunResolver.php
+
+		-
 			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''CodeIgniter\\\\I18n\\\\Time'' and CodeIgniter\\I18n\\Time will always evaluate to true\.$#'
 			identifier: method.alreadyNarrowedType
 			count: 1

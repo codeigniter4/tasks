@@ -10,6 +10,7 @@
     cacheDirectory="build/psalm/"
     findUnusedBaselineEntry="false"
     findUnusedCode="false"
+    ensureOverrideAttribute="false"
 >
     <projectFiles>
         <directory name="src/" />

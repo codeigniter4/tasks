@@ -71,7 +71,7 @@ trait FrequenciesTrait
     {
         $min = $hour = 0;
 
-        if (! empty($time)) {
+        if ($time !== null && $time !== '' && $time !== '0') {
             [$min, $hour] = $this->parseTime($time);
         }
 
@@ -323,7 +323,7 @@ trait FrequenciesTrait
     {
         $min = $hour = 0;
 
-        if (! empty($time)) {
+        if ($time !== null && $time !== '' && $time !== '0') {
             [$min, $hour] = $this->parseTime($time);
         }
 
@@ -403,7 +403,7 @@ trait FrequenciesTrait
     {
         $min = $hour = 0;
 
-        if (! empty($time)) {
+        if ($time !== null && $time !== '' && $time !== '0') {
             [$min, $hour] = $this->parseTime($time);
         }
 
@@ -425,7 +425,7 @@ trait FrequenciesTrait
     {
         $min = $hour = 0;
 
-        if (! empty($time)) {
+        if ($time !== null && $time !== '' && $time !== '0') {
             [$min, $hour] = $this->parseTime($time);
         }
 
@@ -446,7 +446,7 @@ trait FrequenciesTrait
     {
         $min = $hour = 0;
 
-        if (! empty($time)) {
+        if ($time !== null && $time !== '' && $time !== '0') {
             [$min, $hour] = $this->parseTime($time);
         }
 
@@ -466,7 +466,7 @@ trait FrequenciesTrait
     {
         $min = $hour = 0;
 
-        if (! empty($time)) {
+        if ($time !== null && $time !== '' && $time !== '0') {
             [$min, $hour] = $this->parseTime($time);
         }
 
@@ -486,7 +486,7 @@ trait FrequenciesTrait
     {
         $min = $hour = '*';
 
-        if (! empty($time)) {
+        if ($time !== null && $time !== '' && $time !== '0') {
             [$min, $hour] = $this->parseTime($time);
         }
 
