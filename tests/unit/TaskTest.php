@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use CodeIgniter\I18n\Time;
+use CodeIgniter\Tasks\Exceptions\TasksException;
 use CodeIgniter\Tasks\Task;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\Filters\CITestStreamFilter;
@@ -158,5 +159,142 @@ final class TaskTest extends TasksTestCase
         // Should return the current time
         $this->assertInstanceOf(Time::class, $task->lastRun()); // @phpstan-ignore-line
         $this->assertSame($date, $task->lastRun()->format('Y-m-d H:i:s'));
+    }
+
+    public function testSingleInstanceMethod()
+    {
+        $task = new Task('command', 'foo:bar');
+
+        $this->assertFalse($this->getPrivateProperty($task, 'singleInstance'));
+
+        $result = $task->singleInstance();
+        $this->assertTrue($this->getPrivateProperty($task, 'singleInstance'));
+        $this->assertNull($this->getPrivateProperty($task, 'singleInstanceTTL'));
+        $this->assertSame($task, $result);
+
+        // Test with custom TTL
+        $task->singleInstance(3600);
+        $this->assertTrue($this->getPrivateProperty($task, 'singleInstance'));
+        $this->assertSame(3600, $this->getPrivateProperty($task, 'singleInstanceTTL'));
+    }
+
+    public function testGetLockKey()
+    {
+        $task = new Task('command', 'foo:bar');
+        $task->named('test_task');
+
+        $method   = $this->getPrivateMethodInvoker($task, 'getLockKey');
+        $expected = 'task_lock_test_task';
+
+        $this->assertSame($expected, $method());
+
+        // Test with unnamed task - should use dynamic name
+        $task   = new Task('command', 'foo:bar');
+        $method = $this->getPrivateMethodInvoker($task, 'getLockKey');
+
+        // Should use task name from magic getter
+        $expected = 'task_lock_' . $task->name;
+        $this->assertSame($expected, $method());
+    }
+
+    public function testNamedTaskLockConsistency()
+    {
+        // Create two different closure tasks with the same name
+        $closure1 = static fn () => 'test1';
+
+        $closure2 = static function () {
+            return 'test2'; // Different functionality
+        };
+
+        $task1 = new Task('closure', $closure1);
+        $task2 = new Task('closure', $closure2);
+
+        // If they have the same name, they should have the same lock key
+        $task1->named('same_name');
+        $task2->named('same_name');
+
+        $getLockKey1 = $this->getPrivateMethodInvoker($task1, 'getLockKey');
+        $getLockKey2 = $this->getPrivateMethodInvoker($task2, 'getLockKey');
+
+        $this->assertSame($getLockKey1(), $getLockKey2());
+
+        // Different names should produce different keys
+        $task3 = new Task('closure', $closure1);
+        $task3->named('different_name');
+
+        $getLockKey3 = $this->getPrivateMethodInvoker($task3, 'getLockKey');
+
+        $this->assertNotSame($getLockKey1(), $getLockKey3());
+    }
+
+    public function testShouldRunWithSingleInstance()
+    {
+        $task = (new Task('command', 'foo:bar'))
+            ->named('test_should_run')
+            ->hourly()
+            ->singleInstance();
+
+        // Should run at the right time with no existing lock
+        $this->assertTrue($task->shouldRun('12:00am'));
+
+        // Create a lock
+        $lockKey = $this->getPrivateMethodInvoker($task, 'getLockKey')();
+        cache()->save($lockKey, [], 3600);
+
+        // Should not run if a lock exists
+        $this->assertFalse($task->shouldRun('12:00am'));
+
+        cache()->delete($lockKey);
+    }
+
+    public function testRunWithSingleInstance()
+    {
+        $task = new Task('closure', static fn () => 'task executed');
+        $task->named('test_run_single');
+        $task->singleInstance();
+
+        $result = $task->run();
+        $this->assertSame('task executed', $result);
+
+        $lockKey = $this->getPrivateMethodInvoker($task, 'getLockKey')();
+        $this->assertNull(cache()->get($lockKey));
+    }
+
+    public function testLockReleasedAfterException()
+    {
+        $task = new Task('command', 'invalid:command');
+        $task->named('test_exception');
+        $task->singleInstance();
+
+        $reflection = new ReflectionClass($task);
+        $property   = $reflection->getProperty('type');
+        $property->setValue($task, 'invalid_type');
+
+        $lockKey = $this->getPrivateMethodInvoker($task, 'getLockKey')();
+
+        try {
+            $task->run();
+            $this->fail('Expected exception was not thrown');
+        } catch (Exception $e) {
+            $this->assertInstanceOf(TasksException::class, $e);
+        }
+
+        $this->assertNull(cache()->get($lockKey));
+    }
+
+    public function testSingleInstanceWithCustomTTL()
+    {
+        $task = new Task('closure', static fn () => 'done');
+        $task->named('test_ttl');
+
+        $task->singleInstance(60);
+
+        $this->assertSame(60, $this->getPrivateProperty($task, 'singleInstanceTTL'));
+
+        $task2 = new Task('closure', static fn () => 'done');
+        $task2->named('test_no_ttl');
+        $task2->singleInstance();
+
+        $this->assertNull($this->getPrivateProperty($task2, 'singleInstanceTTL'));
     }
 }
