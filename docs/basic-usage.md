@@ -81,43 +81,69 @@ a simple URL string, you can use a closure or command instead.
 $schedule->url('https://my-status-cloud.com?site=foo.com')->everyFiveMinutes();
 ```
 
+## Single Instance Tasks
+
+Some tasks can run longer than their scheduled interval. To prevent multiple instances of the same task running simultaneously, you can use the `singleInstance()` method:
+
+```php
+$schedule->command('demo:heavy-task')->everyMinute()->singleInstance();
+```
+
+With this setup, even if the task takes more than one minute to complete, a new instance won't start until the running one finishes.
+
+### Setting Lock Duration
+
+By default, the lock will remain active until the task completes execution. However, you can specify a maximum lock duration by passing a TTL (time-to-live) value in seconds to the `singleInstance()` method:
+
+```php
+// Lock for a maximum of 30 minutes (1800 seconds)
+$schedule->command('demo:heavy-task')
+    ->everyFifteenMinutes()
+    ->singleInstance(30 * MINUTE);
+```
+
+This is useful in preventing "stuck" locks. If a task crashes unexpectedly, the lock might remain indefinitely. Setting a TTL ensures the lock eventually expires.
+
+If a task completes before the TTL expires, the lock is released immediately. The TTL only represents the maximum duration the lock can exist.
+
 ## Frequency Options
 
 There are a number of ways available to specify how often the task is called.
 
 
-| Method                            | Description                                                           |
-|:----------------------------------|:----------------------------------------------------------------------|
-| `->cron('* * * * *')`             | Run on a custom cron schedule.                                        |
-| `->daily('4:00 am')`              | Runs daily at 12:00am, unless a time string is passed in.             |
-| `->hourly() / ->hourly(15)`       | Runs at the top of every hour or at specified minute.                 |
-| `->everyHour(3, 15)`              | Runs every 3 hours at XX:15.                                          |
-| `->betweenHours(6,12)`            | Runs between hours 6 and 12.                                          |
-| `->hours([0,10,16])`              | Runs at hours 0, 10 and 16.                                           |
-| `->everyMinute(20)`               | Runs every 20 minutes.                                                |
-| `->betweenMinutes(0,30)`          | Runs between minutes 0 and 30.                                        |
-| `->minutes([0,20,40])`            | Runs at specific minutes 0,20 and 40.                                 |
-| `->everyFiveMinutes()`            | Runs every 5 minutes (12:00, 12:05, 12:10, etc)                       |
-| `->everyFifteenMinutes()`         | Runs every 15 minutes (12:00, 12:15, etc)                             |
-| `->everyThirtyMinutes()`          | Runs every 30 minutes (12:00, 12:30, etc)                             |
-| `->days([0,3])`                   | Runs only on Sunday and Wednesday  ( 0 is Sunday , 6 is Saturday )    |
-| `->sundays('3:15am')`             | Runs every Sunday at midnight, unless time passed in.                 |
-| `->mondays('3:15am')`             | Runs every Monday at midnight, unless time passed in.                 |
-| `->tuesdays('3:15am')`            | Runs every Tuesday at midnight, unless time passed in.                |
-| `->wednesdays('3:15am')`          | Runs every Wednesday at midnight, unless time passed in.              |
-| `->thursdays('3:15am')`           | Runs every Thursday at midnight, unless time passed in.               |
-| `->fridays('3:15am')`             | Runs every Friday at midnight, unless time passed in.                 |
-| `->saturdays('3:15am')`           | Runs every Saturday at midnight, unless time passed in.               |
-| `->monthly('12:21pm')`            | Runs the first day of every month at 12:00am unless time passed in.   |
-| `->daysOfMonth([1,15])`           | Runs only on days 1 and 15.                                           |
-| `->everyMonth(4)`                 | Runs every 4 months.                                                   |
-| `->betweenMonths(4,7)`            | Runs between months 4 and 7.                                          |
-| `->months([1,7])`                 | Runs only on January and July.                                        |
-| `->quarterly('5:00am')`           | Runs the first day of each quarter (Jan 1, Apr 1, July 1, Oct 1)      |
-| `->yearly('12:34am')`             | Runs the first day of the year.                                       |
-| `->weekdays('1:23pm')`            | Runs M-F at 12:00 am unless time passed in.                           |
-| `->weekends('2:34am')`            | Runs Saturday and Sunday at 12:00 am unless time passed in.           |
-| `->environments('local', 'prod')` | Restricts the task to run only in the specified environments          |
+| Method                                        | Description                                                         |
+|:----------------------------------------------|:--------------------------------------------------------------------|
+| `->cron('* * * * *')`                         | Run on a custom cron schedule.                                      |
+| `->daily('4:00 am')`                          | Runs daily at 12:00am, unless a time string is passed in.           |
+| `->hourly() / ->hourly(15)`                   | Runs at the top of every hour or at specified minute.               |
+| `->everyHour(3, 15)`                          | Runs every 3 hours at XX:15.                                        |
+| `->betweenHours(6,12)`                        | Runs between hours 6 and 12.                                        |
+| `->hours([0,10,16])`                          | Runs at hours 0, 10 and 16.                                         |
+| `->everyMinute(20)`                           | Runs every 20 minutes.                                              |
+| `->betweenMinutes(0,30)`                      | Runs between minutes 0 and 30.                                      |
+| `->minutes([0,20,40])`                        | Runs at specific minutes 0,20 and 40.                               |
+| `->everyFiveMinutes()`                        | Runs every 5 minutes (12:00, 12:05, 12:10, etc)                     |
+| `->everyFifteenMinutes()`                     | Runs every 15 minutes (12:00, 12:15, etc)                           |
+| `->everyThirtyMinutes()`                      | Runs every 30 minutes (12:00, 12:30, etc)                           |
+| `->days([0,3])`                               | Runs only on Sunday and Wednesday  ( 0 is Sunday , 6 is Saturday )  |
+| `->sundays('3:15am')`                         | Runs every Sunday at midnight, unless time passed in.               |
+| `->mondays('3:15am')`                         | Runs every Monday at midnight, unless time passed in.               |
+| `->tuesdays('3:15am')`                        | Runs every Tuesday at midnight, unless time passed in.              |
+| `->wednesdays('3:15am')`                      | Runs every Wednesday at midnight, unless time passed in.            |
+| `->thursdays('3:15am')`                       | Runs every Thursday at midnight, unless time passed in.             |
+| `->fridays('3:15am')`                         | Runs every Friday at midnight, unless time passed in.               |
+| `->saturdays('3:15am')`                       | Runs every Saturday at midnight, unless time passed in.             |
+| `->monthly('12:21pm')`                        | Runs the first day of every month at 12:00am unless time passed in. |
+| `->daysOfMonth([1,15])`                       | Runs only on days 1 and 15.                                         |
+| `->everyMonth(4)`                             | Runs every 4 months.                                                |
+| `->betweenMonths(4,7)`                        | Runs between months 4 and 7.                                        |
+| `->months([1,7])`                             | Runs only on January and July.                                      |
+| `->quarterly('5:00am')`                       | Runs the first day of each quarter (Jan 1, Apr 1, July 1, Oct 1)    |
+| `->yearly('12:34am')`                         | Runs the first day of the year.                                     |
+| `->weekdays('1:23pm')`                        | Runs M-F at 12:00 am unless time passed in.                         |
+| `->weekends('2:34am')`                        | Runs Saturday and Sunday at 12:00 am unless time passed in.         |
+| `->environments('local', 'prod')`             | Restricts the task to run only in the specified environments.       |
+| `->singleInstance() / ->singleInstance(HOUR)` | Prevents concurrent executions of the same task.                    |
 
 
 These methods can be combined to create even more nuanced timings:

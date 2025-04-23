@@ -67,6 +67,16 @@ class Task
     protected string $name;
 
     /**
+     * Whether to prevent concurrent executions of this task.
+     */
+    protected bool $singleInstance = false;
+
+    /**
+     * Maximum lock duration in seconds for single instance tasks.
+     */
+    protected ?int $singleInstanceTTL = null;
+
+    /**
      * @param $action mixed The actual content that should be run.
      *
      * @throws TasksException
@@ -119,12 +129,23 @@ class Task
      */
     public function run()
     {
-        $method = 'run' . ucfirst($this->type);
-        if (! method_exists($this, $method)) {
-            throw TasksException::forInvalidTaskType($this->type);
+        if ($this->singleInstance) {
+            $lockKey = $this->getLockKey();
+            cache()->save($lockKey, [], $this->singleInstanceTTL ?? 0);
         }
 
-        return $this->{$method}();
+        try {
+            $method = 'run' . ucfirst($this->type);
+            if (! method_exists($this, $method)) {
+                throw TasksException::forInvalidTaskType($this->type);
+            }
+
+            return $this->{$method}();
+        } finally {
+            if ($this->singleInstance) {
+                cache()->delete($lockKey);
+            }
+        }
     }
 
     /**
@@ -145,7 +166,27 @@ class Task
             return false;
         }
 
+        // If this is a single instance task and a lock exists, don't run
+        if ($this->singleInstance && cache()->get($this->getLockKey()) !== null) {
+            return false;
+        }
+
         return $cron->shouldRun($this->getExpression());
+    }
+
+    /**
+     * Set this task to be a single instance
+     *
+     * @param int|null $lockTTL Time-to-live for the cache lock in seconds
+     *
+     * @return $this
+     */
+    public function singleInstance(?int $lockTTL = null): static
+    {
+        $this->singleInstance    = true;
+        $this->singleInstanceTTL = $lockTTL;
+
+        return $this;
     }
 
     /**
@@ -296,6 +337,8 @@ class Task
      * Magic getter
      *
      * @return mixed
+     *
+     * @throws ReflectionException
      */
     public function __get(string $key)
     {
@@ -306,5 +349,17 @@ class Task
         if (property_exists($this, $key)) {
             return $this->{$key};
         }
+    }
+
+    /**
+     * Determine the lock key for the task.
+     *
+     * @throws ReflectionException
+     */
+    private function getLockKey(): string
+    {
+        $name = $this->name ?? $this->buildName();
+
+        return sprintf('task_lock_%s', $name);
     }
 }
