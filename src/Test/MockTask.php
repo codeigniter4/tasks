@@ -46,6 +46,7 @@ class MockTask extends Task
             'closure' => 42,
             'event'   => true,
             'url'     => 'body',
+            'queue'   => true,
         ][$this->type];
     }
 }

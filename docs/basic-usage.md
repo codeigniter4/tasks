@@ -81,6 +81,48 @@ a simple URL string, you can use a closure or command instead.
 $schedule->url('https://my-status-cloud.com?site=foo.com')->everyFiveMinutes();
 ```
 
+### Scheduling Queue Jobs
+
+If you want to schedule a Queue Job, you can use the `queue()` method and specify the queue name, job name and data your job needs:
+
+```php
+$schedule->queue('queue-name', 'jobName', ['data' => 'array'])->hourly();
+```
+
+!!! note
+
+    To learn more about the [Queue package](https://github.com/codeigniter4/queue) you can visit a project page.
+
+
+The `singleInstance()` option, described in the next section, works a bit differently than with other scheduling methods.
+Since queue jobs are added quickly and processed later in the background, the lock is applied as soon as the job is queued - not when it actually runs.
+
+```php
+$schedule->queue('queue-name', 'jobName', ['data' => 'array'])
+    ->hourly()
+    ->singleInstance();
+```
+
+This means:
+
+- The lock is created immediately when the job is queued.
+- The lock is released only after the job is processed (whether it succeeds or fails).
+
+We can optionally pass a TTL to `singleInstance()` to limit how long the job lock should last:
+
+```php
+$schedule->queue('queue-name', 'jobName', ['data' => 'array'])
+    ->hourly()
+    ->singleInstance(30 * MINUTE);
+```
+
+How it works:
+
+- The lock is set immediately when the job is queued.
+- The job must start processing before the TTL expires (in this case, within 30 minutes).
+- Once the job starts, the lock is renewed for the same TTL.
+- So, effectively, you have 30 minutes to start, and another 30 minutes to complete the job.
+
 ## Single Instance Tasks
 
 Some tasks can run longer than their scheduled interval. To prevent multiple instances of the same task running simultaneously, you can use the `singleInstance()` method:

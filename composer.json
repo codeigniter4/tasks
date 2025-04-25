@@ -20,7 +20,8 @@
     "require": {
         "php": "^8.1",
         "ext-json": "*",
-        "codeigniter4/settings": "^2.0"
+        "codeigniter4/settings": "^2.0",
+        "codeigniter4/queue": "dev-develop"
     },
     "require-dev": {
         "codeigniter4/devkit": "^1.3",

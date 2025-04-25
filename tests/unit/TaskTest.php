@@ -297,4 +297,31 @@ final class TaskTest extends TasksTestCase
 
         $this->assertNull($this->getPrivateProperty($task2, 'singleInstanceTTL'));
     }
+
+    public function testRunQueue()
+    {
+        $task = new Task('queue', ['example', 'job-example', []]);
+        $task->named('test_run_queue');
+
+        $result = $task->run();
+        $this->assertTrue($result);
+
+        // No lock
+        $lockKey = $this->getPrivateMethodInvoker($task, 'getLockKey')();
+        $this->assertNull(cache()->get($lockKey));
+    }
+
+    public function testRunQueueWithSingleInstance()
+    {
+        $task = new Task('queue', ['example', 'job-example', []]);
+        $task->named('test_run_queue_single');
+        $task->singleInstance();
+
+        $result = $task->run();
+        $this->assertTrue($result);
+
+        // Lock is still present
+        $lockKey = $this->getPrivateMethodInvoker($task, 'getLockKey')();
+        $this->assertNotNull(cache()->get($lockKey));
+    }
 }
