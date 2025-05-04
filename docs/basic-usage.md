@@ -91,7 +91,7 @@ $schedule->queue('queue-name', 'jobName', ['data' => 'array'])->hourly();
 
 !!! note
 
-    To learn more about the [Queue package](https://github.com/codeigniter4/queue) you can visit a project page.
+    To learn more about queues, you can visit the [Queue package](https://github.com/codeigniter4/queue).
 
 
 The `singleInstance()` option, described in the next section, works a bit differently than with other scheduling methods.
