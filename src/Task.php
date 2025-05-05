@@ -15,6 +15,7 @@ namespace CodeIgniter\Tasks;
 
 use CodeIgniter\Events\Events;
 use CodeIgniter\I18n\Time;
+use CodeIgniter\Queue\Payloads\PayloadMetadata;
 use CodeIgniter\Tasks\Exceptions\TasksException;
 use InvalidArgumentException;
 use ReflectionException;
@@ -48,6 +49,7 @@ class Task
         'closure',
         'event',
         'url',
+        'queue',
     ];
 
     /**
@@ -142,7 +144,7 @@ class Task
 
             return $this->{$method}();
         } finally {
-            if ($this->singleInstance) {
+            if ($this->singleInstance && $this->getType() !== 'queue') {
                 cache()->delete($lockKey);
             }
         }
@@ -295,6 +297,25 @@ class Task
         $response = service('curlrequest')->request('GET', $this->getAction());
 
         return $response->getBody();
+    }
+
+    /**
+     * Sends a job to the queue.
+     */
+    protected function runQueue()
+    {
+        $queueAction = $this->getAction();
+
+        if ($this->singleInstance) {
+            // Create PayloadMetadata instance with the task lock key
+            $queueAction[] = new PayloadMetadata([
+                'queue'       => $queueAction[0],
+                'taskLockTTL' => $this->singleInstanceTTL,
+                'taskLockKey' => $this->getLockKey(),
+            ]);
+        }
+
+        return service('queue')->push(...$queueAction);
     }
 
     /**

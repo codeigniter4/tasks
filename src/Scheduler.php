@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace CodeIgniter\Tasks;
 
 use Closure;
+use CodeIgniter\Queue\Queue;
+use CodeIgniter\Tasks\Exceptions\TasksException;
 
 class Scheduler
 {
@@ -71,6 +73,16 @@ class Scheduler
     public function url(string $url): Task
     {
         return $this->createTask('url', $url);
+    }
+
+    /**
+     * Schedule a queue job.
+     *
+     * @throws TasksException
+     */
+    public function queue(string $queue, string $job, array $data): Task
+    {
+        return $this->createTask('queue', [$queue, $job, $data]);
     }
 
     // --------------------------------------------------------------------

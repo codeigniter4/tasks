@@ -56,4 +56,12 @@ final class SchedulerTest extends TestCase
         $this->assertInstanceOf(Task::class, $task);
         $this->assertSame('foo:bar', $task->getAction());
     }
+
+    public function testQueueSavesTask()
+    {
+        $task = $this->scheduler->queue('example', 'job-example', ['data' => 'array']);
+
+        $this->assertInstanceOf(Task::class, $task);
+        $this->assertSame(['example', 'job-example', ['data' => 'array']], $task->getAction());
+    }
 }

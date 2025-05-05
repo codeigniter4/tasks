@@ -39,7 +39,7 @@ parameters:
 		-
 			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''CodeIgniter\\\\Tasks\\\\Task'' and CodeIgniter\\Tasks\\Task will always evaluate to true\.$#'
 			identifier: method.alreadyNarrowedType
-			count: 3
+			count: 4
 			path: tests/unit/SchedulerTest.php
 
 		-
