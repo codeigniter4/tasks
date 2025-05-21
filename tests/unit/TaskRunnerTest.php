@@ -66,12 +66,59 @@ final class TaskRunnerTest extends TestCase
                 'start'    => date('Y-m-d H:i:s'),
                 'duration' => '0.00',
                 'output'   => null,
-                'error'    => serialize(null),
+                'error'    => null,
             ],
         ];
         $this->seeInDatabase('settings', [
             'class' => 'CodeIgniter\Tasks\Config\Tasks',
             'key'   => 'log-task2',
+            'value' => serialize($expected),
+        ]);
+        $this->dontSeeInDatabase('settings', [
+            'key' => 'log-task1',
+        ]);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function testRunWithError()
+    {
+        $task1 = (new Task('closure', static function () {
+            echo 'Task 1';
+        }))->daily('12:05am')->named('task1');
+        $task3 = (new Task('closure', static function () {
+            throw new Exception('Example exception in Task 3');
+        }))->daily('12:00am')->named('task3');
+
+        $runner = $this->getRunner([$task1, $task3]);
+
+        ob_start();
+        $runner->withTestTime('12:00am')->run();
+        $output = ob_get_clean();
+
+        // Only task 3 should have run
+        $this->assertSame('', $output);
+
+        // Get info about the exception
+        $reflection = new ReflectionFunction($task3->getAction());
+        $file       = $reflection->getFileName();
+        $line       = $reflection->getStartLine() + 1;
+
+        // Should have logged the stats
+        $expected = [
+            [
+                'task'     => 'task3',
+                'type'     => 'closure',
+                'start'    => date('Y-m-d H:i:s'),
+                'duration' => '0.00',
+                'output'   => null,
+                'error'    => "Exception: 0 - Example exception in Task 3\nfile: {$file}:{$line}",
+            ],
+        ];
+        $this->seeInDatabase('settings', [
+            'class' => 'CodeIgniter\Tasks\Config\Tasks',
+            'key'   => 'log-task3',
             'value' => serialize($expected),
         ]);
         $this->dontSeeInDatabase('settings', [
