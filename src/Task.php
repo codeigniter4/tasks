@@ -315,7 +315,7 @@ class Task
             ]);
         }
 
-        return service('queue')->push(...$queueAction);
+        return service('queue')->push(...$queueAction)->getStatus();
     }
 
     /**
