@@ -301,6 +301,8 @@ class Task
 
     /**
      * Sends a job to the queue.
+     *
+     * @return bool Status of the queue push
      */
     protected function runQueue()
     {
@@ -315,7 +317,7 @@ class Task
             ]);
         }
 
-        return service('queue')->push(...$queueAction);
+        return service('queue')->push(...$queueAction)->getStatus();
     }
 
     /**
