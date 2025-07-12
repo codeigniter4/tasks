@@ -22,6 +22,28 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 final class TaskLogTest extends TestCase
 {
+    /**
+     * @param array|bool|int|string|null $output
+     *
+     * @throws Exception
+     */
+    #[DataProvider('provideDuration')]
+    public function testDuration(string $start, string $end, string $expected, $output)
+    {
+        $start = new Time($start);
+        $end   = new Time($end);
+
+        $log = new TaskLog([
+            'task'     => new Task('closure', static function () {}),
+            'output'   => $output,
+            'runStart' => $start,
+            'runEnd'   => $end,
+            'error'    => null,
+        ]);
+
+        $this->assertSame($expected, $log->duration());
+    }
+
     public static function provideDuration(): iterable
     {
         return [
@@ -44,27 +66,5 @@ final class TaskLogTest extends TestCase
                 null,
             ],
         ];
-    }
-
-    /**
-     * @param array|bool|int|string|null $output
-     *
-     * @throws Exception
-     */
-    #[DataProvider('provideDuration')]
-    public function testDuration(string $start, string $end, string $expected, $output)
-    {
-        $start = new Time($start);
-        $end   = new Time($end);
-
-        $log = new TaskLog([
-            'task'     => new Task('closure', static function () {}),
-            'output'   => $output,
-            'runStart' => $start,
-            'runEnd'   => $end,
-            'error'    => null,
-        ]);
-
-        $this->assertSame($expected, $log->duration());
     }
 }

@@ -154,6 +154,28 @@ final class CronExpressionTest extends TestCase
         $this->assertFalse($this->cron->shouldRun('00 * * * *'));
     }
 
+    public static function provideEveryHour(): iterable
+    {
+        $hours24 = array_map(static fn ($h) => [
+            $h . ':00',
+            $h . ':10',
+        ], range(0, 23));
+        $hoursAM = array_map(static fn ($h) => [
+            $h . ':00 AM',
+            $h . ':10 AM',
+        ], range(1, 12));
+        $hoursPM = array_map(static fn ($h) => [
+            $h . ':00 PM',
+            $h . ':10 PM',
+        ], range(1, 12));
+
+        return [
+            ...$hours24,
+            ...$hoursAM,
+            ...$hoursPM,
+        ];
+    }
+
     public function testQuarterPastHour()
     {
         $this->cron->testTime('6:15 PM');
@@ -192,26 +214,15 @@ final class CronExpressionTest extends TestCase
         $this->assertFalse($this->cron->shouldRun('0 20 * 10 1-5'));
     }
 
-    public static function provideEveryHour(): iterable
+    #[DataProvider('provideNextRun')]
+    public function testNextRun(string $exp, string $expected)
     {
-        $hours24 = array_map(static fn ($h) => [
-            $h . ':00',
-            $h . ':10',
-        ], range(0, 23));
-        $hoursAM = array_map(static fn ($h) => [
-            $h . ':00 AM',
-            $h . ':10 AM',
-        ], range(1, 12));
-        $hoursPM = array_map(static fn ($h) => [
-            $h . ':00 PM',
-            $h . ':10 PM',
-        ], range(1, 12));
+        $this->cron->testTime('October 5, 2020 8:00 pm');
 
-        return [
-            ...$hours24,
-            ...$hoursAM,
-            ...$hoursPM,
-        ];
+        $next = $this->cron->nextRun($exp);
+
+        $this->assertInstanceOf(Time::class, $next);
+        $this->assertSame($expected, $next->format('F j, Y g:i a'));
     }
 
     public static function provideNextRun(): iterable
@@ -236,16 +247,5 @@ final class CronExpressionTest extends TestCase
             ['* * * * 3', 'October 6, 2020 8:00 pm'],
             ['* * * * 6,0', 'October 9, 2020 8:00 pm'],
         ];
-    }
-
-    #[DataProvider('provideNextRun')]
-    public function testNextRun(string $exp, string $expected)
-    {
-        $this->cron->testTime('October 5, 2020 8:00 pm');
-
-        $next = $this->cron->nextRun($exp);
-
-        $this->assertInstanceOf(Time::class, $next);
-        $this->assertSame($expected, $next->format('F j, Y g:i a'));
     }
 }
