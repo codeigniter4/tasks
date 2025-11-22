@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace CodeIgniter\Tasks\Config;
 
+use CodeIgniter\Config\BaseService;
 use CodeIgniter\Tasks\CronExpression;
 use CodeIgniter\Tasks\Scheduler;
-use CodeIgniter\Config\BaseService;
 
 class Services extends BaseService
 {
