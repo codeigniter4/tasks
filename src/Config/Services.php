@@ -15,9 +15,9 @@ namespace CodeIgniter\Tasks\Config;
 
 use CodeIgniter\Tasks\CronExpression;
 use CodeIgniter\Tasks\Scheduler;
-use Config\Services as BaseServices;
+use CodeIgniter\Config\BaseService;
 
-class Services extends BaseServices
+class Services extends BaseService
 {
     /**
      * Returns the Task Scheduler
