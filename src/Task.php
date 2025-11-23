@@ -365,7 +365,7 @@ class Task
      */
     public function __get(string $key)
     {
-        if ($key === 'name' && empty($this->name)) {
+        if ($key === 'name' && (! isset($this->name) || ($this->name === ''))) {
             return $this->buildName();
         }
 
