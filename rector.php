@@ -43,6 +43,7 @@ use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Php73\Rector\FuncCall\StringifyStrNeedlesRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\AnnotationWithValueToAttributeRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\YieldDataProviderRector;
+use Rector\PHPUnit\CodeQuality\Rector\StmtsAwareInterface\DeclareStrictTypesTestsRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Privatization\Rector\Property\PrivatizeFinalClassPropertyRector;
 use Rector\Set\ValueObject\LevelSetList;
@@ -119,6 +120,9 @@ return static function (RectorConfig $rectorConfig): void {
             __DIR__ . '/tests/_support/Commands/TasksExample.php',
             __DIR__ . '/tests/unit/TaskRunnerTest.php',
         ],
+
+        // Temporary fix
+        DeclareStrictTypesTestsRector::class,
     ]);
 
     // auto import fully qualified class names
