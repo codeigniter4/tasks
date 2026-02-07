@@ -39,8 +39,6 @@ class CronExpression
      * on construct
      *
      * @param string $timezone The global timezone for all tasks
-     *
-     * @return void
      */
     public function __construct(?string $timezone = null)
     {
