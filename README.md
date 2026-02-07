@@ -7,8 +7,8 @@ A task scheduler for CodeIgniter 4.
 [![Deptrac](https://github.com/codeigniter4/tasks/actions/workflows/deptrac.yml/badge.svg)](https://github.com/codeigniter4/tasks/actions/workflows/deptrac.yml)
 [![Coverage Status](https://coveralls.io/repos/github/codeigniter4/tasks/badge.svg?branch=develop)](https://coveralls.io/github/codeigniter4/tasks?branch=develop)
 
-![PHP](https://img.shields.io/badge/PHP-%5E8.1-blue)
-![CodeIgniter](https://img.shields.io/badge/CodeIgniter-%5E4.1-blue)
+![PHP](https://img.shields.io/badge/PHP-%5E8.2-blue)
+![CodeIgniter](https://img.shields.io/badge/CodeIgniter-%5E4.3-blue)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
 ## Installation
