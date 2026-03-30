@@ -21,7 +21,7 @@
         "php": "^8.2",
         "ext-json": "*",
         "codeigniter4/settings": "^2.0",
-        "codeigniter4/queue": "dev-develop"
+        "codeigniter4/queue": "^1.0"
     },
     "require-dev": {
         "codeigniter4/devkit": "^1.3",
