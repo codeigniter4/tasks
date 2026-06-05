@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://tasks.codeigniter.com/1.0/</loc>
+         <lastmod>2026-06-05</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://tasks.codeigniter.com/1.0/basic-usage/</loc>
+         <lastmod>2026-06-05</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://tasks.codeigniter.com/1.0/cli-commands/</loc>
+         <lastmod>2026-06-05</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://tasks.codeigniter.com/1.0/configuration/</loc>
+         <lastmod>2026-06-05</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://tasks.codeigniter.com/1.0/installation/</loc>
+         <lastmod>2026-06-05</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://tasks.codeigniter.com/1.0/vision/</loc>
+         <lastmod>2026-06-05</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+</urlset>
