@@ -73,7 +73,7 @@ class TaskRunner
             } catch (Throwable $e) {
                 $this->cliWrite('Failed: ' . ($task->name ?: 'Task'), 'red');
 
-                log_message('error', $e->getMessage(), $e->getTrace());
+                log_message('error', $e->getMessage(), ['exception' => $e]);
                 $error = $e;
             } finally {
                 // Save performance info
