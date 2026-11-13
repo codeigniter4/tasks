@@ -107,6 +107,8 @@ class RunResolver
                     continue 2;
                 }
             }
+
+            return $next;
         }
 
         return $next;
