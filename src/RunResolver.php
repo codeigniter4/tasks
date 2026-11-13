@@ -107,6 +107,8 @@ class RunResolver
                     continue 2;
                 }
             }
+
+            return $next;
         }
 
         return $next;
@@ -122,11 +124,11 @@ class RunResolver
     protected function increment(Time $next, string $position): Time
     {
         return match ($position) {
-            'minute' => $next->addMinutes(1),
-            'hour'   => $next->addHours(1),
+            'minute'              => $next->addMinutes(1),
+            'hour'                => $next->addHours(1),
             'monthDay', 'weekDay' => $next->addDays(1),
-            'month' => $next->addMonths(1),
-            default => $next,
+            'month'               => $next->addMonths(1),
+            default               => $next,
         };
     }
 

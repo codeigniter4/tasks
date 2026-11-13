@@ -144,7 +144,7 @@ class Task
 
             return $this->{$method}();
         } finally {
-            if ($this->singleInstance && $this->getType() !== 'queue') {
+            if ($this->singleInstance && isset($lockKey) && $this->getType() !== 'queue') {
                 cache()->delete($lockKey);
             }
         }
